@@ -178,15 +178,53 @@
 @include('layouts.progressbar')
 @include('layouts.groesse')
 <div class=" mt-5">
-    <button  onclick="window.location='{{ route('showFruits') }}'" class="buttonGrey">
-        Fruits
+
+
+<div>
+  <h2 class="sr-only">Steps</h2>
+
+  <div>
+    <ol
+      class="grid grid-cols-1 divide-x divide-gray-100 overflow-hidden rounded-lg border border-gray-100 text-sm text-gray-500 sm:grid-cols-3 w-3/5"
+    > 
+     <button onclick="window.location='{{ route('showFruits') }}'"> 
+        <li class="flex items-center justify-center p-4 bg-gray-600">
+        <img src="/images/fruitsicon.png" alt="" class="mr-2 h-7 w-7 flex-shrink-0">
+            <p class="leading-none">
+              <strong class="block text-white font-bold"> Früchte </strong>
+            </p> 
+        
+        </li>
     </button>
-    <button  onclick="window.location='{{ route('showVeggie') }}'" class="buttonGrey">
-        Veggie
+     <button onclick="window.location='{{ route('showVeggie') }}'"> 
+         <li class="relative flex items-center justify-center bg-gray-500 p-4">
+            <span
+            class="absolute -left-2 top-1/2 hidden h-4 w-4 -translate-y-1/2 rotate-45 border border-b-0 border-l-0 border-gray-100 bg-gray-600 bg-white sm:block"
+            >
+            </span>
+
+            <span
+            class="absolute -right-2 top-1/2 hidden h-4 w-4 -translate-y-1/2 rotate-45 border border-b-0 border-l-0 border-gray-100 bg-gray-500 sm:block"
+            >
+        </span>
+     
+        <img src="/images/vegetablesicon.png" alt="" class="mr-2 h-7 w-7 flex-shrink-0">
+        <p class="leading-none">
+          <strong class="block text-white font-bold"> Gemüse </strong>
+        </p>
+      </li>
+      </button>
+      <button onclick="window.location='{{ route('showLiquids') }}'"> 
+        <li class="flex items-center justify-center p-4 bg-gray-600">
+          <img src="/images/liquidicon.png" alt="" class="mr-2 h-7 w-7 flex-shrink-0">
+            <p class="leading-none">
+                <strong class="block text-white font-bold"> Flüssigkeit </strong>
+            </p>
+        </li>
     </button>
-    <button  onclick="window.location='{{ route('showLiquids') }}'" class="buttonGrey">
-        Liquid
-    </button>
+    </ol>
+  </div>
+</div>
 
     @auth
     <button  onclick="window.location='{{ route('create') }}'" class="buttonGreen">
@@ -196,30 +234,22 @@
 
 </div>
 
-<div class="row flex">
-    
-    <div class="row flex w-75 h-75">
+<div class="px-4 sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-10 w-3/5">
+  <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-4 mx-auto">
+     @foreach($zutaten as $zutat)
+    <div>
+      <div class="relative overflow-hidden transition duration-300 transform rounded lg:hover:-translate-y-2 px-2">
+        <img class="object-cover h-12 md:h-20 xl:h-28" src="/images/{{  $zutat['image'] }}" />
+        <div class="absolute w-44 inset-0 flex flex-col justify-center px-5 py-4 text-center transition-opacity duration-300 bg-black bg-opacity-75 opacity-0 hover:opacity-100">
+          <p class="mb-1 text-lg font-bold text-gray-100">{{ $zutat['name'] }}</p>
+          <p class="mb-4 text-xs text-gray-100">Preis: {{ $zutat['price'] }}€ </p>
+          <p class="mb-4 text-xs text-gray-100">evtl. Bereich für Nährwerte der Zutaten </p>
         
-    @foreach($zutaten as $zutat)
-
-        <div class="col-3 pb-3">
-        @auth
-        
-                 <form class="box" action="/update/ingrediente/{{  $zutat['id'] }}" enctype="multipart/form-data" method="post">
-                 @csrf
-                  <button class="btn"><i class="fa fa-pencil"></i></button>
-                </form>
-                
-                <form action="/delete/ingrediente/{{  $zutat['id'] }}" enctype="multipart/form-data" method="post">
-                 @csrf
-                      <button class="btn"><i class="fa fa-trash"></i></button>
-                </form>
-       
-        @endauth
-            <img src="/images/{{  $zutat['image'] }}" class="w-25">
-
-
-            <div>
+        </div>
+      
+      </div>
+      <div class="mx-auto my-2">
+             <div>
                 <span class="text-dark">Zutat: {{  $zutat['name'] }}</span>
                 <div>
                     <span class="font-weight-bold"> Preis: {{ $zutat['price'] }}€</span>
@@ -231,16 +261,18 @@
                  <div class="flex">
                  <input id="amount" type="number"  step="1" min="1" max="20"
                         name="amount" value="1">
-                 <button class="btn wkorb"> <svg class="flex-1 w-8 h-8 fill-current" viewbox="0 0 24 24">
-      <path d="M17,18C15.89,18 15,18.89 15,20A2,2 0 0,0 17,22A2,2 0 0,0 19,20C19,18.89 18.1,18 17,18M1,2V4H3L6.6,11.59L5.24,14.04C5.09,14.32 5,14.65 5,15A2,2 0 0,0 7,17H19V15H7.42A0.25,0.25 0 0,1 7.17,14.75C7.17,14.7 7.18,14.66 7.2,14.63L8.1,13H15.55C16.3,13 16.96,12.58 17.3,11.97L20.88,5.5C20.95,5.34 21,5.17 21,5A1,1 0 0,0 20,4H5.21L4.27,2M7,18C5.89,18 5,18.89 5,20A2,2 0 0,0 7,22A2,2 0 0,0 9,20C9,18.89 8.1,18 7,18Z"/>
-      </svg></button>
+                 <button class="btn wkorb"> <svg class="flex-1 w-8 h-8 fill-current ml-3" viewbox="0 0 24 24">
+                <path d="M17,18C15.89,18 15,18.89 15,20A2,2 0 0,0 17,22A2,2 0 0,0 19,20C19,18.89 18.1,18 17,18M1,2V4H3L6.6,11.59L5.24,14.04C5.09,14.32 5,14.65 5,15A2,2 0 0,0 7,17H19V15H7.42A0.25,0.25 0 0,1 7.17,14.75C7.17,14.7 7.18,14.66 7.2,14.63L8.1,13H15.55C16.3,13 16.96,12.58 17.3,11.97L20.88,5.5C20.95,5.34 21,5.17 21,5A1,1 0 0,0 20,4H5.21L4.27,2M7,18C5.89,18 5,18.89 5,20A2,2 0 0,0 7,22A2,2 0 0,0 9,20C9,18.89 8.1,18 7,18Z"/>
+                </svg></button>
                  </div>
               
             </form>
         </div>
-        @endforeach
     </div>
-    <div class="w-75 buttonsBottom">
+    @endforeach
+    </div>
+</div>
+    <div class="w-3/5 buttonsBottom">
         <div class="center-con">
         <div class="arrcontainer">
                 <div id="cta">
@@ -267,8 +299,8 @@
             </div>
         </div>
 
-   </div>
-     <img src="/images/kitchen-mixer-icon.svg" class="imagemargin">
+   </div class="row-span-3">
+    <!-- <img src="/images/kitchen-mixer-icon.svg" class="imagemargin"> -->
 
    </div>
 

@@ -1,6 +1,5 @@
 <style>
         .container .progress2 {
-            margin: 0 auto;
             width: 100%;
         }
 
@@ -22,9 +21,10 @@
             width: 10%;
         }
 </style>
-<div class="progress2">
+
+<div class="progress2 my-8">
     <div class="progress-bar" id="progressbar"></div>
-  </div>
+</div>
   <script>
         let progressbar = document.getElementById("progressbar");
          var amount = <?php echo json_encode(session()->get('bottle')->amount); ?>;

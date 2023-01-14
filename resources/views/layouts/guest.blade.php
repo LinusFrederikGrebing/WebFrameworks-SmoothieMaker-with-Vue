@@ -52,7 +52,7 @@
 		<a class=" sm:inline-block py-2 px-6 bg-gray-500 hover:bg-lime-500 text-sm text-white font-bold rounded-xl transition duration-200" href="{{ route('register') }}">Sign up</a>
 	</nav>
     @include('sweetalert::alert')
-           <div class="font-sans text-gray-900 antialiased">
+           <div class="font-sans text-gray-900 antialiased m-auto w-3/4 bg-white-500">
             {{ $slot }}
            </div>
     </body>
