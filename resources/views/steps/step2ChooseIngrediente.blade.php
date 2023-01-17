@@ -199,7 +199,7 @@
      <button onclick="window.location='{{ route('showVeggie') }}'"> 
          <li class="relative flex items-center justify-center bg-gray-500 p-4">
             <span
-            class="absolute -left-2 top-1/2 hidden h-4 w-4 -translate-y-1/2 rotate-45 border border-b-0 border-l-0 border-gray-100 bg-gray-600 bg-white sm:block"
+            class="absolute -left-2 top-1/2 hidden h-4 w-4 -translate-y-1/2 rotate-45 border border-b-0 border-l-0 border-gray-100 bg-gray-600 sm:block"
             >
             </span>
 
