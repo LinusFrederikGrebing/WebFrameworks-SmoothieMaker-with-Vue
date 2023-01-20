@@ -46,7 +46,6 @@ class IngredienteController extends Controller
 
     public function store(Request $request)
     {
-        $this->authorize('create', Ingrediente::class);
         $request->validate([
             'image' => ['required', 'image'],
         ]);
@@ -70,7 +69,7 @@ class IngredienteController extends Controller
         $zutat->type = $request->type;
         $zutat->save();
         Alert::success('', 'Die Zutat wurde erfolgreich hinzugefügt!');
-        return redirect('/custom/fruits');
+        return redirect('/dashboard');
     }
 
 
@@ -113,6 +112,6 @@ class IngredienteController extends Controller
 
         $zutat->save();
         Alert::success('', 'Die Zutat wurde erfolgreich aktualisiert!');
-        return redirect('/custom/fruits');
+        return redirect('/dashboard');
     }
 }
