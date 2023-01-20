@@ -153,10 +153,11 @@
 
 
 <x-guest-layout>
+ 
 <div class="container step1">
     <div class="flex-row">
         <div class="flex-col">
-        TESSSTTT
+       
         @foreach($bottles as $bottle)
         <a id="{{$bottle['id']}}" type="button" onclick="window.location='{{ route('showInhalt', ['bottle' => $bottle])}}'" class="bottle">
         <div class="rotating-map">
