@@ -12,7 +12,7 @@
 
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
         <script src="{{ asset('js/app.js') }}" defer></script>
-        
+        @livewireStyles
     </head>
     <body>
    
@@ -51,17 +51,23 @@
 		<a class=" sm:inline-block sm:ml-auto sm:mr-3 py-2 px-6 bg-gray-50 hover:bg-lime-500 text-sm text-gray-900 font-bold rounded-xl transition duration-200" href="{{ route('login') }}">Sign In</a>
 		<a class=" sm:inline-block py-2 px-6 bg-gray-500 hover:bg-lime-500 text-sm text-white font-bold rounded-xl transition duration-200" href="{{ route('register') }}">Sign up</a>
 		
-		  <a  href="{{ route('showCard')}}">
-			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="white" class="  hover:fill-lime-500 w-12 h-6">
-				<path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
-			  </svg>
-		</a>
 		
+			<a  href="{{ route('showCard')}}">
+				<div class=" flex w-6  ">
+				<livewire:counter />
+				
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="white" class="  hover:fill-lime-500 w-12 h-6">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+				  </svg>
+				  
+			
+		</div>
 	
 	</nav>
     @include('sweetalert::alert')
            <div class="font-sans text-gray-900 antialiased m-auto w-3/4 bg-white-500">
             {{ $slot }}
            </div>
+		   @livewireScripts
     </body>
 </html>
