@@ -170,7 +170,11 @@
         .greenbg{
             background-image: linear-gradient(45deg, #6D9E1F 0%, #80ba24  51%, #96D82B  100%);
         }
-    
+        
+         #myCanvas {
+                border: 1px solid black;
+            }
+  
 
 </style>
 <x-guest-layout>
@@ -229,12 +233,12 @@
     
 
 </div>
-
-<div class="px-4 sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-10 w-3/5">
+<div class="flex">
+<div class="px-4 basis-3/4">
   <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-4 mx-auto">
      @foreach($zutaten as $zutat)
     <div>
-      <div class="relative overflow-hidden transition duration-300 transform rounded lg:hover:-translate-y-2 px-2">
+      <div class="relative overflow-hidden transition duration-300 transform rounded lg:hover:-translate-y-2 px-2" onclick="setImg('/images/{{  $zutat['image'] }}')">
         <img class="object-cover h-12 md:h-20 xl:h-28" src="/images/{{  $zutat['image'] }}" />
         <div class="absolute w-44 inset-0 flex flex-col justify-center px-5 py-4 text-center transition-opacity duration-300 bg-black bg-opacity-75 opacity-0 hover:opacity-100">
           <p class="mb-1 text-lg font-bold text-gray-100">{{ $zutat['name'] }}</p>
@@ -267,8 +271,8 @@
     </div>
     @endforeach
     </div>
-</div>
-    <div class="w-3/5 buttonsBottom">
+
+    <div class="buttonsBottom">
         <div class="center-con">
         <div class="arrcontainer">
                 <div id="cta">
@@ -295,12 +299,14 @@
             </div>
         </div>
 
-   </div class="row-span-3">
-    <!-- <img src="/images/kitchen-mixer-icon.svg" class="imagemargin"> -->
-
-   </div>
+    </div>
+    </div>
+    <div class="basis-1/4">
+        <canvas id="myCanvas" width="200" height="600"></canvas>
+    </div>
 
 </div>
+<script src="{{ asset('js/mixer.js') }}"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script>

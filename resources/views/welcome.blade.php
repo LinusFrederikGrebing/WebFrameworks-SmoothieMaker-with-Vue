@@ -16,7 +16,7 @@
     <body class="antialiased">
     <x-guest-layout>
     <!-- component -->
-        <div class="py-16">
+     <div class="py-16">
             <div class="container m-auto px-6">
 
             <div class="lg:flex justify-between items-center">
@@ -30,13 +30,13 @@
 
                     </div>
                     <div class="lg:w-7/12 order-2">
-                    <img src="/images/smoothie.jpg"
-                    style="transform: scale(1) perspective(1040px) rotateY(-11deg) rotateX(2deg) rotate(2deg);" alt="" class="rounded">
+                    <img src="/images/smoothie.jpg" style="transform: scale(1) perspective(1040px) rotateY(-11deg) rotateX(2deg) rotate(2deg);" alt="" class="rounded">
                     </div>
                 </div>
 
-            </div>
+            </div> 
         </div>
        </x-guest-layout>
     </body>
 </html>
+

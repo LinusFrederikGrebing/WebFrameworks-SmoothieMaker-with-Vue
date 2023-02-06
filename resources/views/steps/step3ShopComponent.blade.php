@@ -152,8 +152,8 @@
   </tbody>
 </table>
 <hr class="w-75">
-    <p>Total: <b>{{ Gloudemans\Shoppingcart\Facades\Cart::subtotal()}}</b></p>
-    <h5>Total inkl. MwSt: <b>{{ Gloudemans\Shoppingcart\Facades\Cart::total()}}</b></h5>
+    <p>Total: <b>{{ Gloudemans\Shoppingcart\Facades\Cart::subtotal() }}</b></p>
+    <h5>Total inkl. MwSt: <b>{{ Gloudemans\Shoppingcart\Facades\Cart::total() }}</b></h5>
   
     <button class="button-87 greenbg" role="button"> Jetzt kaufen </button>
     @else     
@@ -171,8 +171,11 @@
 </div>
 </div>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+
 <script>
+    
     $(".removeAll").on("click", function(e){
       e.preventDefault();
       var self = $(this);
@@ -192,6 +195,6 @@
         }
       })
     });
-   
+
 </script>
 </x-guest-layout>
