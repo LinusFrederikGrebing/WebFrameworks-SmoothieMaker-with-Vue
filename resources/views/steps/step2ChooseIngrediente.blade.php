@@ -171,10 +171,6 @@
             background-image: linear-gradient(45deg, #6D9E1F 0%, #80ba24  51%, #96D82B  100%);
         }
         
-         #myCanvas {
-                border: 1px solid black;
-            }
-  
 
 </style>
 <x-guest-layout>
@@ -233,8 +229,8 @@
     
 
 </div>
-<div class="flex">
-<div class="px-4 basis-3/4">
+<div class="flex test w-100">
+<div class="px-4 basis-3/5">
   <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-4 mx-auto">
      @foreach($zutaten as $zutat)
     <div>
@@ -301,12 +297,12 @@
 
     </div>
     </div>
-    <div class="basis-1/4">
-        <canvas id="myCanvas" width="200" height="600"></canvas>
+    <div class="basis-2/5">
+        <livewire:mixer />
     </div>
 
 </div>
-<script src="{{ asset('js/mixer.js') }}"></script>
+
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script>
