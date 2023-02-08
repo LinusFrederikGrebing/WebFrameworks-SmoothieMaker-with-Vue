@@ -1,19 +1,3 @@
-<style>
-    #canvas {
-      border: 2px solid black;
-    }
-
-    #mixerLogo {
-        position: relative;
-        top: -460;
-        width: 450px;
-        height: 750px;
-        right: 65;
-    }
-    .test {
-        width: 100em;
-    }
-</style>
 <script>
 	$(document).ready(function() {
 		setup();

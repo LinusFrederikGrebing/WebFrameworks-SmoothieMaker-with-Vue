@@ -79,9 +79,20 @@ function detectWallCollision(ball, canvas) {
   }
 }
 */
-function setImg(image){
-  balls.push(new Ball(Math.random() * (250 - 0) + 0, 50, 25, 0.7, 10, image));
-  balls.push(new Ball(Math.random() * (250 - 0) + 0, 50, 25, 0.7, 10, image));
+
+
+function removeOne(){
+	if(JSON.parse(sessionStorage.getItem("zutatenArray"))) {
+		balls = JSON.parse(sessionStorage.getItem("zutatenArray"));
+	}
+	balls.pop();
+	balls.pop();
+	sessionStorage.setItem("zutatenArray", JSON.stringify(balls));
+}
+
+function removeAll(){
+	balls = [];
+	sessionStorage.setItem("zutatenArray", JSON.stringify(balls));
 }
 
 function Ball(x, y, radius, e, mass, image){
@@ -91,7 +102,7 @@ function Ball(x, y, radius, e, mass, image){
 	this.mass = mass; //kg
 	this.radius = radius; //m
 	this.area = (Math.PI * radius * radius) / 100; //m^2
-  this.img = ".." + image
+ 	 this.img = "../images/" + image
 }
 var canvas = null;
 var ctx = null;
@@ -107,12 +118,22 @@ var height = 0;
 var balls = [];
 var img = new Image();
 
+function setImg(image, count){
+	for(let i = 0; i < (count*2); i++){
+		balls.push(new Ball(Math.random() * (265 - 0) + 0, 50, 22, 0.7, 10, image));
+	}
+}
+  
+
 var setup = function(){
 	canvas = document.getElementById('myCanvas');
 	ctx = canvas.getContext('2d');
 	width = canvas.width;
 	height = canvas.height;
 	timer = setInterval(loop, dt);
+	if(JSON.parse(sessionStorage.getItem("zutatenArray"))) {
+		balls = JSON.parse(sessionStorage.getItem("zutatenArray"));
+	}
 }
 
 function loop(){
@@ -145,19 +166,20 @@ function loop(){
 			balls[i].position.x += balls[i].velocity.x * fps * 100;
 			balls[i].position.y += balls[i].velocity.y * fps * 100;
 		}
-		
+		var img = new Image();
 		//Rendering the ball
-		ctx.beginPath();
-		//ctx.fillStyle = balls[i].colour;
-    img.src = balls[i].img;
-    ctx.drawImage(img, balls[i].position.x-balls[i].radius*1.2, balls[i].position.y-balls[i].radius*1.2, img.width*1, img.height*1);
-	  //	ctx.arc(balls[i].position.x, balls[i].position.y, balls[i].radius, 0, 2 * Math.PI, true);
-	  //	ctx.fill();
-		ctx.closePath();
+		img.src = balls[i].img;
+			ctx.beginPath();
+			
+			ctx.drawImage(img, balls[i].position.x-balls[i].radius*1.2, balls[i].position.y-balls[i].radius*1.2);
+			//ctx.arc(balls[i].position.x, balls[i].position.y, balls[i].radius, 0, 2 * Math.PI, true);
+			//ctx.fill();
+			ctx.closePath();
 
 		//Handling the ball collisions
 		collisionBall(balls[i]);
 		collisionWall(balls[i]);	
+		sessionStorage.setItem("zutatenArray", JSON.stringify(balls));
 	}
 }
 	

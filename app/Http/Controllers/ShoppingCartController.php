@@ -12,6 +12,7 @@ class ShoppingCartController extends Controller
 {
     public function storeCart(Request $request, $ingredienteID)
     {
+        //dd("test");
         $zutat = Ingrediente::find($ingredienteID);
         if ((Cart::count()+$request->amount) <= $request->session()->get('bottle')->amount) {
          Cart::add(
@@ -23,15 +24,17 @@ class ShoppingCartController extends Controller
                 'options' => array('image' => $zutat->image),
             )
          );
-         session()->flash('success_message', 'Item added in Card');
-         Alert::success('', 'Die Zutat wurde erfolgreich zum Warenkorb hinzugefügt!');
-        } else {
+         return response()->json(['image' => $zutat->image, 'count' => Cart::count(), 'reqCount' => $request->amount, 'amount' => $request->session()->get('bottle')->amount]);
+
+        // Alert::success('', 'Die Zutat wurde erfolgreich zum Warenkorb hinzugefügt!');
+        } 
+        /*else {
             Alert::error('', 'Du hast zu viele Zutaten ausgewählt!');
-        }
+        }*/
+       
+        // $zutaten = Ingrediente::where('type', IngredienteType::FRUITS)->get();
 
-        $zutaten = Ingrediente::where('type', IngredienteType::FRUITS)->get();
-
-       return view('steps/step2ChooseIngrediente', compact('zutaten'));
+        // return view('steps/step2ChooseIngrediente', compact('zutaten'));
     }
 
     public function deleteCart(Request $request, $ingredienteID)
