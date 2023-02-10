@@ -39,8 +39,10 @@ class ShoppingCartController extends Controller
 
     public function deleteCart(Request $request, $ingredienteID)
     {
+        $image = Cart::get($ingredienteID)->options->image;
+        $count = Cart::count()-Cart::get($ingredienteID)->qty;   
         Cart::remove($ingredienteID);
-        return view('steps/step3ShopComponent');
+        return response()->json(['image' => $image, 'count' => $count, 'amount' => $request->session()->get('bottle')->amount]);
     }
 
     public function removeAllFromCard(Request $request)
@@ -56,18 +58,17 @@ class ShoppingCartController extends Controller
         if (Cart::count() < $request->session()->get('bottle')->amount) {
             $newqty = Cart::get($ingredienteID)->qty + 1;
             Cart::update($ingredienteID, $newqty); // Will update the quantity
-        } else {
-            Alert::error('', 'Du hast zu viele Zutaten ausgewählt!');
+            return response()->json(['image' => Cart::get($ingredienteID)->options->image, 'count' => Cart::count(), 'amount' => $request->session()->get('bottle')->amount]);
         }
-        return view('steps/step3ShopComponent');
     }
 
     public function decreaseCardQty(Request $request, $ingredienteID)
     {
+        $image = Cart::get($ingredienteID)->options->image;
+        $count = Cart::count()-1;   
         $newqty = Cart::get($ingredienteID)->qty - 1;
         Cart::update($ingredienteID, $newqty); // Will update the quantity
-
-        return view('steps/step3ShopComponent');
+        return response()->json(['image' => $image, 'count' => $count, 'newqty' => $newqty, 'amount' => $request->session()->get('bottle')->amount]);
     }
 
     public function showCard(Request $request)

@@ -1,27 +1,3 @@
-<style>
-        .container .progress2 {
-            width: 100%;
-        }
-
-        .progress2 {
-            padding: 1px;
-            background: rgba(0, 0, 0, 0.1);
-            border-radius: 6px;
-           
-        }
-
-        .progress-bar {
-            height: 0.7em;
-            border-radius: 4px; 
-            width: 4%;
-            background-color: #80ba24;
-         
-        }
-        .progress-bar {
-            width: 10%;
-        }
-</style>
-
 <div class="progress2 my-8">
     <div class="progress-bar" id="progressbar"></div>
 </div>

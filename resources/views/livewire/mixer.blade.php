@@ -4,8 +4,10 @@
 	});
 </script>
 <div>
-     <canvas id="myCanvas" width="265" height="350"></canvas>
-    <img id="mixerLogo" src="/images/mixerV2.png" class="mixer mt-2"> 
+     <canvas class="mx-8" id="myCanvas" width="350" height="460"></canvas>
+    <img id="mixerLogo" src="/images/mixer2.png" class="mixer mt-2"> 
+	<img id="becherLogo" src="/images/becher.png" class="mixer mt-2"> 
+	<img id="mlZahlLogo" src="/images/mlzahl.png" class="mixer mt-2"> 
 </div>
 		
 <script src="{{ asset('js/mixer.js') }}"></script>

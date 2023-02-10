@@ -28,6 +28,29 @@
         position: relative;
     }
 
+    .container .progress2 {
+        width: 100%;
+    }
+
+    .progress2 {
+        padding: 1px;
+        background: rgba(0, 0, 0, 0.1);
+        border-radius: 6px;
+       
+    }
+
+    .progress-bar {
+        height: 0.7em;
+        border-radius: 4px; 
+        width: 4%;
+        background-color: #80ba24;
+     
+    }
+    .progress-bar {
+        width: 10%;
+    }
+
+
     /*basic*/
     .mr-40 {
         margin-top: 2em;
@@ -241,7 +264,7 @@
 
     #progressbar>div {
         background-color: #80ba24;
-        width: 80%;
+        width: 100%;
         /* Adjust with JavaScript */
         height: 20px;
         border-radius: 10px;
@@ -284,17 +307,37 @@
         transform: scale(1.5);
     }
 
-    #canvas {
-        border: 2px solid black;
-      }
+    #myCanvas {
+        border: 2px solid black; 
+        -webkit-clip-path: polygon(96% 0, 97% 79%, 91% 100%, 9% 100%, 3% 72%, 0% 0);
+        clip-path: polygon(96% 0, 97% 79%, 91% 100%, 9% 100%, 3% 72%, 0% 0);
+    }
   
       #mixerLogo {
           position: relative;
-          top: -460;
-          width: 450px;
-          height: 750px;
-          right: 65;
+          z-index: 0;
+          top: -575px;
+          width: 550px;
+          height: 950px;
+          right: 30px;
       }
+      #becherLogo {
+        position: relative;
+        z-index: 0;
+        top: -1495px;
+        width: 490px;
+        height: 450px;
+        right: -5px;
+        opacity: 0.3;
+    }
+    #mlZahlLogo {
+        position: relative;
+        z-index: 0;
+        top: -1995px;
+        width: 500px;
+        height: 450px;
+        right: -5px;
+    }
       .test {
           width: 100em;
       }
