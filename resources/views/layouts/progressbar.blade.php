@@ -3,6 +3,10 @@
 </div>
 
   <script>
+    var amount = <?php echo json_encode(session()->get('bottle')->amount); ?>;
+    var aktamount = <?php echo json_encode(Gloudemans\Shoppingcart\Facades\Cart::count()); ?>;
+    progress(aktamount, amount);
+
     function progress(aktamount, amount){
          let progressbar = document.getElementById("progressbar");
          if(amount > 0){

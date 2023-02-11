@@ -51,7 +51,7 @@
                                                   </svg>
                                               </button>
                                           </form>
-                                          <span class="qty" id="qty"> {{ $item->qty }}</span>
+                                          <span class="qty" id='qty{{ $item->id }}'>{{ $item->qty }}</span>
                                           <form action="/decreaseCardQty/{{ $item->rowId }}"
                                               enctype="multipart/form-data" method="post">
                                               @csrf
@@ -122,7 +122,8 @@
                                 if(response.image){
                                     setImg(response.image, 1);
                                     progress(response.count, response.amount);
-                                    setnewAmount(response.count)
+                                    setnewAmount(response.newqty, response.id);
+                                    setnewaktCount(response.count)
                                 } else {
                                   showAlertToMany();
                                 }
@@ -144,12 +145,15 @@
                             success: function(response) {
                                 // Hier kannst du auf die Serverantwort reagieren
                                 removeSpecificAll(response.image);
-                                progress(response.count, response.amount);      
-                                location.reload();         
+                                progress(response.count, response.amount);       
+                                location.reload();
                             }
                         });
                     });
                 });
+                function setnewaktCount(newCounter){
+                    $(".cart-count").html(newCounter);
+                }
                 $(document).ready(function() {
                     $('.decrease').click(function(e) {
                         e.preventDefault();
@@ -164,17 +168,18 @@
                             success: function(response) {
                                 // Hier kannst du auf die Serverantwort reagieren
                                 removeSpecificOne(response.image);
-                                setnewAmount(response.newqty)
+                                setnewAmount(response.newqty, response.id)
                                 progress(response.count, response.amount);
+                                setnewaktCount(response.count)
                                 if(response.newqty == 0){
-                                    location.reload()
+                                    location.reload();
                                 }
                             }
                         });
                     });
                 });
-                function setnewAmount(newCounter){
-                   var element = document.getElementById('qty');
+                function setnewAmount(newCounter, id){
+                   var element = document.getElementById('qty'+id);
                    element.innerHTML = newCounter;
               }
                 function showAlertToMany(){

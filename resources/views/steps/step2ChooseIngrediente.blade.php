@@ -144,7 +144,7 @@
                             // Hier kannst du auf die Serverantwort reagieren
                             if(response.image){
                                 setImg(response.image, response.reqCount);
-                                test(response.count);
+                                setnewaktCount(response.count);
                                 progress(response.count, response.amount);
                             } else {
                                 showAlertToMany();
@@ -154,11 +154,8 @@
                     });
                 });
             });
-            function test(newCounter){
-                 var element = document.getElementById('cart-counter');
-                element.innerHTML = newCounter;
-                var element2 = document.getElementById('cart-counter2');
-                element2.innerHTML = newCounter;
+            function setnewaktCount(newCounter){
+                $(".cart-count").html(newCounter);
             }
             $('.arrcontainer').click(function(e) {
                 e.preventDefault();

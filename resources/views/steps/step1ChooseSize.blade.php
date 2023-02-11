@@ -36,3 +36,7 @@
         </section>
     </div>
 </x-guest-layout>
+<script>
+    sessionStorage.clear();
+</script>
+

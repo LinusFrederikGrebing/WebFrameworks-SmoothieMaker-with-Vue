@@ -86,15 +86,18 @@ function removeOne() {
     sessionStorage.setItem("zutatenArray", JSON.stringify(balls));
 }
 function removeSpecificOne(image) {
-    for (var j = 0; j < 2; j++) {
-        for (var i = 0; i < balls.length; i++) {
-            if (balls[i].img == "../images/" + image) {
-                balls.splice(i, 1);
-                break;
-            }
-            break;
+    var count = 0;
+    for (var i = 0; i < balls.length; i++) {
+      if (balls[i].img === "../images/" + image) {
+        balls.splice(i, 1);
+        count++;
+        i--;
+        if (count === 2) {
+          break;
         }
+      }
     }
+    
     sessionStorage.setItem("zutatenArray", JSON.stringify(balls));
 }
 
@@ -138,9 +141,9 @@ var balls = [];
 var img = new Image();
 
 function setImg(image, count) {
-    for (let i = 0; i < count * 2; i++) {
+    for (let i = 0; i < count * 3; i++) {
         balls.push(
-            new Ball(Math.random() * (265 - 0) + 0, 50, 22, 0.7, 10, image)
+            new Ball(Math.random() * (265 - 0) + 0, 50, 15, 0.7, 10, image)
         );
     }
 	sessionStorage.setItem("zutatenArray", JSON.stringify(balls));
@@ -209,7 +212,9 @@ function loop() {
         ctx.drawImage(
             img,
             balls[i].position.x - balls[i].radius * 1.35,
-            balls[i].position.y - balls[i].radius * 1.35
+            balls[i].position.y - balls[i].radius * 1.35,
+            45, 45
+
         );
         //ctx.arc(balls[i].position.x, balls[i].position.y, balls[i].radius, 0, 2 * Math.PI, true);
         //ctx.fill();

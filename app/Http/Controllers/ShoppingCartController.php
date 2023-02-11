@@ -56,19 +56,21 @@ class ShoppingCartController extends Controller
     public function increaseCardQty(Request $request, $ingredienteID)
     {
         if (Cart::count() < $request->session()->get('bottle')->amount) {
+            $id = Cart::get($ingredienteID)->id;
             $newqty = Cart::get($ingredienteID)->qty + 1;
             Cart::update($ingredienteID, $newqty); // Will update the quantity
-            return response()->json(['image' => Cart::get($ingredienteID)->options->image, 'count' => Cart::count(), 'amount' => $request->session()->get('bottle')->amount]);
+            return response()->json(['image' => Cart::get($ingredienteID)->options->image, 'count' => Cart::count(), 'newqty' => $newqty, 'amount' => $request->session()->get('bottle')->amount, 'id' => $id]);
         }
     }
 
     public function decreaseCardQty(Request $request, $ingredienteID)
     {
         $image = Cart::get($ingredienteID)->options->image;
+        $id = Cart::get($ingredienteID)->id;
         $count = Cart::count()-1;   
         $newqty = Cart::get($ingredienteID)->qty - 1;
         Cart::update($ingredienteID, $newqty); // Will update the quantity
-        return response()->json(['image' => $image, 'count' => $count, 'newqty' => $newqty, 'amount' => $request->session()->get('bottle')->amount]);
+        return response()->json(['image' => $image, 'count' => $count, 'newqty' => $newqty, 'amount' => $request->session()->get('bottle')->amount, 'id' => $id]);
     }
 
     public function showCard(Request $request)
