@@ -1,90 +1,3 @@
-/*
-var canvas = document.getElementById('myCanvas');
-var ctx = canvas.getContext('2d');
-var balls = [];
-var ballRadius = 30;
-var img = new Image();
-var imgs = [] 
-
-
-function setImg(image){
-       var ball = {
-        x: Math.random() * (180 - 10) + 10,
-        y: 20,
-        r: ballRadius,
-        vx: 0,
-        vy: 12,
-        falling: true,
-        imgsrc:  ".." + image
-      };
-      balls.push(ball);
-}
-
-function draw() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  for (var i = 0; i < balls.length; i++) {
-    var ball = balls[i];
-    var collision = 0;
-   
-    ctx.beginPath();
-    img.src = ball.imgsrc 
-   // ctx.drawImage(img, ball.x - ballRadius, ball.y - ballRadius, img.width*1.3, img.width*1.3);
-    ctx.arc(ball.x, ball.y, ballRadius, 0, Math.PI * 2);
-    ctx.fillStyle = "#c82124"; //red
-    ctx.fill();
-    ctx.closePath();
-
-    for (var j = 0; j < balls.length; j++) {
-        if(j != i) { if(detectCollision(ball, balls[j])) { if(balls[j].falling == false) collision++ } }; 
-        if(j != i) { detectWallCollision(ball, canvas) }; 
-    }
-   
-    if (ball.y + ballRadius < canvas.height) {
-        if(collision < 2) {
-        ball.y += ball.vy;
-        ball.x += ball.vx;
-         ball.vy += 0.1;
-      } ball.falling = false;
-    } else {
-      ball.vy = -(ball.vy/2);
-    }
-  }
-  requestAnimationFrame(draw);
-}
-
-draw();
-
-  function detectCollision(ball1, ball2) {
-    var collides = false;
-    var dx = ball1.x - ball2.x;
-    var dy = ball1.y - ball2.y;
-    var distance = Math.sqrt(dx * dx + dy * dy);
-
-    if (distance < ball1.r + ball2.r) {
-        collides = true;
-        var angle = Math.atan2(ball1.y - ball2.y, ball1.x - ball2.x);
-
-        ball1.vx = Math.cos(angle);
-        ball1.vy = Math.sin(angle);
-        ball1.vx *= 0.5;
-        ball1.vy *= 0.5;
-    }
-    return collides;
-}
-
-
-function detectWallCollision(ball, canvas) {
-  if (ball.x - ball.r < 0 - ball.r || ball.x + ball.r > canvas.width + ball.r) {
-    ball.vx = -ball.vx;
-  }
-}
-*/
-
-function removeOne() {
-    balls.pop();
-    balls.pop();
-    sessionStorage.setItem("zutatenArray", JSON.stringify(balls));
-}
 function removeSpecificOne(image) {
     var count = 0;
     for (var i = 0; i < balls.length; i++) {
@@ -97,18 +10,13 @@ function removeSpecificOne(image) {
         }
       }
     }
-    
     sessionStorage.setItem("zutatenArray", JSON.stringify(balls));
 }
 
-function removeSpecificAll(image) {
-	var newBalls = []
-    for (var i = 0; i < balls.length; i++) {
-        if (balls[i].img !== "../images/" + image) {
-            newBalls.push(balls[i])
-        }
-    }
-	balls = newBalls;
+function removeSpecificAll(img) {
+    balls = balls.filter(function (ball) {
+        return ball.img !== "../images/" + img;
+    });
     sessionStorage.setItem("zutatenArray", JSON.stringify(balls));
 }
 
@@ -141,9 +49,9 @@ var balls = [];
 var img = new Image();
 
 function setImg(image, count) {
-    for (let i = 0; i < count * 3; i++) {
+    for (let i = 0; i < count * 2; i++) {
         balls.push(
-            new Ball(Math.random() * (265 - 0) + 0, 50, 15, 0.7, 10, image)
+            new Ball(Math.random() * (265 - 0) + 0, 50, 18, 0.7, 10, image)
         );
     }
 	sessionStorage.setItem("zutatenArray", JSON.stringify(balls));
@@ -162,9 +70,9 @@ var setup = function () {
 
 function loop() {
     //create constants
-    var gravity = 1;
-    var density = 1.22;
-    var drag = 0.47;
+    var gravity = 0.7;
+    var density = 1;
+    var drag = 1;
 
     //Clear window at the begining of every frame
     ctx.clearRect(0, 0, width, height);
@@ -211,11 +119,11 @@ function loop() {
 
         ctx.drawImage(
             img,
-            balls[i].position.x - balls[i].radius * 1.35,
-            balls[i].position.y - balls[i].radius * 1.35,
-            45, 45
+            balls[i].position.x - balls[i].radius * 1.7,
+            balls[i].position.y - balls[i].radius * 1.8,
+            60, 60
 
-        );
+        ); 
         //ctx.arc(balls[i].position.x, balls[i].position.y, balls[i].radius, 0, 2 * Math.PI, true);
         //ctx.fill();
         ctx.closePath();

@@ -100,7 +100,7 @@
                     <div class="center-con">
                         <div class="arrcontainer">
                             <div id="cta">
-                                <button class="button-left redbg back" href="{{ route('showBottleSizes') }} ">
+                                <button class="button-left redbg back" data-href="{{ route('showBottleSizes') }} ">
                                     <span class="arrow prev arrow-left"></span>
                                     <span class="arrow segunda prev arrow-left segunda-left  "></span>
                                     Zurück!
@@ -129,11 +129,15 @@
         <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
         <script>
-            $(document).ready(function() {
+            handleFormSubmit();
+            handleArrowClick();
+            handleBackClick();
+
+            function handleFormSubmit() {
                 $('.btn.wkorb').click(function(e) {
                     e.preventDefault();
                     var form = $(this).closest('form');
-                    var url = form.attr('action');
+                    var url = form.prop('action');
                     var data = form.serialize();
 
                     $.ajax({
@@ -141,31 +145,35 @@
                         url: url,
                         data: data,
                         success: function(response) {
-                            // Hier kannst du auf die Serverantwort reagieren
-                            if(response.image){
+                            if (response.image) {
                                 setImg(response.image, response.reqCount);
-                                setnewaktCount(response.count);
+                                setNewCounter(response.count);
                                 progress(response.count, response.amount);
                             } else {
-                                showAlertToMany();
+                                showAlertTooMany();
                             }
-                           
                         }
                     });
                 });
-            });
-            function setnewaktCount(newCounter){
-                $(".cart-count").html(newCounter);
             }
-            $('.arrcontainer').click(function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                $('.arrow').toggleClass('bounceAlpha');
-            });
-            $(".back").on("click", function(e) {
-                e.preventDefault();
-                var self = $(this);
-                console.log(self.data('name'));
+
+            function handleArrowClick() {
+                $('.arrcontainer').click(function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    $('.arrow').toggleClass('bounceAlpha');
+                });
+            }
+
+            function handleBackClick() {
+                $(".back").click(function(e) {
+                    e.preventDefault();
+                    var self = $(this);
+                    removeAllAlert(self);
+                });
+            }
+
+            function removeAllAlert(self) {
                 Swal.fire({
                     title: 'Bist du Dir sicher?',
                     text: "Wenn du zurückgehst wird deine bisherige Zusammenstellung unwiederruflich gelöscht!",
@@ -177,21 +185,24 @@
                     cancelButtonText: 'Abbrechen!'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        location.href = self.attr('href');
+                        location.href = self.data('href');
                     }
-                })
-            });
+                });
+            }
 
-
-            function showAlertToMany(){
+            function showAlertTooMany() {
                 Swal.fire({
                     title: 'Du hast zu viele Zutaten ausgewählt!',
                     text: "",
                     icon: 'error',
                     showCancelButton: false,
-                    confirmButtonColor: '#6D9E1F',  
+                    confirmButtonColor: '#6D9E1F',
                     confirmButtonText: 'Okay!',
-                })
+                });
+            }
+
+            function setNewCounter(newCounter) {
+                $(".cart-count").html(newCounter);
             }
         </script>
 </x-guest-layout>

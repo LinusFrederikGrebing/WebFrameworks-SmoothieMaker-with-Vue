@@ -311,8 +311,8 @@
         margin-top: 80px;
         margin-left: 13px;
         /* border: 2px solid black; */
-       -webkit-clip-path: polygon(100% 0, 97% 79%, 91% 100%, 12% 100%, 0% 72%, 0% 0);
-        clip-path: polygon(100% 0, 97% 79%, 91% 100%, 12% 100%, 0% 72%, 0% 0); 
+       -webkit-clip-path: polygon(100% 0, 97% 79%, 91% 100%, 12% 100%, 4% 79%, 0% 0);
+        clip-path: polygon(100% 0, 97% 79%, 91% 100%, 12% 100%, 4% 79%, 0% 0); 
     }
   
       #mixerLogo {
