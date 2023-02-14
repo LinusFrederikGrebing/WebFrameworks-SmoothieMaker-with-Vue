@@ -69,3 +69,39 @@ gsap.fromTo(
     opacity: 1,
     x: 0,
   });
+
+
+  gsap.timeline({ delay: 0, 
+    scrollTrigger: {
+    trigger: "#steps",
+    start: "top 30%",
+    end: "bottom 0%",
+    toggleActions: "play reset play reset ",
+  },})
+  .fromTo("#step1",  {
+    delay: 0.5,
+    y: 300,
+    opacity: 0,
+  },
+  {
+    opacity: 1,
+    y: 0,
+  })
+  .fromTo("#step2",  {
+    y: 300,
+    delay: 0.5,
+    opacity: 0,
+  },
+  {
+    opacity: 1,
+    y: 0,
+  })
+  .fromTo("#step3",  {
+    delay: 0.5,
+    y: 300,
+    opacity: 0,
+  },
+  {
+    opacity: 1,
+    y: 0,
+  });

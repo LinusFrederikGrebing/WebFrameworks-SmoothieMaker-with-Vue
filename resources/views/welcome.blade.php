@@ -51,13 +51,13 @@
                 </div>
             </div>
             
-            <div class="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20 py-20 mb-32 mt-32">
+            <div id="steps" class="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20 py-20 mb-32 mt-32">
                 <div class="container p-4 mx-auto my-6 space-y-1 text-center">
                     <h4 class="pb-3 text-2xl font-bold md:text-3xl">Nur drei Schritte bis zu deinem Smoothie!</h4>
                     <p>An warmen Tagen sind erfrischende Drinks wichtiger, denn je! Und Smoothies sind als Erfrischung (und auch als Frühstück) dafür einfach perfekt. Sie sind gesund, voller Vitamine und machen fit für den Tag. Ich kriege von Smoothies diesen Sommer auf jeden Fall nicht genug. Deswegen schnapp‘ dir auch einen und lass uns auf dem Balkon, Terrasse oder in meinem Fall im Park chillen.</p>
                 </div>
                 <div class="grid gap-8 row-gap-0 lg:grid-cols-3">
-                    <div class="relative text-center">
+                    <div id="step1" class="relative text-center">
                         <div
                             class="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-indigo-50 sm:w-20 sm:h-20">
                             <svg class="w-12 h-12 text-deep-purple-accent-400 sm:w-16 sm:h-16" stroke="currentColor"
@@ -79,7 +79,7 @@
                             </svg>
                         </div>
                     </div>
-                    <div class="relative text-center">
+                    <div id="step2" class="relative text-center">
                         <div
                             class="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-indigo-50 sm:w-20 sm:h-20">
                             <svg class="w-12 h-12 text-deep-purple-accent-400 sm:w-16 sm:h-16" stroke="currentColor"
@@ -101,7 +101,7 @@
                             </svg>
                         </div>
                     </div>
-                    <div class="relative text-center">
+                    <div id="step3" class="relative text-center">
                         <div
                             class="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-indigo-50 sm:w-20 sm:h-20">
                             <svg class="w-12 h-12 text-deep-purple-accent-400 sm:w-16 sm:h-16" stroke="currentColor"

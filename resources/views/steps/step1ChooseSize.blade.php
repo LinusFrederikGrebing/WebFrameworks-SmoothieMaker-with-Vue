@@ -35,7 +35,6 @@
             </div>
         </section>
     </div>
-    @include('layouts.footer')
 </x-guest-layout>
 <script>
     sessionStorage.clear();
