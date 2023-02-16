@@ -39,6 +39,13 @@ gsap.fromTo(
     end: "bottom 0%",
     toggleActions: "play reset play reset ",
   },})
+  .fromTo("#tipsheader",  {
+    delay: 0,
+    opacity: 0,
+  },
+  {
+    opacity: 1,
+  })
   .fromTo("#tip1",  {
     delay: 0.5,
     y: 0,
@@ -78,6 +85,13 @@ gsap.fromTo(
     end: "bottom 0%",
     toggleActions: "play reset play reset ",
   },})
+  .fromTo("#stepsheader",  {
+    delay: 0,
+    opacity: 0,
+  },
+  {
+    opacity: 1,
+  })
   .fromTo("#step1",  {
     delay: 0.5,
     y: 300,

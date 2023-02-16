@@ -52,7 +52,7 @@
             </div>
             
             <div id="steps" class="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20 py-20 mb-32 mt-32">
-                <div class="container p-4 mx-auto my-6 space-y-1 text-center">
+                <div id="stepsheader" class="container p-4 mx-auto my-6 space-y-1 text-center">
                     <h4 class="pb-3 text-2xl font-bold md:text-3xl">Nur drei Schritte bis zu deinem Smoothie!</h4>
                     <p>An warmen Tagen sind erfrischende Drinks wichtiger, denn je! Und Smoothies sind als Erfrischung (und auch als Frühstück) dafür einfach perfekt. Sie sind gesund, voller Vitamine und machen fit für den Tag. Ich kriege von Smoothies diesen Sommer auf jeden Fall nicht genug. Deswegen schnapp‘ dir auch einen und lass uns auf dem Balkon, Terrasse oder in meinem Fall im Park chillen.</p>
                 </div>
@@ -118,37 +118,37 @@
                     </div>
                 </div>
             </div>
-            <div class="container p-4 mx-auto my-6 space-y-1 text-center">
+            <div id="tipsheader" class="container p-4 mx-auto my-6 space-y-1 text-center">
                 <h2 class="pb-3 text-2xl font-bold md:text-3xl">Unsere Smoothie-Tipps der Woche</h2>
                 <p>Hier findest du unsere Smoothie-Geheimtipps. Lasse dich gerne von unseren Top-Vorschlägen inspirieren!</p>
             </div>
-            <section id="tips" class="p-4 lg:p-8 dark:bg-gray-800 dark:text-gray-100">
+            <section id="tips" class="p-4 lg:p-8">
                 <div class="container mx-auto space-y-12">
                     <hr>
                     <div id="tip1" class="flex flex-col overflow-hidden rounded-md shadow-sm lg:flex-row">
                         <img style="transform: scale(1) perspective(1040px) rotateY(11deg) rotateX(-2deg) rotate(-2deg);" src="/images/beerensmoothie.jpg" alt=""
-                            class="h-80 dark:bg-gray-500 aspect-video">
-                        <div class="flex flex-col justify-center flex-1 p-6 dark:bg-gray-900">
+                            class="h-80 aspect-video">
+                        <div class="flex flex-col justify-center flex-1 p-6">
                             <h4 class="text-2xl font-bold">Beeren-Smoothie mit Flohsamenschalen & Kokoswasser</h4>
-                            <p class="my-6 dark:text-gray-400">Dieser beerige Smoothie liefert viele wertvolle Ballaststoffe, wichtige Antioxidantien und Eisen. Er schmeckt fruchtig frisch und erhält eine leichte Schärfe durch den enthaltenen Ingwer. Der natürliche, fettfreie Iso-Drink aus der Kokosnuss - das Kokoswasser - rundet den Smoothie perfekt ab.</p>
+                            <p class="my-6">Dieser beerige Smoothie liefert viele wertvolle Ballaststoffe, wichtige Antioxidantien und Eisen. Er schmeckt fruchtig frisch und erhält eine leichte Schärfe durch den enthaltenen Ingwer. Der natürliche, fettfreie Iso-Drink aus der Kokosnuss - das Kokoswasser - rundet den Smoothie perfekt ab.</p>
                         </div>
                     </div>
                     <hr>
                     <div id="tip2" class="flex flex-col overflow-hidden rounded-md shadow-sm lg:flex-row-reverse">
                         <img style="transform: scale(1) perspective(1040px) rotateY(-11deg) rotateX(-2deg) rotate(-2deg);" src="/images/rucolasmoothie.jpg" alt=""
-                            class="h-80 dark:bg-gray-500 aspect-video">
-                        <div class="flex flex-col justify-center flex-1 p-6 dark:bg-gray-900">
+                            class="h-80 aspect-video">
+                        <div class="flex flex-col justify-center flex-1 p-6">
                             <h4 class="text-2xl font-bold">Grüner Smoothie mit Rucola</h4>
-                            <p class="my-6 dark:text-gray-400"> Dieses Exemplar ist perfekt für alle, die sich gerade erst an dieses Metier herantrauen, denn Mango und Zitrone bieten noch viel Fruchtigkeit. Mit einem leistungsstarken Mixer werden die Fasern des Rucolas optimal aufgespalten und du erhältst einen samtigen Smoothie, der fast so fein wie Saft ist.</p>
+                            <p class="my-6 gray-400"> Dieses Exemplar ist perfekt für alle, die sich gerade erst an dieses Metier herantrauen, denn Mango und Zitrone bieten noch viel Fruchtigkeit. Mit einem leistungsstarken Mixer werden die Fasern des Rucolas optimal aufgespalten und du erhältst einen samtigen Smoothie, der fast so fein wie Saft ist.</p>
                         </div>
                     </div>
                     <hr>
                     <div id="tip3" class="flex flex-col overflow-hidden rounded-md shadow-sm lg:flex-row">
                         <img  style="transform: scale(1) perspective(1040px) rotateY(11deg) rotateX(-2deg) rotate(-2deg);" src="/images/schokosmoothie.jpg" alt=""
-                            class="h-80 dark:bg-gray-500 aspect-video">
-                        <div class="flex flex-col justify-center flex-1 p-6 dark:bg-gray-900">
+                            class="h-80 aspect-video">
+                        <div class="flex flex-col justify-center flex-1 p-6">
                             <h4 class="text-2xl font-bold">Avocado-Schoko-Smoothie</h4>
-                            <p class="my-6 dark:text-gray-400">Schokolade zum Frühstück – mit diesem Smoothie ist das problemlos möglich. Dank Bananen, Avocado und Backkakao wird es nicht nur lecker, sondern auch gesund.</p>
+                            <p class="my-6-gray-400">Schokolade zum Frühstück – mit diesem Smoothie ist das problemlos möglich. Dank Bananen, Avocado und Backkakao wird es nicht nur lecker, sondern auch gesund.</p>
                         </div>
                     </div>
                     <hr>
