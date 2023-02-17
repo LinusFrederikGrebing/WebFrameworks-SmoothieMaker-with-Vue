@@ -11,18 +11,20 @@
                 @foreach ($bottles as $bottle)
                     <div class="w-full bg-gray-200 rounded-lg sahdow-lg overflow-hidden flex flex-col md:flex-row">
                         <div class="w-full md:w-2/5 h-80">
-                            <img class="object-center object-cover w-full h-full" src="/images/{{ $bottle['image'] }}" alt="bottleSize">
+                            <img class="object-center object-cover w-full h-full" src="/images/{{ $bottle['image'] }}"
+                                alt="bottleSize">
                         </div>
                         <div class="w-full md:w-3/5 text-left p-6 md:p-4 space-y-2">
                             <p class="text-xl text-black font-bold">Größe: {{ $bottle['name'] }}</p>
                             <p class="text-base text-gray-400 font-normal"></p>
-                            <p class="text-base leading-relaxed text-gray-500 font-normal">{{ $bottle['description'] }}</p>
+                            <p class="text-base leading-relaxed text-gray-500 font-normal">{{ $bottle['description'] }}
+                            </p>
                             <div class="center-con">
                                 <div class="arrcontainer">
                                     <div id="cta">
-                                        <button class="button-right greenbg"
-                                        onclick="window.location='{{ route('showInhalt', ['bottle' => $bottle]) }}'">
-                                                Weiter
+                                        <button class="button-right greenbg newBottleSize"
+                                            onclick="window.location='{{ route('showInhalt', ['bottle' => $bottle]) }}'">
+                                            Weiter
                                             <span class="arrow next "></span>
                                             <span class="arrow segunda next "></span>
                                         </button>
@@ -37,6 +39,5 @@
     </div>
 </x-guest-layout>
 <script>
-    sessionStorage.clear();
+   sessionStorage.clear();
 </script>
-

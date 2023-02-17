@@ -32,6 +32,7 @@ gsap.fromTo(
     }
   );
 
+  /*
   gsap.timeline({ delay: 0, 
     scrollTrigger: {
     trigger: "#tips",
@@ -76,12 +77,85 @@ gsap.fromTo(
     opacity: 1,
     x: 0,
   });
-
+*/
+gsap.fromTo(
+  "#tipsheader",
+  {
+    opacity: 0,
+  },
+  {
+    opacity: 1,
+    scrollTrigger: {
+      trigger: "#tipsheader",
+      start: "top 90%",
+      end: "bottom 95%",
+      scrub: true,
+      id: "scrub",
+    },
+  }
+);
+gsap.fromTo(
+  "#tip1",
+  {
+    y: 0,
+    x: 1000,
+    opacity: 0,
+  },
+  {
+    opacity: 1,
+    x: 0,
+    scrollTrigger: {
+      trigger: "#tip1",
+      start: "top 90%",
+      end: "bottom 95%",
+      scrub: true,
+      id: "scrub",
+    },
+  }
+);
+gsap.fromTo(
+  "#tip2",
+  {
+    y: 0,
+    x: -1000,
+    opacity: 0,
+  },
+  {
+    opacity: 1,
+    x: 0,
+    scrollTrigger: {
+      trigger: "#tip2",
+      start: "top 90%",
+      end: "bottom 95%",
+      scrub: true,
+      id: "scrub",
+    },
+  }
+);
+gsap.fromTo(
+  "#tip3",
+  {
+    y: 0,
+    x: 1000,
+    opacity: 0,
+  },
+  {
+    opacity: 1,
+    x: 0,
+    scrollTrigger: {
+      trigger: "#tip3",
+      start: "top 90%",
+      end: "bottom 95%",
+      scrub: true,
+      id: "scrub",
+    },
+  }
+);
 
   gsap.timeline({ delay: 0, 
     scrollTrigger: {
     trigger: "#steps",
-    start: "top 30%",
+    start: "top 80%",
     end: "bottom 0%",
     toggleActions: "play reset play reset ",
   },})

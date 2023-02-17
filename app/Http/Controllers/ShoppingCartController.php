@@ -74,10 +74,11 @@ class ShoppingCartController extends Controller
     }
 
     public function showCard(Request $request)
-    {
-       
+    {  
         if ($request->session()->get('bottle') == true) {
             $bottle = $request->session()->get('bottle');
+        } else {
+             $bottle = BottleSize::findOrFail("4");
         }
 
         return view('steps/step3ShopComponent')->with('bottle', $bottle);
