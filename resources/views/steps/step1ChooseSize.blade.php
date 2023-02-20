@@ -2,5 +2,5 @@
 @extends('layouts.app')
 
 @section('content')
-    <bottle-sizes :bottles="{{  $bottles }}"/>
+    <bottle-sizes :bottles="{{  $bottles }}"/>    
 @endsection

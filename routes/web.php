@@ -43,3 +43,14 @@ Route::get('/removeAll', [App\Http\Controllers\ShoppingCartController::class, 'r
 Route::post('/increaseCardQty/{carditem}', [App\Http\Controllers\ShoppingCartController::class, 'increaseCardQty'])->name('increaseCardQty');
 Route::post('/decreaseCardQty/{carditem}', [App\Http\Controllers\ShoppingCartController::class, 'decreaseCardQty'])->name('decreaseCardQty');
 Route::get('/showCard', [App\Http\Controllers\ShoppingCartController::class, 'showCard'])->name('showCard');
+
+
+
+//Route::get('/cart/count',  [App\Http\Controllers\ShoppingCartController::class, 'getCartCount']);
+Route::get('/cart/count',  [App\Http\Controllers\ShoppingCartController::class, 'getCartCount']);
+Route::get('/ingrediente', [App\Http\Controllers\IngredienteController::class, 'getIngediente']);
+
+
+Route::get('/test', function () {
+    return response('This is a test route.', 200);
+});

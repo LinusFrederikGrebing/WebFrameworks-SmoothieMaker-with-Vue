@@ -26,15 +26,7 @@ class ShoppingCartController extends Controller
          );
          return response()->json(['image' => $zutat->image, 'count' => Cart::count(), 'reqCount' => $request->amount, 'amount' => $request->session()->get('bottle')->amount]);
 
-        // Alert::success('', 'Die Zutat wurde erfolgreich zum Warenkorb hinzugefügt!');
         } 
-        /*else {
-            Alert::error('', 'Du hast zu viele Zutaten ausgewählt!');
-        }*/
-       
-        // $zutaten = Ingrediente::where('type', IngredienteType::FRUITS)->get();
-
-        // return view('steps/step2ChooseIngrediente', compact('zutaten'));
     }
 
     public function deleteCart(Request $request, $ingredienteID)
@@ -48,8 +40,8 @@ class ShoppingCartController extends Controller
     public function removeAllFromCard(Request $request)
     {
         Cart::destroy();
-        Alert::info('', 'Der Warenkorb wurde erfolgreich geleert!');
-        return view('steps/step3ShopComponent');
+      //  Alert::info('', 'Der Warenkorb wurde erfolgreich geleert!');
+        //return view('steps/step3ShopComponent');
     }
 
 
@@ -82,6 +74,18 @@ class ShoppingCartController extends Controller
         }
 
         return view('steps/step3ShopComponent')->with('bottle', $bottle);
+    } 
+    
+    public function getCartCount(Request $request)
+    {  
+     $cartcount = Cart::count();
+     if ($request->session()->get('bottle') == true) {
+        $bottle = $request->session()->get('bottle');
+    } else {
+         $bottle = BottleSize::findOrFail("4");
     }
-
+     return response()->json(['cartCount' => $cartcount, 'bottle' => $bottle ]);
+    
+    }
+    
 }

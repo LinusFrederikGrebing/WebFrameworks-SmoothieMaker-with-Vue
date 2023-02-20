@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <div class="text-center">
+        <div class="text-center my-4 mx-4">
             <h1 class="">Wähle jetzt deine Smoothie-Größe!</h1>
         </div>
         <v-row class="mx-auto ml-16" no-gutters>
@@ -14,14 +14,11 @@
                             :src="'/images/' + bottle.image"
                             :alt="bottle.name"
                         />
-
                         <div>
-                            <h3>Größe: {{ bottle.name }}</h3>
+                            <h3 class="my-4 mx-8">Größe: {{ bottle.name }}</h3>
                             <p class="mx-8 my-4">{{ bottle.description }}</p>
-                            <v-btn @click="showInhalt">Click me!</v-btn>
-                            <button class="" @click="showInhalt(bottle)">
-                                Weiter
-                            </button>
+                            <v-btn class="mx-4 my-4" @click="showInhalt(bottle)">Weiter</v-btn>
+                          
                         </div>
                     </div>
                 </v-card>
@@ -32,7 +29,7 @@
 
 <script>
 export default {
-    name: "ChooseBottleSize",
+    name: "Step1ChooseBottleSize",
     props: {
         bottles: Object,
     },
