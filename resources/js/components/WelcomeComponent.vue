@@ -49,7 +49,7 @@
         </v-col>
       </v-row>
     </v-container>
-    <v-section id="tips" class="px-4 lg:px-8 py-12">
+    <section id="tips" class="px-4 lg:px-8 py-12">
       <v-container id="stepsheader" class="p-4 mx-auto my-6 space-y-1 text-center">
         <h4 class="pb-3 text-2xl font-bold md:text-3xl">
           Unsere Smoothie-Tipps der Woche
@@ -87,7 +87,7 @@
           </v-col>
         </v-row>
       </v-container>
-    </v-section>
+    </section>
   </v-container>
 </template>
 
@@ -134,7 +134,7 @@ export default {
   },
   methods: {
     showInhalt() {
-      window.location = "/custom/bottleSize";
+      this.$router.push({ path: "/chooseBottleSize" })
     },
   },
   mounted(){

@@ -1,5 +1,4 @@
 @extends('layouts.app')
 @section('content')
-    <welcome />
-    <footer-template />
+ <app-view />
 @endsection

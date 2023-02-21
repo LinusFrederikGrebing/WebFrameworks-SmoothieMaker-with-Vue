@@ -13,13 +13,13 @@ class BottleSizeController extends Controller
     public function showBottleSizes()
     {
         $bottles = BottleSize::all();
-
-        return view('steps/step1ChooseSize', compact('bottles'));
+        return response()->json(['bottles' => $bottles ]);
+       // return view('steps/step1ChooseSize', compact('bottles'));
     }
 
     public function showInhalt(Request $request, $bottleID)
     { 
-        Cart::destroy();
+        //Cart::destroy();
         
         $bottle = BottleSize::findOrFail($bottleID);
         $request->session()->put('bottle', $bottle);

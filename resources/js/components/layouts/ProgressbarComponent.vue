@@ -25,9 +25,6 @@
     methods: {
         setNewProgress(){
             const progressbar = this.$refs.progressbar;
-            console.log("setNewProgress")
-            console.log(this.bottle)
-            console.log(this.cartCount)
             if (this.bottle.amount > 0) {
                 const width = this.cartCount * 100 / this.bottle.amount;
                 progressbar.style.width = `${width}%`;

@@ -67,11 +67,7 @@ class ShoppingCartController extends Controller
 
     public function showCard(Request $request)
     {  
-        if ($request->session()->get('bottle') == true) {
-            $bottle = $request->session()->get('bottle');
-        } else {
-             $bottle = BottleSize::findOrFail("4");
-        }
+        $bottle = $this->getBottle($request);
 
         return view('steps/step3ShopComponent')->with('bottle', $bottle);
     } 
@@ -79,13 +75,32 @@ class ShoppingCartController extends Controller
     public function getCartCount(Request $request)
     {  
      $cartcount = Cart::count();
-     if ($request->session()->get('bottle') == true) {
-        $bottle = $request->session()->get('bottle');
-    } else {
-         $bottle = BottleSize::findOrFail("4");
-    }
+     $bottle = $this->getBottle($request);
+    
      return response()->json(['cartCount' => $cartcount, 'bottle' => $bottle ]);
     
     }
+    public function getCartContent(Request $request)
+    {  
+     $cart = Cart::content();
+     $cartTotal = Cart::total();
+     $cartSubTotal = Cart::subtotal();
+     return response()->json(['cart' => $cart, 'cartTotal' =>  $cartTotal, 'cartSubTotal' => $cartSubTotal]);
     
+    }
+    public function getBottle(Request $request){
+        if ($request->session()->get('bottle') == true) {
+            return $request->session()->get('bottle');
+        } else {
+            return BottleSize::findOrFail("4");
+        }
+    }
+    
+    public function removeAll(Request $request)
+    { 
+       
+        Cart::destroy();
+      
+        return response()->json(['test' =>  "test"]);
+    }
 }

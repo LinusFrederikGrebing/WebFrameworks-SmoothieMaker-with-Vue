@@ -21,7 +21,7 @@
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
 </head>
 <body>
-    <div id="app">
+    <div>
         <nav class="navbar navbar-expand-md bg-thm-grey shadow-sm">
             <div class="container">
                 <a class="navbar-brand text-white" href="{{ url('/') }}">
@@ -75,13 +75,10 @@
                 </div>
             </div>
         </nav>
-        <main class="">
+        <main  id="app" >
             @yield('content')
         </main> 
-       <footer-template />
     </div>
-   
+   <script src="{{ mix('js/app.js') }}"></script>
 </body>
-
-<script src="{{ mix('js/app.js') }}"></script>
 </html>

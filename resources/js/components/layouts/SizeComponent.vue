@@ -33,7 +33,6 @@ export default {
         axios.get('/cart/count')
             .then(response => {
                 this.cartCount = response.data.cartCount;
-                console.log(this.cartCount)
                 this.bottle = response.data.bottle;
             }).catch((err) => {
                 console.log(err);

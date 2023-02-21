@@ -30,15 +30,23 @@
 <script>
 export default {
     name: "Step1ChooseBottleSize",
-    props: {
-        bottles: Object,
-    },
     data() {
-        return {};
+        return {
+            bottles: []
+        };
+    },
+    created() {
+        axios.get('/api/bottleSize')
+            .then(response => {
+               this.bottles = response.data.bottles;
+            }).catch((err) => {
+                console.log(err);
+        });
     },
     methods: {
+
         showInhalt(bottle) {
-            window.location = "/schritt1/" + bottle.id;
+            this.$router.push({path: '/chooseIngrediente'});
         },
     },
     mounted() {},

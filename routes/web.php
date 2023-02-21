@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -49,8 +50,11 @@ Route::get('/showCard', [App\Http\Controllers\ShoppingCartController::class, 'sh
 //Route::get('/cart/count',  [App\Http\Controllers\ShoppingCartController::class, 'getCartCount']);
 Route::get('/cart/count',  [App\Http\Controllers\ShoppingCartController::class, 'getCartCount']);
 Route::get('/ingrediente', [App\Http\Controllers\IngredienteController::class, 'getIngediente']);
+Route::get('/cartContent', [App\Http\Controllers\ShoppingCartController::class, 'getCartContent']);
+Route::get('/removeAll', [App\Http\Controllers\ShoppingCartController::class, 'removeAll']);
+//Route::get('/bottleSize', [App\Http\Controllers\BottleSizeController::class, 'showBottleSizes']);
 
-
-Route::get('/test', function () {
-    return response('This is a test route.', 200);
-});
+// needed to refer to the vue router
+Route::get('{any}', function () {
+    return view('welcome');
+})->where('any','.*');

@@ -1,14 +1,14 @@
 <template>
     <div class="container">
         <progressbar-component />
-        <size-component/>
-
+        <size-component />
+       
         <v-row class="mt-5">
             <h2 class="sr-only">Steps</h2>
             <v-col class="mb-5" cols="12">
                 <v-card class="mx-auto d-flex flex-wrap">
                     <v-btn class="mx-auto flex-grow-1" v-for="(category, index) in categories" :key="index"
-                        :to="category.route">
+                       >
                         <img width="25" height="25" class="my-2" :src=category.icon :alt="category.title" />
                         {{ category.title }}
                     </v-btn>
@@ -44,16 +44,21 @@
                         </v-card>
                     </v-col>
                 </v-row>
+                <v-row>
+                    <v-col class="mb-5" cols="12">
+                        <v-card class="mx-auto d-flex flex-wrap">
+                            <v-btn color="error" class="mx-auto flex-grow-1" @click="showBottleSize()"> Zurück </v-btn>
+                            <v-btn color="success" class="mx-auto flex-grow-1" @click="showInhalt()"> Weiter </v-btn>
+                        </v-card>
+                    </v-col>
+                </v-row>
             </v-col>
             <v-col cols="12" md="4">
                 <div class="mb-5" max-width="400">
-                    <mixer-component ref="mixerComponent"/>
+                    <mixer-component ref="mixerComponent" />
                 </div>
             </v-col>
         </v-row>
-        <v-btn @click="showInhalt()">
-            Remove all
-        </v-btn>
     </div>
 </template>
 
@@ -68,9 +73,6 @@ export default {
         MixerComponent,
         ProgressbarComponent,
         SizeComponent
-    },
-    props: {
-        bottles: Object,
     },
     data() {
         return {
@@ -98,6 +100,7 @@ export default {
     created() {
         axios.get('/ingrediente')
             .then(response => {
+                
                 this.zutaten = response.data.zutaten;
             }).catch((err) => {
                 console.log(err);
@@ -105,14 +108,17 @@ export default {
     },
     methods: {
         showInhalt() {
-            window.location = "/removeAll";
+            this.$router.push({path: '/shop'});
+        },
+        showBottleSize() {
+            this.$router.push({ path: "/chooseBottleSize" })
         },
         addToCart(zutat) {
             axios.post("/addCart/" + zutat.id, {
-                amount: this.amount
+                amount: 1
             })
                 .then(response => {
-                    console.log(response.data.image)
+                    console.log("imAddToCard")
                     this.$refs.mixerComponent.setImg(response.data.image, response.data.reqCount);
                 })
                 .catch(error => {
