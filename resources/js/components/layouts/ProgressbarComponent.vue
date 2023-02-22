@@ -12,17 +12,19 @@
         }
     },
     created() {
-       
-        axios.get('/cart/count')
+       this.getProgress();
+    },
+    methods: {
+        getProgress(){
+            axios.get('/cart/count')
             .then(response => {
                 this.cartCount = response.data.cartCount;
                 this.bottle = response.data.bottle;
                 this.setNewProgress();
             }).catch((err) => {
                 console.log(err);
-        });
-    },
-    methods: {
+            });
+        },
         setNewProgress(){
             const progressbar = this.$refs.progressbar;
             if (this.bottle.amount > 0) {

@@ -23,3 +23,14 @@ Route::get('/cart/count',  [App\Http\Controllers\ShoppingCartController::class, 
 Route::get('/bottleSize', [App\Http\Controllers\BottleSizeController::class, 'showBottleSizes']);
 
 Route::get('/removeAll',  [App\Http\Controllers\ShoppingCartController::class, 'removeAll']);
+
+
+
+Route::get('/session', function() {
+    session()->put('user_id', 123);
+    return response()->json(['session' => session()->all()]);
+});
+
+Route::get('/session2', function() {
+    return response()->json(['session' => session()->all()]);
+});

@@ -12,9 +12,9 @@ class ShoppingCartController extends Controller
 {
     public function storeCart(Request $request, $ingredienteID)
     {
-        //dd("test");
         $zutat = Ingrediente::find($ingredienteID);
-        if ((Cart::count()+$request->amount) <= $request->session()->get('bottle')->amount) {
+        $bottle =  $this->getBottle($request);
+        if ((Cart::count()+$request->amount) <= $bottle->amount) {
          Cart::add(
             array(
                 'id' => $zutat->id,
@@ -24,17 +24,18 @@ class ShoppingCartController extends Controller
                 'options' => array('image' => $zutat->image),
             )
          );
-         return response()->json(['image' => $zutat->image, 'count' => Cart::count(), 'reqCount' => $request->amount, 'amount' => $request->session()->get('bottle')->amount]);
-
-        } 
+         return response()->json(['image' => $zutat->image, 'count' => Cart::count(), 'reqCount' => $request->amount, 'amount' => $bottle->amount]);
+        
+    }
     }
 
     public function deleteCart(Request $request, $ingredienteID)
     {
+        $bottle =  $this->getBottle($request);
         $image = Cart::get($ingredienteID)->options->image;
         $count = Cart::count()-Cart::get($ingredienteID)->qty;   
         Cart::remove($ingredienteID);
-        return response()->json(['image' => $image, 'count' => $count, 'amount' => $request->session()->get('bottle')->amount]);
+        return response()->json(['image' => $image, 'count' => $count, 'amount' => $bottle->amount]);
     }
 
     public function removeAllFromCard(Request $request)
@@ -47,22 +48,24 @@ class ShoppingCartController extends Controller
 
     public function increaseCardQty(Request $request, $ingredienteID)
     {
-        if (Cart::count() < $request->session()->get('bottle')->amount) {
+        $bottle =  $this->getBottle($request);
+        if (Cart::count() < $bottle->amount) {
             $id = Cart::get($ingredienteID)->id;
             $newqty = Cart::get($ingredienteID)->qty + 1;
             Cart::update($ingredienteID, $newqty); // Will update the quantity
-            return response()->json(['image' => Cart::get($ingredienteID)->options->image, 'count' => Cart::count(), 'newqty' => $newqty, 'amount' => $request->session()->get('bottle')->amount, 'id' => $id]);
+            return response()->json(['image' => Cart::get($ingredienteID)->options->image, 'count' => Cart::count(), 'newqty' => $newqty, 'amount' => $bottle->amount, 'id' => $id]);
         }
     }
 
     public function decreaseCardQty(Request $request, $ingredienteID)
     {
+        $bottle =  $this->getBottle($request);
         $image = Cart::get($ingredienteID)->options->image;
         $id = Cart::get($ingredienteID)->id;
         $count = Cart::count()-1;   
         $newqty = Cart::get($ingredienteID)->qty - 1;
         Cart::update($ingredienteID, $newqty); // Will update the quantity
-        return response()->json(['image' => $image, 'count' => $count, 'newqty' => $newqty, 'amount' => $request->session()->get('bottle')->amount, 'id' => $id]);
+        return response()->json(['image' => $image, 'count' => $count, 'newqty' => $newqty, 'amount' => $bottle->amount, 'id' => $id]);
     }
 
     public function showCard(Request $request)

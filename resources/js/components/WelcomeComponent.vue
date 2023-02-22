@@ -138,7 +138,7 @@ export default {
     },
   },
   mounted(){
-    sessionStorage.clear();
+    //sessionStorage.clear();
   }
 };
 </script>

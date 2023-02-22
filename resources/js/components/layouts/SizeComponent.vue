@@ -30,17 +30,21 @@ export default {
         }
     },
     created() {
-        axios.get('/cart/count')
+        
+    }, 
+    mounted() {
+        this.getCartCount();
+    },
+    methods: {
+        getCartCount(){
+            axios.get('/cart/count')
             .then(response => {
                 this.cartCount = response.data.cartCount;
                 this.bottle = response.data.bottle;
             }).catch((err) => {
                 console.log(err);
             });
-    }, 
-    mounted() {
-    },
-    methods: {
+        },
         showBottleSizes() {
             const self = this;
             Swal.fire({

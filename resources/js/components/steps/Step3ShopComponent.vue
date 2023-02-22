@@ -1,7 +1,7 @@
 <template>
     <div class="container">
-        <ProgressbarComponent />
-        <SizeComponent />
+        <ProgressbarComponent ref="progressComponent" />
+        <SizeComponent ref="sizeComponent" />
         <v-row class="mt-5">
             <v-col class="mb-5" cols="12">
                 <v-card class="mx-auto d-flex flex-wrap">
@@ -26,8 +26,8 @@
                                 <td><img :src="'/images/' + cart.options.image" class="mt-2 mb-2" ></td>
                                 <td>{{ cart.name }}</td>
                                 <td>{{ cart.price }}</td>
-                                <td>{{ cart.qty }}</td>
-                                <td><v-icon>mdi:trash-can</v-icon></td>
+                                <td> <v-icon color="red" @click="addSpecificOne(cart)">mdi-plus</v-icon>{{ cart.qty }} <v-icon color="red" @click="removeSpecificOne(cart)">mdi-minus</v-icon></td>
+                                <td><v-btn @click="removeSpecificCart(cart)"><v-icon color="red">mdi-delete</v-icon></v-btn> </td>
                             </tr>
                         </tbody>
                     </v-table>
@@ -73,6 +73,9 @@ export default {
     created() {
         this.getCartContent()
     },
+    beforeUnmount() {
+        this.$refs.mixerComponent.clearInterval();
+    },
     methods: {
         getCartContent(){
             this.cartContent = [];
@@ -83,15 +86,59 @@ export default {
                 for (let key in response.data.cart) {
                     this.cartContent.push(response.data.cart[key])
                 }
-                console.log(response)
             })
         },
         removeAllFromCart(){
             axios.get('/removeAll') .then(response => { 
                 this.getCartContent()
-                console.log(response)
+                this.$refs.mixerComponent.removeAll();
+                this.$refs.sizeComponent.getCartCount();
+                this.$refs.progressComponent.getProgress();
+                sessionStorage.clear();
             })
         },
+        removeSpecificCart(cart){
+            axios.post("/deleteCart/" + cart.rowId, {              
+                })
+                .then((response) => {
+                    this.getCartContent()
+                    this.$refs.mixerComponent.removeAll();
+                    this.$refs.sizeComponent.getCartCount();
+                    this.$refs.progressComponent.getProgress();
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        },
+        addSpecificOne(cart){
+            axios.post("/increaseCardQty/" + cart.rowId, {
+                    amount: 1,
+                })
+                .then((response) => {
+                    this.getCartContent()
+                    this.$refs.mixerComponent.removeAll();
+                    this.$refs.sizeComponent.getCartCount();
+                    this.$refs.progressComponent.getProgress();
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        },
+        removeSpecificOne(cart){
+            axios.post("/decreaseCardQty/" + cart.rowId, {
+                    amount: 1,
+                })
+                .then((response) => {
+                    this.getCartContent()
+                    this.$refs.mixerComponent.removeAll();
+                    this.$refs.sizeComponent.getCartCount();
+                    this.$refs.progressComponent.getProgress();
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        },
+
         showIngrediente() {
             this.$router.push({path: '/chooseIngrediente'});
         },

@@ -38,7 +38,7 @@ Route::post('/updated/ingrediente/{zutat}', [App\Http\Controllers\IngredienteCon
 Route::post('/update/ingrediente/{zutat}', [App\Http\Controllers\IngredienteController::class, 'showUpdateField'])->name('update');
 
 //ShoppingCard-Routes
-Route::post('/addCart/{zutat}', [App\Http\Controllers\ShoppingCartController::class, 'storeCart'])->name('storeInCart');
+Route::post('/addCart/{ingredienteID}', [App\Http\Controllers\ShoppingCartController::class, 'storeCart'])->name('storeInCart');
 Route::post('/deleteCart/{carditem}', [App\Http\Controllers\ShoppingCartController::class, 'deleteCart'])->name('deleteCart');
 Route::get('/removeAll', [App\Http\Controllers\ShoppingCartController::class, 'removeAllFromCard'])->name('removeAll');
 Route::post('/increaseCardQty/{carditem}', [App\Http\Controllers\ShoppingCartController::class, 'increaseCardQty'])->name('increaseCardQty');
@@ -53,6 +53,10 @@ Route::get('/ingrediente', [App\Http\Controllers\IngredienteController::class, '
 Route::get('/cartContent', [App\Http\Controllers\ShoppingCartController::class, 'getCartContent']);
 Route::get('/removeAll', [App\Http\Controllers\ShoppingCartController::class, 'removeAll']);
 //Route::get('/bottleSize', [App\Http\Controllers\BottleSizeController::class, 'showBottleSizes']);
+
+
+
+Route::post('/addCart/{zutat}', [App\Http\Controllers\ShoppingCartController::class, 'storeCart']);
 
 // needed to refer to the vue router
 Route::get('{any}', function () {

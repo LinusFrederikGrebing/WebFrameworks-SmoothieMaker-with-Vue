@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="containerMixer">
         <canvas class="mx-8" id="myCanvas" width="240" height="330"></canvas>
         <img id="mixerLogo" src="/images/mixer2.png" class="mixer mt-2">
         <img id="becherLogo" src="/images/becher.png" class="mixer mt-2">
@@ -14,7 +14,7 @@ export default {
             canvas: null,
             ctx: null,
             fps: 1 / 60, //60 FPS
-            dt: this.fps * 1000, //ms
+            dt: this.fps * 100, //ms
             timer: false,
             Cd: 0.47,
             rho: 1.22, //kg/m^3
@@ -36,6 +36,9 @@ export default {
         }
     },
     methods: {
+        clearInterval(){
+            clearInterval(this.timer);
+        },
         removeSpecificOne(image) {
             var count = 0;
             for (var i = 0; i < this.balls.length; i++) {
@@ -61,8 +64,10 @@ export default {
             sessionStorage.setItem("zutatenArray", JSON.stringify(this.balls));
         },
         setImg(image, count) {
+            if (JSON.parse(sessionStorage.getItem("zutatenArray"))) {
+            this.balls = JSON.parse(sessionStorage.getItem("zutatenArray"));
+            }
             for (let i = 0; i < count * 2; i++) {
-                console.log(this.balls);
                 this.balls.push(new Ball(Math.random() * (265 - 0) + 0, 50, 18, 0.7, 10, image));
             }
         
@@ -74,7 +79,7 @@ export default {
             const gravity = 0.7;
             const density = 1;
             const drag = 1;
-
+           
             //Clear window at the beginning of every frame
             this.ctx.clearRect(0, 0, this.width, this.height);
             for (let i = 0; i < this.balls.length; i++) {
@@ -130,6 +135,7 @@ export default {
                 //Handling the ball collisions
                 this.collisionBall(this.balls[i]);
                 this.collisionWall(this.balls[i]);
+            
                 sessionStorage.setItem("zutatenArray", JSON.stringify(this.balls));
             }
         },
