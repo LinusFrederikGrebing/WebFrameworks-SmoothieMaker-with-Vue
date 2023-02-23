@@ -14,7 +14,6 @@ export default {
             canvas: null,
             ctx: null,
             fps: 1 / 60, //60 FPS
-            dt: this.fps * 100, //ms
             timer: false,
             Cd: 0.47,
             rho: 1.22, //kg/m^3
@@ -30,7 +29,7 @@ export default {
         this.ctx = this.canvas.getContext("2d");
         this.width = this.canvas.width;
         this.height = this.canvas.height;
-        this.timer = setInterval(this.loop, this.dt);
+        this.timer = setInterval(this.loop, 10);
         if (JSON.parse(sessionStorage.getItem("zutatenArray"))) {
             this.balls = JSON.parse(sessionStorage.getItem("zutatenArray"));
         }
@@ -41,21 +40,21 @@ export default {
         },
         removeSpecificOne(image) {
             var count = 0;
-            for (var i = 0; i < this.balls.length; i++) {
-                if (this.balls[i].img === "../images/" + image) {
-                    this.balls.splice(i, 1);
-                    count++;
-                    i--;
+                for (var i = 0; i < this.balls.length; i++) {
+                    if (this.balls[i].img === "/images/" + image) {
+                        this.balls.splice(i, 1);
+                        count++;
+                        i--;
                     if (count === 1) {
-                        break;
+                            break;
+                        }
                     }
                 }
-            }
             sessionStorage.setItem("zutatenArray", JSON.stringify(this.balls));
         },
         removeSpecificAll(img) {
             this.balls = this.balls.filter(function (ball) {
-                return ball.img !== "../images/" + img;
+                return ball.img !== "/images/" + img;
             });
             sessionStorage.setItem("zutatenArray", JSON.stringify(this.balls));
         },
@@ -127,9 +126,9 @@ export default {
                     this.balls[i].position.y - this.balls[i].radius * 1.8,
                     60,
                     60
-                );
-                //this.ctx.arc(this.balls[i].position.x, this.balls[i].position.y, this.balls[i].radius, 0, 2 * Math.PI, true);
-                //this.ctx.fill();
+                ); 
+                // this.ctx.arc(this.balls[i].position.x, this.balls[i].position.y, this.balls[i].radius, 0, 2 * Math.PI, true);
+                // this.ctx.fill();
                 this.ctx.closePath();
 
                 //Handling the ball collisions

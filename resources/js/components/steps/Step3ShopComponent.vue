@@ -51,7 +51,6 @@
     </div>
 </template>
 
-
 <script>
 import MixerComponent from '../layouts/MixerComponent.vue'
 import ProgressbarComponent from '../layouts/ProgressbarComponent.vue'
@@ -102,7 +101,7 @@ export default {
                 })
                 .then((response) => {
                     this.getCartContent()
-                    this.$refs.mixerComponent.removeAll();
+                    this.$refs.mixerComponent.removeSpecificAll(response.data.image);
                     this.$refs.sizeComponent.getCartCount();
                     this.$refs.progressComponent.getProgress();
                 })
@@ -116,13 +115,10 @@ export default {
                 })
                 .then((response) => {
                     this.getCartContent()
-                    this.$refs.mixerComponent.removeAll();
+                    this.$refs.mixerComponent.setImg(response.data.image, 1);
                     this.$refs.sizeComponent.getCartCount();
                     this.$refs.progressComponent.getProgress();
                 })
-                .catch((error) => {
-                    console.error(error);
-                });
         },
         removeSpecificOne(cart){
             axios.post("/decreaseCardQty/" + cart.rowId, {
@@ -130,15 +126,11 @@ export default {
                 })
                 .then((response) => {
                     this.getCartContent()
-                    this.$refs.mixerComponent.removeAll();
+                    this.$refs.mixerComponent.removeSpecificOne(response.data.image);
                     this.$refs.sizeComponent.getCartCount();
                     this.$refs.progressComponent.getProgress();
                 })
-                .catch((error) => {
-                    console.error(error);
-                });
         },
-
         showIngrediente() {
             this.$router.push({path: '/chooseIngrediente'});
         },
