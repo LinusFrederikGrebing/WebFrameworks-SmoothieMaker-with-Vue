@@ -41,11 +41,12 @@ export default {
         removeSpecificOne(image) {
             var count = 0;
                 for (var i = 0; i < this.balls.length; i++) {
+                    console.log(count);
                     if (this.balls[i].img === "/images/" + image) {
                         this.balls.splice(i, 1);
                         count++;
                         i--;
-                    if (count === 1) {
+                    if (count === 2) {
                             break;
                         }
                     }

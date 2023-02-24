@@ -9,6 +9,7 @@
             class="mx-auto flex-grow-1"
             v-for="(category, index) in categories"
             :key="index"
+            v-on:click="handleCategoryClick(category)"
           >
             <img
               width="20"
@@ -90,7 +91,7 @@
               <v-btn
                 color="error"
                 class="mx-auto flex-grow-1"
-                @click="showBottleSize()"
+                @click="removeAllAlert()"
               >
                 Zurück
               </v-btn>
@@ -132,16 +133,19 @@ export default {
           route: 1,
           icon: "/images/fruitsicon.png",
           title: "Früchte",
+          method: "getFruitsIngredientsList",
         },
         {
           route: 1,
           icon: "/images/vegetablesicon.png",
           title: "Gemüse",
+          method: "getVeggieIngredientsList",
         },
         {
           route: 1,
           icon: "/images/liquidicon.png",
           title: "Flüssigkeit",
+          method: "getLiquidIngredientsList",
         },
       ],
       zutaten: {},
@@ -152,17 +156,44 @@ export default {
     this.$refs.mixerComponent.clearInterval();
   },
   created() {
-   this.getIngredientsList();
+    this.getFruitsIngredientsList();
   },
   methods: {
-    getIngredientsList(){
-       axios.get("/ingrediente")
+    handleCategoryClick(category) {
+      // Rufe die entsprechende Methode basierend auf der Kategorie auf
+      this[category.method]();
+    },
+    getFruitsIngredientsList() {
+      axios
+        .get("/fruits")
         .then((response) => {
-            this.zutaten = response.data.zutaten;
-            this.selectedAmounts = Array(this.zutaten.length).fill(1);
+          this.zutaten = response.data.zutaten;
+          this.selectedAmounts = Array(this.zutaten.length).fill(1);
         })
         .catch((err) => {
-            console.log(err);
+          console.log(err);
+        });
+    },
+    getVeggieIngredientsList() {
+      axios
+        .get("/vegetables")
+        .then((response) => {
+          this.zutaten = response.data.zutaten;
+          this.selectedAmounts = Array(this.zutaten.length).fill(1);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    getLiquidIngredientsList() {
+      axios
+        .get("/liquid")
+        .then((response) => {
+          this.zutaten = response.data.zutaten;
+          this.selectedAmounts = Array(this.zutaten.length).fill(1);
+        })
+        .catch((err) => {
+          console.log(err);
         });
     },
     increaseSelectedAmount(index) {
@@ -182,17 +213,53 @@ export default {
       this.$router.push({ path: "/chooseBottleSize" });
     },
     addToCart(zutat, amount) {
-      axios.post("/addCart/" + zutat.id, {
+      axios
+        .post("/addCart/" + zutat.id, {
           amount: amount,
         })
         .then((response) => {
-          this.$refs.mixerComponent.setImg(response.data.image, response.data.reqCount);
-          this.$refs.sizeComponent.getCartCount();
-          this.$refs.progressComponent.getProgress();
+          if(response.data.stored){
+             this.$refs.mixerComponent.setImg(
+            response.data.image,
+            response.data.reqCount
+            );
+            this.$refs.sizeComponent.getCartCount();
+            this.$refs.progressComponent.getProgress();
+          } else {
+            this.showAlertTooMany();
+          }
+         
         })
         .catch((error) => {
           console.error(error);
         });
+    },
+    removeAllAlert() {
+      Swal.fire({
+        title: "Bist du Dir sicher?",
+        text: "Wenn du zurückgehst wird deine bisherige Zusammenstellung unwiederruflich gelöscht!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#6D9E1F",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Weiter zurück!",
+        cancelButtonText: "Abbrechen!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.$router.push({ path: "/chooseBottleSize" });
+        }
+      });
+    },
+
+    showAlertTooMany() {
+      Swal.fire({
+        title: "Du hast zu viele Zutaten ausgewählt!",
+        text: "",
+        icon: "error",
+        showCancelButton: false,
+        confirmButtonColor: "#6D9E1F",
+        confirmButtonText: "Okay!",
+      });
     },
   },
   mounted() {},

@@ -8,32 +8,33 @@ use App\Models\BottleSize;
 use App\Models\Ingrediente;
 use Alert;
 use App\Models\IngredienteType;
+
 class ShoppingCartController extends Controller
 {
     public function storeCart(Request $request, $ingredienteID)
     {
         $zutat = Ingrediente::find($ingredienteID);
-        $bottle =  $this->getBottle($request);
-        if ((Cart::count()+$request->amount) <= $bottle->amount) {
-         Cart::add(
-            array(
-                'id' => $zutat->id,
-                'name' => $zutat->name,
-                'qty' => $request->amount,
-                'price' => $zutat->price,
-                'options' => array('image' => $zutat->image),
-            )
-         );
-         return response()->json(['image' => $zutat->image, 'count' => Cart::count(), 'reqCount' => $request->amount, 'amount' => $bottle->amount]);
-        
-    }
+        $bottle = $this->getBottle($request);
+        if ((Cart::count() + $request->amount) <= $bottle->amount) {
+            Cart::add(
+                array(
+                    'id' => $zutat->id,
+                    'name' => $zutat->name,
+                    'qty' => $request->amount,
+                    'price' => $zutat->price,
+                    'options' => array('image' => $zutat->image),
+                )
+            );
+            return response()->json(['stored' => true, 'image' => $zutat->image, 'count' => Cart::count(), 'reqCount' => $request->amount, 'amount' => $bottle->amount]);
+        }
+        return response()->json(['stored' => false]);
     }
 
     public function deleteCart(Request $request, $ingredienteID)
     {
-        $bottle =  $this->getBottle($request);
+        $bottle = $this->getBottle($request);
         $image = Cart::get($ingredienteID)->options->image;
-        $count = Cart::count()-Cart::get($ingredienteID)->qty;   
+        $count = Cart::count() - Cart::get($ingredienteID)->qty;
         Cart::remove($ingredienteID);
         return response()->json(['image' => $image, 'count' => $count, 'amount' => $bottle->amount]);
     }
@@ -41,69 +42,71 @@ class ShoppingCartController extends Controller
     public function removeAllFromCard(Request $request)
     {
         Cart::destroy();
-      //  Alert::info('', 'Der Warenkorb wurde erfolgreich geleert!');
+        //  Alert::info('', 'Der Warenkorb wurde erfolgreich geleert!');
         //return view('steps/step3ShopComponent');
     }
 
 
     public function increaseCardQty(Request $request, $ingredienteID)
     {
-        $bottle =  $this->getBottle($request);
+        $bottle = $this->getBottle($request);
         if (Cart::count() < $bottle->amount) {
             $id = Cart::get($ingredienteID)->id;
             $newqty = Cart::get($ingredienteID)->qty + 1;
             Cart::update($ingredienteID, $newqty); // Will update the quantity
-            return response()->json(['image' => Cart::get($ingredienteID)->options->image, 'count' => Cart::count(), 'newqty' => $newqty, 'amount' => $bottle->amount, 'id' => $id]);
+            return response()->json(['stored' => true, 'image' => Cart::get($ingredienteID)->options->image, 'count' => Cart::count(), 'newqty' => $newqty, 'amount' => $bottle->amount, 'id' => $id]);
         }
+        return response()->json(['stored' => false]);
     }
 
     public function decreaseCardQty(Request $request, $ingredienteID)
     {
-        $bottle =  $this->getBottle($request);
+        $bottle = $this->getBottle($request);
         $image = Cart::get($ingredienteID)->options->image;
         $id = Cart::get($ingredienteID)->id;
-        $count = Cart::count()-1;   
+        $count = Cart::count() - 1;
         $newqty = Cart::get($ingredienteID)->qty - 1;
         Cart::update($ingredienteID, $newqty); // Will update the quantity
         return response()->json(['image' => $image, 'count' => $count, 'newqty' => $newqty, 'amount' => $bottle->amount, 'id' => $id]);
     }
 
     public function showCard(Request $request)
-    {  
+    {
         $bottle = $this->getBottle($request);
 
         return view('steps/step3ShopComponent')->with('bottle', $bottle);
-    } 
-    
+    }
+
     public function getCartCount(Request $request)
-    {  
-     $cartcount = Cart::count();
-     $bottle = $this->getBottle($request);
-    
-     return response()->json(['cartCount' => $cartcount, 'bottle' => $bottle ]);
-    
+    {
+        $cartcount = Cart::count();
+        $bottle = $this->getBottle($request);
+
+        return response()->json(['cartCount' => $cartcount, 'bottle' => $bottle]);
+
     }
     public function getCartContent(Request $request)
-    {  
-     $cart = Cart::content();
-     $cartTotal = Cart::total();
-     $cartSubTotal = Cart::subtotal();
-     return response()->json(['cart' => $cart, 'cartTotal' =>  $cartTotal, 'cartSubTotal' => $cartSubTotal]);
-    
+    {
+        $cart = Cart::content();
+        $cartTotal = Cart::total();
+        $cartSubTotal = Cart::subtotal();
+        return response()->json(['cart' => $cart, 'cartTotal' => $cartTotal, 'cartSubTotal' => $cartSubTotal]);
+
     }
-    public function getBottle(Request $request){
+    public function getBottle(Request $request)
+    {
         if ($request->session()->get('bottle') == true) {
             return $request->session()->get('bottle');
         } else {
             return BottleSize::findOrFail("4");
         }
     }
-    
+
     public function removeAll(Request $request)
-    { 
-       
+    {
+
         Cart::destroy();
-      
-        return response()->json(['test' =>  "test"]);
+
+        return response()->json(['test' => "test"]);
     }
 }

@@ -19,12 +19,20 @@ class IngredienteController extends Controller
         return view('steps/step2ChooseIngrediente', compact('zutaten'));
 
     }
-    public function getIngediente(Request $request)
+    public function getFruits(Request $request)
     {
         $zutaten = Ingrediente::where('type', IngredienteType::FRUITS)->get();
-
         return response()->json(['zutaten' => $zutaten]);
-
+    }
+    public function getVegetables(Request $request)
+    {
+        $zutaten = Ingrediente::where('type', IngredienteType::VEGETABLES)->get();
+        return response()->json(['zutaten' => $zutaten]);
+    }
+    public function getLiquid(Request $request)
+    {
+        $zutaten = Ingrediente::where('type', IngredienteType::LIQUID)->get();
+        return response()->json(['zutaten' => $zutaten]);
     }
 
 

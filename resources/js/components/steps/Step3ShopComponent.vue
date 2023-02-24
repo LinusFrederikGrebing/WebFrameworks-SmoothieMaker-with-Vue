@@ -6,7 +6,7 @@
             <v-col class="mb-5" cols="12">
                 <v-card class="mx-auto d-flex flex-wrap">
                     <v-btn color="success" class="mx-auto flex-grow-1" @click="showIngrediente()"> Weitere Zutaten hinzufügen </v-btn>
-                    <v-btn color="error" class="mx-auto flex-grow-1" @click="removeAllFromCart()"> Alles aus dem Warenkorb entfernen </v-btn>
+                    <v-btn color="error" class="mx-auto flex-grow-1" @click="removeAllAlert()"> Alles aus dem Warenkorb entfernen </v-btn>
                 </v-card>
             </v-col>
             <v-col cols="12" md="8" class="mb-5">
@@ -114,10 +114,15 @@ export default {
                     amount: 1,
                 })
                 .then((response) => {
-                    this.getCartContent()
-                    this.$refs.mixerComponent.setImg(response.data.image, 1);
-                    this.$refs.sizeComponent.getCartCount();
-                    this.$refs.progressComponent.getProgress();
+                    if(response.data.stored){
+                        this.getCartContent()
+                        this.$refs.mixerComponent.setImg(response.data.image, 1);
+                        this.$refs.sizeComponent.getCartCount();
+                        this.$refs.progressComponent.getProgress();
+                    } else {
+                        this.showAlertTooMany();
+                    }
+                  
                 })
         },
         removeSpecificOne(cart){
@@ -134,6 +139,32 @@ export default {
         showIngrediente() {
             this.$router.push({path: '/chooseIngrediente'});
         },
+        showAlertTooMany() {
+            Swal.fire({
+                title: "Du hast zu viele Zutaten ausgewählt!",
+                text: "",
+                icon: "error",
+                showCancelButton: false,
+                confirmButtonColor: "#6D9E1F",
+                confirmButtonText: "Okay!",
+            });
+        },
+        removeAllAlert() {
+                    Swal.fire({
+                        title: 'Bist du Dir sicher?',
+                        text: "Deine komplette Zusammenstellung wird unwiederruflich gelöscht!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#6D9E1F',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Zusammenstellung löschen!',
+                        cancelButtonText: 'Abbrechen!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            this.removeAllFromCart()
+                        }
+                    });
+                }
     },
     mounted() { },
 };

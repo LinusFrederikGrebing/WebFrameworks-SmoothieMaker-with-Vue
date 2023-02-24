@@ -49,7 +49,9 @@ Route::get('/showCard', [App\Http\Controllers\ShoppingCartController::class, 'sh
 
 //Route::get('/cart/count',  [App\Http\Controllers\ShoppingCartController::class, 'getCartCount']);
 Route::get('/cart/count',  [App\Http\Controllers\ShoppingCartController::class, 'getCartCount']);
-Route::get('/ingrediente', [App\Http\Controllers\IngredienteController::class, 'getIngediente']);
+Route::get('/fruits', [App\Http\Controllers\IngredienteController::class, 'getFruits']);
+Route::get('/vegetables', [App\Http\Controllers\IngredienteController::class, 'getVegetables']);
+Route::get('/liquid', [App\Http\Controllers\IngredienteController::class, 'getLiquid']);
 Route::get('/cartContent', [App\Http\Controllers\ShoppingCartController::class, 'getCartContent']);
 Route::get('/removeAll', [App\Http\Controllers\ShoppingCartController::class, 'removeAll']);
 //Route::get('/bottleSize', [App\Http\Controllers\BottleSizeController::class, 'showBottleSizes']);

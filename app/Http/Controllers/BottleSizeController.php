@@ -20,13 +20,10 @@ class BottleSizeController extends Controller
     public function showInhalt(Request $request, $bottleID)
     { 
         //Cart::destroy();
-        
         $bottle = BottleSize::findOrFail($bottleID);
         $request->session()->put('bottle', $bottle);
-
-        $zutaten = Ingrediente::where('type', IngredienteType::FRUITS)->get();
-      
-        return view('steps/step2ChooseIngrediente', compact('zutaten'));
+        $bottleSes = $request->session()->get('bottle');
+        return response()->json(['bottles' => $bottleSes  ]);
     }
 
 }

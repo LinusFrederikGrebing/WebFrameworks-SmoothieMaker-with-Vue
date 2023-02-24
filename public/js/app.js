@@ -23370,11 +23370,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     removeSpecificOne: function removeSpecificOne(image) {
       var count = 0;
       for (var i = 0; i < this.balls.length; i++) {
+        console.log(count);
         if (this.balls[i].img === "/images/" + image) {
           this.balls.splice(i, 1);
           count++;
           i--;
-          if (count === 1) {
+          if (count === 2) {
             break;
           }
         }
@@ -23653,9 +23654,14 @@ __webpack_require__.r(__webpack_exports__);
     });
   },
   methods: {
-    showInhalt: function showInhalt(bottle) {
-      this.$router.push({
-        path: '/chooseIngrediente'
+    storeBottle: function storeBottle(bottle) {
+      var _this2 = this;
+      axios.get("/schritt1/" + bottle.id).then(function (response) {
+        _this2.$router.push({
+          path: '/chooseIngrediente'
+        });
+      })["catch"](function (error) {
+        console.error(error);
       });
     }
   },
@@ -23693,15 +23699,18 @@ __webpack_require__.r(__webpack_exports__);
       categories: [{
         route: 1,
         icon: "/images/fruitsicon.png",
-        title: "Früchte"
+        title: "Früchte",
+        method: "getFruitsIngredientsList"
       }, {
         route: 1,
         icon: "/images/vegetablesicon.png",
-        title: "Gemüse"
+        title: "Gemüse",
+        method: "getVeggieIngredientsList"
       }, {
         route: 1,
         icon: "/images/liquidicon.png",
-        title: "Flüssigkeit"
+        title: "Flüssigkeit",
+        method: "getLiquidIngredientsList"
       }],
       zutaten: {},
       selectedAmounts: null
@@ -23711,14 +23720,36 @@ __webpack_require__.r(__webpack_exports__);
     this.$refs.mixerComponent.clearInterval();
   },
   created: function created() {
-    this.getIngredientsList();
+    this.getFruitsIngredientsList();
   },
   methods: {
-    getIngredientsList: function getIngredientsList() {
+    handleCategoryClick: function handleCategoryClick(category) {
+      // Rufe die entsprechende Methode basierend auf der Kategorie auf
+      this[category.method]();
+    },
+    getFruitsIngredientsList: function getFruitsIngredientsList() {
       var _this = this;
-      axios.get("/ingrediente").then(function (response) {
+      axios.get("/fruits").then(function (response) {
         _this.zutaten = response.data.zutaten;
         _this.selectedAmounts = Array(_this.zutaten.length).fill(1);
+      })["catch"](function (err) {
+        console.log(err);
+      });
+    },
+    getVeggieIngredientsList: function getVeggieIngredientsList() {
+      var _this2 = this;
+      axios.get("/vegetables").then(function (response) {
+        _this2.zutaten = response.data.zutaten;
+        _this2.selectedAmounts = Array(_this2.zutaten.length).fill(1);
+      })["catch"](function (err) {
+        console.log(err);
+      });
+    },
+    getLiquidIngredientsList: function getLiquidIngredientsList() {
+      var _this3 = this;
+      axios.get("/liquid").then(function (response) {
+        _this3.zutaten = response.data.zutaten;
+        _this3.selectedAmounts = Array(_this3.zutaten.length).fill(1);
       })["catch"](function (err) {
         console.log(err);
       });
@@ -23744,15 +23775,48 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     addToCart: function addToCart(zutat, amount) {
-      var _this2 = this;
+      var _this4 = this;
       axios.post("/addCart/" + zutat.id, {
         amount: amount
       }).then(function (response) {
-        _this2.$refs.mixerComponent.setImg(response.data.image, response.data.reqCount);
-        _this2.$refs.sizeComponent.getCartCount();
-        _this2.$refs.progressComponent.getProgress();
+        if (response.data.stored) {
+          _this4.$refs.mixerComponent.setImg(response.data.image, response.data.reqCount);
+          _this4.$refs.sizeComponent.getCartCount();
+          _this4.$refs.progressComponent.getProgress();
+        } else {
+          _this4.showAlertTooMany();
+        }
       })["catch"](function (error) {
         console.error(error);
+      });
+    },
+    removeAllAlert: function removeAllAlert() {
+      var _this5 = this;
+      Swal.fire({
+        title: "Bist du Dir sicher?",
+        text: "Wenn du zurückgehst wird deine bisherige Zusammenstellung unwiederruflich gelöscht!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#6D9E1F",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Weiter zurück!",
+        cancelButtonText: "Abbrechen!"
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          _this5.$router.push({
+            path: "/chooseBottleSize"
+          });
+        }
+      });
+    },
+    showAlertTooMany: function showAlertTooMany() {
+      Swal.fire({
+        title: "Du hast zu viele Zutaten ausgewählt!",
+        text: "",
+        icon: "error",
+        showCancelButton: false,
+        confirmButtonColor: "#6D9E1F",
+        confirmButtonText: "Okay!"
       });
     }
   },
@@ -23836,10 +23900,14 @@ __webpack_require__.r(__webpack_exports__);
       axios.post("/increaseCardQty/" + cart.rowId, {
         amount: 1
       }).then(function (response) {
-        _this4.getCartContent();
-        _this4.$refs.mixerComponent.setImg(response.data.image, 1);
-        _this4.$refs.sizeComponent.getCartCount();
-        _this4.$refs.progressComponent.getProgress();
+        if (response.data.stored) {
+          _this4.getCartContent();
+          _this4.$refs.mixerComponent.setImg(response.data.image, 1);
+          _this4.$refs.sizeComponent.getCartCount();
+          _this4.$refs.progressComponent.getProgress();
+        } else {
+          _this4.showAlertTooMany();
+        }
       });
     },
     removeSpecificOne: function removeSpecificOne(cart) {
@@ -23856,6 +23924,33 @@ __webpack_require__.r(__webpack_exports__);
     showIngrediente: function showIngrediente() {
       this.$router.push({
         path: '/chooseIngrediente'
+      });
+    },
+    showAlertTooMany: function showAlertTooMany() {
+      Swal.fire({
+        title: "Du hast zu viele Zutaten ausgewählt!",
+        text: "",
+        icon: "error",
+        showCancelButton: false,
+        confirmButtonColor: "#6D9E1F",
+        confirmButtonText: "Okay!"
+      });
+    },
+    removeAllAlert: function removeAllAlert() {
+      var _this6 = this;
+      Swal.fire({
+        title: 'Bist du Dir sicher?',
+        text: "Deine komplette Zusammenstellung wird unwiederruflich gelöscht!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#6D9E1F',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Zusammenstellung löschen!',
+        cancelButtonText: 'Abbrechen!'
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          _this6.removeAllFromCart();
+        }
       });
     }
   },
@@ -24348,7 +24443,10 @@ var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
   "class": ""
 }, "Wähle jetzt deine Smoothie-Größe!")], -1 /* HOISTED */);
 var _hoisted_2 = {
-  "class": "d-flex"
+  style: {
+    "width": "100%",
+    "height": "100%"
+  }
 };
 var _hoisted_3 = ["src", "alt"];
 var _hoisted_4 = {
@@ -24358,10 +24456,10 @@ var _hoisted_5 = {
   "class": "mx-8 my-4"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  var _component_v_btn = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("v-btn");
-  var _component_v_card = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("v-card");
   var _component_v_col = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("v-col");
+  var _component_v_btn = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("v-btn");
   var _component_v_row = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("v-row");
+  var _component_v_card = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("v-card");
   var _component_v_container = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("v-container");
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_v_container, null, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
@@ -24382,24 +24480,49 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                   elevation: "10"
                 }, {
                   "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-                    return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-                      width: "250",
-                      height: "250",
-                      "class": "my-2",
-                      src: '/images/' + bottle.image,
-                      alt: bottle.name
-                    }, null, 8 /* PROPS */, _hoisted_3), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", _hoisted_4, "Größe: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(bottle.name), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(bottle.description), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_v_btn, {
-                      "class": "mx-4 my-4",
-                      onClick: function onClick($event) {
-                        return $options.showInhalt(bottle);
-                      }
-                    }, {
+                    return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_v_row, null, {
                       "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-                        return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Weiter")];
+                        return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_v_col, {
+                          md: "4",
+                          "class": "d-flex"
+                        }, {
+                          "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+                            return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+                              "class": "my-2",
+                              src: '/images/' + bottle.image,
+                              alt: bottle.name,
+                              style: {
+                                "max-width": "100%",
+                                "max-height": "100%",
+                                "object-fit": "contain"
+                              }
+                            }, null, 8 /* PROPS */, _hoisted_3)])];
+                          }),
+                          _: 2 /* DYNAMIC */
+                        }, 1024 /* DYNAMIC_SLOTS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_v_col, {
+                          md: "8"
+                        }, {
+                          "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+                            return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", _hoisted_4, "Größe: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(bottle.name), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(bottle.description), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_v_btn, {
+                              "class": "mx-4 my-4",
+                              onClick: function onClick($event) {
+                                return $options.storeBottle(bottle);
+                              }
+                            }, {
+                              "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+                                return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Weiter")];
+                              }),
+                              _: 2 /* DYNAMIC */
+                            }, 1032 /* PROPS, DYNAMIC_SLOTS */, ["onClick"])])];
+                          }),
+                          _: 2 /* DYNAMIC */
+                        }, 1024 /* DYNAMIC_SLOTS */)];
                       }),
+
                       _: 2 /* DYNAMIC */
-                    }, 1032 /* PROPS, DYNAMIC_SLOTS */, ["onClick"])])])];
+                    }, 1024 /* DYNAMIC_SLOTS */)];
                   }),
+
                   _: 2 /* DYNAMIC */
                 }, 1024 /* DYNAMIC_SLOTS */)];
               }),
@@ -24491,7 +24614,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
               return [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.categories, function (category, index) {
                 return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_v_btn, {
                   "class": "mx-auto flex-grow-1",
-                  key: index
+                  key: index,
+                  onClick: function onClick($event) {
+                    return $options.handleCategoryClick(category);
+                  }
                 }, {
                   "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
                     return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
@@ -24504,7 +24630,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                   }),
 
                   _: 2 /* DYNAMIC */
-                }, 1024 /* DYNAMIC_SLOTS */);
+                }, 1032 /* PROPS, DYNAMIC_SLOTS */, ["onClick"]);
               }), 128 /* KEYED_FRAGMENT */))];
             }),
 
@@ -24661,7 +24787,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                         color: "error",
                         "class": "mx-auto flex-grow-1",
                         onClick: _cache[0] || (_cache[0] = function ($event) {
-                          return $options.showBottleSize();
+                          return $options.removeAllAlert();
                         })
                       }, {
                         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
@@ -24792,7 +24918,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                 color: "error",
                 "class": "mx-auto flex-grow-1",
                 onClick: _cache[1] || (_cache[1] = function ($event) {
-                  return $options.removeAllFromCart();
+                  return $options.removeAllAlert();
                 })
               }, {
                 "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
