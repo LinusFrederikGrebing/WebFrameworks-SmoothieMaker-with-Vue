@@ -130,19 +130,16 @@ export default {
     return {
       categories: [
         {
-          route: 1,
           icon: "/images/fruitsicon.png",
           title: "Früchte",
           method: "getFruitsIngredientsList",
         },
         {
-          route: 1,
           icon: "/images/vegetablesicon.png",
           title: "Gemüse",
           method: "getVeggieIngredientsList",
         },
         {
-          route: 1,
           icon: "/images/liquidicon.png",
           title: "Flüssigkeit",
           method: "getLiquidIngredientsList",

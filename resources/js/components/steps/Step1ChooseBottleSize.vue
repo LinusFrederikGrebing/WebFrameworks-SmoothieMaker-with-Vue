@@ -48,6 +48,7 @@ export default {
         });
     },
     methods: {
+        
         storeBottle(bottle) {
             axios.get("/schritt1/" + bottle.id)
                 .then((response) => {
