@@ -46,7 +46,6 @@ export default {
             });
         },
         showBottleSizes() {
-            const self = this;
             Swal.fire({
                 title: 'Bist du Dir sicher?',
                 text: 'Deine komplette Zusammenstellung wird bei Größenänderung unwiederruflich gelöscht!',
@@ -58,7 +57,7 @@ export default {
                 cancelButtonText: 'Abbrechen!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    self.$router.push({ name: 'showBottleSizes' });
+                    this.$router.push({ path: "/chooseBottleSize" });
                 }
             });
         }

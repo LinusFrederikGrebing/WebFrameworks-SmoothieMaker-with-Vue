@@ -4,6 +4,7 @@
         <FooterTemplate />
     </div>
 </template>
+
 <script>
 import FooterTemplate from '../components/layouts/FooterTemplate'
 import HeaderTemplate from './HeaderTemplate'

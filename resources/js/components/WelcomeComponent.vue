@@ -1,92 +1,109 @@
 <template>
-  <v-container class="container">
-      <v-row class="mt-16 mb-16 seperate">
-        <v-col cols="6" md="12" xl="6"  style="
-          transform: scale(1) perspective(1040px) rotateY(21deg) rotateX(-2deg)
-            rotate(-2deg);
-        ">
-          <h1 class="mx-4 my-4">Smoothiemaker</h1>
-        <v-card-text class="mx-4 my-4 mb-16"
-          >Stelle Dir jetzt deinen perfekten Smoothie zusammen! Deine Auswahl
-          erstreckt sich aus einer Vielzahl verschiedener Zutaten. Es gibt vier
-          veschiedene Smoothie-Größen. Du kannst entscheiden, ob dein Smoothie
-          aus 250ml, 500ml, 750ml oder sogar 1l leckeren Zutaten bestehen soll.
-          Den Smoothie kannst du kostenlos und ohne Anmeldung zusammenstellen.
-          Bei Kauf errechnet sich der Preis deines Getränks aus den
-          Einzelpreisen der Zutaten.
-        </v-card-text>
-        <v-btn class="mx-4 my-4" @click="showInhalt()">Beginne mit der Zusammenstellung</v-btn>
-        </v-col>
-        <v-col cols="6" xl="6" md="12" style="
-          transform: scale(1) perspective(1040px) rotateY(-11deg) rotateX(2deg)
-            rotate(2deg);
-        " >
-          <v-img   src="/images/smoothie.jpg" ></v-img>
-        </v-col>
-      </v-row>
-      <v-row
-        id="stepsheader"
-        class="mt-16 mb-16"
-      ><div class="text-center">
-        <h2>Nur drei Schritte bis zu deinem Smoothie!</h2>
-        <p>
-          An warmen Tagen sind erfrischende Drinks wichtiger, denn je! Und
-          Smoothies sind als Erfrischung (und auch als Frühstück) dafür einfach
-          perfekt. Sie sind gesund, voller Vitamine und machen fit für den Tag.
-          Ich kriege von Smoothies diesen Sommer auf jeden Fall nicht genug.
-          Deswegen schnapp‘ dir auch einen und lass uns auf dem Balkon, Terrasse
-          oder in meinem Fall im Park chillen.
-        </p>
-      </div>
-        
-      </v-row>
-      <v-row class="grid gap-8 row-gap-0 lg:grid-cols-3">
+  <v-parallax height="3000" src="/images/background/bg2.svg">
+    <v-container class="container">
+      <v-row class="seperate">
         <v-col
-          class="relative text-center"
-          cols="12"
-          md="4"
-          v-for="(item, index) in items"
-          :key="index"
-          :id="'step' + (index+1)"
+          cols="6"
+          md="12"
+          xl="6"
+          sm="12"
+
+          style="
+            transform: scale(1) perspective(1040px) rotateY(21deg)
+              rotateX(-2deg) rotate(-2deg);
+          "
         >
-          <div
-            class="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-indigo-50 sm:w-20 sm:h-20"
-          >
-            <v-icon
-              class="w-12 h-12 text-deep-purple-accent-400 sm:w-16 sm:h-16"
+          <v-card elevation="10">
+            <h1 class="mx-5 my-5">Smoothiemaker</h1>
+            <h5 class="mx-5 my-5">
+              Stelle Dir jetzt deinen perfekten Smoothie zusammen! Deine Auswahl
+              erstreckt sich aus einer Vielzahl verschiedener Zutaten. Es gibt
+              vier veschiedene Smoothie-Größen. Du kannst entscheiden, ob dein
+              Smoothie aus 250ml, 500ml, 750ml oder sogar 1l leckeren Zutaten
+              bestehen soll. Den Smoothie kannst du kostenlos und ohne Anmeldung
+              zusammenstellen. Bei Kauf errechnet sich der Preis deines Getränks
+              aus den Einzelpreisen der Zutaten.
+            </h5>
+            <v-btn class="mx-5 mb-5" @click="showInhalt()"
+              >Beginne mit der Zusammenstellung</v-btn
             >
-            mdi-polygon
-            </v-icon>
-          </div>
-          <h4 class="mb-2" v-text="item.title"></h4>
-          <p
-            class="max-w-md mb-3 text-sm text-gray-900 sm:mx-auto"
-            v-text="item.text"
-          ></p>
-          <div
-            class="top-0 right-0 flex items-center justify-center h-24 lg:-mr-8 lg:absolute"
-          >
-            <v-icon
-              class="w-8 text-gray-700 transform rotate-90 lg:rotate-0"
-              stroke-width="2"
-            >
-              mdi-line-weight
-            </v-icon>
-          </div>
+          </v-card>
+        </v-col>
+        <v-col
+          cols="6"
+          xl="6"
+          md="12"
+          sm="12"
+          style="
+            transform: scale(1) perspective(1040px) rotateY(-11deg)
+              rotateX(2deg) rotate(2deg);
+          "
+        >
+          <v-card elevation="10 mt-8">
+            <v-img src="/images/smoothie.jpg"></v-img>
+          </v-card>
         </v-col>
       </v-row>
-      <v-row
-        id="tipsheader"
-        class="p-4 mx-auto my-6 space-y-1 text-center"
-      >
-        <h4 class="pb-3 text-2xl font-bold md:text-3xl">
-          Unsere Smoothie-Tipps der Woche
-        </h4>
-        <p>
-          Hier findest du unsere Smoothie-Geheimtipps. Lasse dich gerne von
-          unseren Top-Vorschlägen inspirieren!
-        </p>
+      <v-card elevation="10" class="seperate my-8 mx-8">
+        <v-row id="stepsheader" class="my-6 mx-6">
+          <div class="ml-auto mr-auto mt-4">
+            <h2 class="text-center">
+              Nur drei Schritte bis zu deinem Smoothie!
+            </h2>
+          </div>
         </v-row>
+        <v-divider width="80%" class="ml-auto mr-auto"></v-divider>
+        <v-row id="steps" class="grid gap-8 row-gap-0 lg:grid-cols-3 my-6 mx-6">
+          <v-col
+            class="relative text-center"
+            cols="12"
+            md="4"
+            v-for="(item, index) in items"
+            :key="index"
+            :id="'step' + (index + 1)"
+            ><div
+              class="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-indigo-50 sm:w-20 sm:h-20"
+            >
+              <span class="material-symbols-outlined test">
+                {{ item.icon }}
+              </span>
+            </div>
+            <div class="d-flex">
+              <div>
+                <h4 class="mb-2" v-text="item.title"></h4>
+                <p
+                  class="max-w-md mb-3 text-sm text-gray-900 sm:mx-auto"
+                  v-text="item.text"
+                ></p>
+              </div>
+              <div
+                class="top-0 right-0 flex items-center justify-center h-24 lg:-mr-8 lg:absolute"
+              >
+                <v-icon
+                  class="w-8 text-gray-700 transform rotate-90 lg:rotate-0"
+                  stroke-width="2"
+                  v-if="index != items.length - 1"
+                >
+                  mdi-arrow-right
+                </v-icon>
+              </div>
+            </div>
+          </v-col>
+        </v-row>
+      </v-card>
+      <div id="tipsheader" class="seperate">
+        <v-card
+          elevation="10"
+          class="d-flex flex-column justify-center text-center my-6 mx-6"
+        >
+          <div class="my-6 mx-6">
+            <h2>Unsere Smoothie-Tipps der Woche</h2>
+            <p>
+              Hier findest du unsere Smoothie-Geheimtipps. Lasse dich gerne von
+              unseren Top-Vorschlägen inspirieren!
+            </p>
+          </div>
+        </v-card>
         <v-row>
           <v-col cols="12">
             <v-divider></v-divider>
@@ -114,12 +131,17 @@
             :order="index % 2 === 0 ? 2 : 1"
             class="d-flex flex-column align-center justify-center"
           >
-            <div class="rounded-lg">
+            <v-card class="rounded-lg">
               <v-card-text>
-                <h4 class="text-h4 font-weight-bold" v-text="item.title"></h4>
-                <p class="my-6" v-text="item.text"></p>
+                <div>
+                  <h4
+                    class="my-6 mx-6 text-h4 font-weight-bold"
+                    v-text="item.title"
+                  ></h4>
+                  <p class="my-6 mx-6" v-text="item.text"></p>
+                </div>
               </v-card-text>
-            </div>
+            </v-card>
           </v-col>
         </v-row>
         <v-row>
@@ -127,7 +149,9 @@
             <v-divider></v-divider>
           </v-col>
         </v-row>
-  </v-container>
+      </div>
+    </v-container>
+  </v-parallax>
 </template>
 
 <script>
@@ -141,17 +165,17 @@ export default {
     return {
       items: [
         {
-          icon: "mdi-polygon",
+          icon: "aspect_ratio",
           title: "Schritt 1",
           text: "Wähle deine Smoothiegröße aus! Du hast die Wahl zwischen 250ml, 500ml, 750ml und 1000ml",
         },
         {
-          icon: "mdi-polygon",
+          icon: "manage_search",
           title: "Schritt 2",
           text: "Bei Schritt 2 hast Du die Auswahl aus vielen verschiedenen Früchten.",
         },
         {
-          icon: "mdi-polygon",
+          icon: "check",
           title: "Schritt 3",
           text: "Überprüfe deine Bestellung! Nach deiner Bestellung liefern wir Dir deine Smoothie-Zusammenstellung innerhalb von einer Stunde!",
         },
@@ -181,22 +205,6 @@ export default {
     },
   },
   mounted() {
-    gsap.fromTo(
-      "#tipsheader",
-      {
-        opacity: 0,
-      },
-      {
-        opacity: 1,
-        scrollTrigger: {
-          trigger: "#tipsheader",
-          start: "top 90%",
-          end: "bottom 95%",
-          scrub: true,
-          id: "scrub",
-        },
-      }
-    );
     const tips = document.querySelectorAll(".tip");
 
     tips.forEach((tip, index) => {
@@ -226,7 +234,7 @@ export default {
         delay: 0,
         scrollTrigger: {
           trigger: "#steps",
-          start: "top 80%",
+          start: "top 100%",
           end: "bottom 0%",
           toggleActions: "play reset play reset ",
         },
@@ -282,13 +290,21 @@ export default {
 </script>
 <style scoped>
 @media (min-width: 1400px) {
-  .container-xxl, .container-xl, .container-lg, .container-md, .container-sm, .container {
+  .container-xxl,
+  .container-xl,
+  .container-lg,
+  .container-md,
+  .container-sm,
+  .container {
     max-width: 1320px !important;
   }
 }
 
 .seperate {
   margin-bottom: 15em !important;
-  margin-top: 15em !important;
+  margin-top: 10em !important;
+}
+.test {
+  scale: 2.5;
 }
 </style>

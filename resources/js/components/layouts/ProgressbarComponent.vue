@@ -2,7 +2,8 @@
     <div class="progress2 my-8">
       <div class="progress-bar" ref="progressbar"></div>
     </div>
-  </template>
+</template>
+
   <script>
   export default {
     data() {

@@ -26,7 +26,7 @@
                                 <td><img :src="'/images/' + cart.options.image" class="mt-2 mb-2" ></td>
                                 <td>{{ cart.name }}</td>
                                 <td>{{ cart.price }}</td>
-                                <td> <v-icon color="red" @click="addSpecificOne(cart)">mdi-plus</v-icon>{{ cart.qty }} <v-icon color="red" @click="removeSpecificOne(cart)">mdi-minus</v-icon></td>
+                                <td><div class="d-flex align-center"><v-icon color="red" @click="addSpecificOne(cart)">mdi-plus</v-icon><p class="mt-3" :id="'qty' + cart.id">{{ cart.qty }}</p><v-icon color="red" @click="removeSpecificOne(cart)">mdi-minus</v-icon></div></td>
                                 <td><v-btn @click="removeSpecificCart(cart)"><v-icon color="red">mdi-delete</v-icon></v-btn> </td>
                             </tr>
                         </tbody>
@@ -115,10 +115,10 @@ export default {
                 })
                 .then((response) => {
                     if(response.data.stored){
-                        this.getCartContent()
                         this.$refs.mixerComponent.setImg(response.data.image, 1);
                         this.$refs.sizeComponent.getCartCount();
                         this.$refs.progressComponent.getProgress();
+                        this.setnewAmount(response.data.newqty, response.data.id);
                     } else {
                         this.showAlertTooMany();
                     }
@@ -130,11 +130,18 @@ export default {
                     amount: 1,
                 })
                 .then((response) => {
-                    this.getCartContent()
+                    if(response.data.newqty > 0) {
+                        this.setnewAmount(response.data.newqty, response.data.id);
+                    } else {
+                        this.getCartContent();
+                    }
                     this.$refs.mixerComponent.removeSpecificOne(response.data.image);
                     this.$refs.sizeComponent.getCartCount();
                     this.$refs.progressComponent.getProgress();
                 })
+        },
+        setnewAmount(newCounter, id) {
+                $('#qty' + id).html(newCounter);
         },
         showIngrediente() {
             this.$router.push({path: '/chooseIngrediente'});
