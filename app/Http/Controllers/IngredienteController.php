@@ -49,44 +49,44 @@ class IngredienteController extends Controller
 
         return view('steps/step2ChooseIngrediente', compact('zutaten'));
     }
-
-    public function create()
-    {
-        return view('ingrediente/createZutat');
-    }
-
+  
     public function showUpdateField(Request $request, $ingredienteID)
     {
-        $zutat = Ingrediente::findOrFail($ingredienteID);
-        return view('ingrediente/updateZutat', compact('zutat'));
+        $ingrediente = Ingrediente::findOrFail($ingredienteID);
+        return response()->json(['ingrediente' => $ingrediente]);
+    }
+    public function create(){
+        return view('welcome');
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'image' => ['required', 'image'],
-        ]);
+        $ingrediente = new Ingrediente;
+        if ($request->name != null) {
+            $ingrediente->name = $request->name;
+        }
+        if ($request->amount != null) {
+            $ingrediente->amount = $request->amount;
+        }
+        if ($request->price != null) {
+            $ingrediente->price = $request->price;
+        }
+        if ($request->type != null) {
+            $ingrediente->type = $request->type;
+        }
 
-        $zutat = new Ingrediente;
-
-        if ($request->hasfile('image')) {
-            $file = $request->file('image');
+        if ($request->hasfile('file')) {
+            $request->validate([
+                'file' => ['required', 'image'],
+            ]);
+            $file = $request->file('file');
             $extension = $file->getClientOriginalExtension(); // getting image extension
             $filename = time() . '.' . $extension;
             $file->move('images/', $filename);
-            $zutat->image = $filename;
-        } else {
-            $zutat->image = '';
-            return $request;
+            $ingrediente->image = $filename;
         }
 
-        $zutat->name = $request->name;
-        $zutat->amount = $request->amount;
-        $zutat->price = $request->price;
-        $zutat->type = $request->type;
-        $zutat->save();
-        Alert::success('', 'Die Zutat wurde erfolgreich hinzugefügt!');
-        return redirect('/dashboard');
+        $ingrediente->save();
     }
 
 
@@ -94,8 +94,6 @@ class IngredienteController extends Controller
     {
         $zutat = Ingrediente::find($ingredienteID);
         $zutat->delete($zutat->id);
-        Alert::success('', 'Die Zutat wurde erfolgreich gelöscht!');
-        return redirect()->back();
     }
 
     public function updateIngrediente(Request $request, $ingredienteID)
@@ -116,11 +114,11 @@ class IngredienteController extends Controller
         }
 
 
-        if ($request->hasfile('image')) {
+        if ($request->hasfile('file')) {
             $request->validate([
-                'image' => ['required', 'image'],
+                'file' => ['required', 'image'],
             ]);
-            $file = $request->file('image');
+            $file = $request->file('file');
             $extension = $file->getClientOriginalExtension(); // getting image extension
             $filename = time() . '.' . $extension;
             $file->move('images/', $filename);
@@ -128,7 +126,5 @@ class IngredienteController extends Controller
         }
 
         $zutat->save();
-        Alert::success('', 'Die Zutat wurde erfolgreich aktualisiert!');
-        return redirect('/dashboard');
     }
 }

@@ -32,7 +32,6 @@ Route::get('/custom/fruits', [App\Http\Controllers\IngredienteController::class,
 Route::get('/custom/veggie', [App\Http\Controllers\IngredienteController::class, 'showVeggie'])->name('showVeggie');
 Route::get('/custom/liquids', [App\Http\Controllers\IngredienteController::class, 'showLiquids'])->name('showLiquids');
 Route::get('/create', [App\Http\Controllers\IngredienteController::class, 'create'])->name('create');
-Route::post('/create/ingrediente', [App\Http\Controllers\IngredienteController::class, 'store'])->name('createIngrediente');
 Route::post('/delete/ingrediente/{zutat}', [App\Http\Controllers\IngredienteController::class, 'deleteIngediengte'])->name('deleteZutat');
 Route::post('/updated/ingrediente/{zutat}', [App\Http\Controllers\IngredienteController::class, 'updateIngrediente']);
 Route::post('/update/ingrediente/{zutat}', [App\Http\Controllers\IngredienteController::class, 'showUpdateField'])->name('update');
@@ -57,7 +56,7 @@ Route::get('/removeAll', [App\Http\Controllers\ShoppingCartController::class, 'r
 //Route::get('/bottleSize', [App\Http\Controllers\BottleSizeController::class, 'showBottleSizes']);
 
 
-
+Route::post('/create/ingrediente', [App\Http\Controllers\IngredienteController::class, 'store']);
 Route::post('/addCart/{zutat}', [App\Http\Controllers\ShoppingCartController::class, 'storeCart']);
 
 // needed to refer to the vue router
