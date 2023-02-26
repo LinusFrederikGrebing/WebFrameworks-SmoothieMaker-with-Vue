@@ -25,7 +25,7 @@
       <v-col cols="12" md="8" class="mb-2 mt-2">
         <v-row>
           <v-col
-            v-for="(zutat, index) in zutaten"
+            v-for="(ingrediente, index) in ingredients"
             :key="index"
             cols="12"
             sm="6"
@@ -36,11 +36,11 @@
               <v-img
                 class="white--text align-end"
                 height="150px"
-                :src="'/images/' + zutat.image"
+                :src="'/images/' + ingrediente.image"
               >
                 <v-card-title>
-                  <span class="font-weight-bold">{{ zutat.name }}</span>
-                  <div>Preis: {{ zutat.price }}€</div>
+                  <span class="font-weight-bold">{{ ingrediente.name }}</span>
+                  <div>Preis: {{ ingrediente.price }}€</div>
                 </v-card-title>
               </v-img>
               <v-card-actions>
@@ -69,7 +69,7 @@
                             color="primary"
                             type="submit"
                             @click.prevent="
-                              addToCart(zutat, selectedAmounts[index])
+                              addToCart(ingrediente, selectedAmounts[index])
                             "
                           >
                             <i style="color: black" class="material-icons"
@@ -119,8 +119,9 @@
 import MixerComponent from "../layouts/MixerComponent.vue";
 import ProgressbarComponent from "../layouts/ProgressbarComponent.vue";
 import SizeComponent from "../layouts/SizeComponent.vue";
+
 export default {
-  name: "ChooseBottleSize",
+  name: "Step2ChooseIngrediente",
   components: {
     MixerComponent,
     ProgressbarComponent,
@@ -132,62 +133,36 @@ export default {
         {
           icon: "/images/fruitsicon.png",
           title: "Früchte",
-          method: "getFruitsIngredientsList",
+          url: "/fruits",
         },
         {
           icon: "/images/vegetablesicon.png",
           title: "Gemüse",
-          method: "getVeggieIngredientsList",
+          url: "/vegetables",
         },
         {
           icon: "/images/liquidicon.png",
           title: "Flüssigkeit",
-          method: "getLiquidIngredientsList",
+          url: "/liquid",
         },
       ],
-      zutaten: {},
-      selectedAmounts: null,
+      ingredients: [],
+      selectedAmounts: [],
     };
   },
   beforeUnmount() {
     this.$refs.mixerComponent.clearInterval();
   },
-  created() {
-    this.getFruitsIngredientsList();
-  },
   methods: {
     handleCategoryClick(category) {
-      // Rufe die entsprechende Methode basierend auf der Kategorie auf
-      this[category.method]();
+      this.getIngredientsList(category.url);
     },
-    getFruitsIngredientsList() {
+    getIngredientsList(url) {
       axios
-        .get("/fruits")
+        .get(url)
         .then((response) => {
-          this.zutaten = response.data.zutaten;
-          this.selectedAmounts = Array(this.zutaten.length).fill(1);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
-    getVeggieIngredientsList() {
-      axios
-        .get("/vegetables")
-        .then((response) => {
-          this.zutaten = response.data.zutaten;
-          this.selectedAmounts = Array(this.zutaten.length).fill(1);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
-    getLiquidIngredientsList() {
-      axios
-        .get("/liquid")
-        .then((response) => {
-          this.zutaten = response.data.zutaten;
-          this.selectedAmounts = Array(this.zutaten.length).fill(1);
+          this.ingredients = response.data.ingrediente;
+          this.selectedAmounts = Array(this.ingredients.length).fill(1);
         })
         .catch((err) => {
           console.log(err);
@@ -209,23 +184,18 @@ export default {
     showBottleSize() {
       this.$router.push({ path: "/chooseBottleSize" });
     },
-    addToCart(zutat, amount) {
+    addToCart(ingredient, amount) {
       axios
-        .post("/addCart/" + zutat.id, {
-          amount: amount,
-        })
+        .post(`/addCart/${ingredient.id}`, { amount })
         .then((response) => {
-          if(response.data.stored){
-             this.$refs.mixerComponent.setImg(
-            response.data.image,
-            response.data.reqCount
-            );
+          if (response.data.stored) {
+            const { image, reqCount } = response.data;
+            this.$refs.mixerComponent.setImg(image, reqCount);
             this.$refs.sizeComponent.getCartCount();
             this.$refs.progressComponent.getProgress();
           } else {
             this.showAlertTooMany();
           }
-         
         })
         .catch((error) => {
           console.error(error);
@@ -259,6 +229,8 @@ export default {
       });
     },
   },
-  mounted() {},
+  created() {
+    this.getIngredientsList("/fruits");
+  },
 };
 </script>

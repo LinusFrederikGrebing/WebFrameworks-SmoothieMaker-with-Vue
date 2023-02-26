@@ -6,55 +6,33 @@ use App\Models\IngredienteType;
 
 use Illuminate\Http\Request;
 use App\Models\Ingrediente;
-use Alert;
 
 class IngredienteController extends Controller
 {
-
-    private $test;
-    public function showFruits(Request $request)
-    {
-        $zutaten = Ingrediente::where('type', IngredienteType::FRUITS)->get();
-
-        return view('steps/step2ChooseIngrediente', compact('zutaten'));
-
-    }
     public function getFruits(Request $request)
     {
-        $zutaten = Ingrediente::where('type', IngredienteType::FRUITS)->get();
-        return response()->json(['zutaten' => $zutaten]);
+        $ingrediente = Ingrediente::where('type', IngredienteType::FRUITS)->get();
+        return response()->json(['ingrediente' => $ingrediente]);
     }
+
     public function getVegetables(Request $request)
     {
-        $zutaten = Ingrediente::where('type', IngredienteType::VEGETABLES)->get();
-        return response()->json(['zutaten' => $zutaten]);
+        $ingrediente = Ingrediente::where('type', IngredienteType::VEGETABLES)->get();
+        return response()->json(['ingrediente' => $ingrediente]);
     }
+
     public function getLiquid(Request $request)
     {
-        $zutaten = Ingrediente::where('type', IngredienteType::LIQUID)->get();
-        return response()->json(['zutaten' => $zutaten]);
+        $ingrediente = Ingrediente::where('type', IngredienteType::LIQUID)->get();
+        return response()->json(['ingrediente' => $ingrediente]);
     }
 
-
-    public function showVeggie(Request $request)
-    {
-        $zutaten = Ingrediente::where('type', IngredienteType::VEGETABLES)->get();
-
-        return view('steps/step2ChooseIngrediente', compact('zutaten'));
-
-    }
-    public function showLiquids(Request $request)
-    {
-        $zutaten = Ingrediente::where('type', IngredienteType::LIQUID)->get();
-
-        return view('steps/step2ChooseIngrediente', compact('zutaten'));
-    }
-  
     public function showUpdateField(Request $request, $ingredienteID)
     {
         $ingrediente = Ingrediente::findOrFail($ingredienteID);
         return response()->json(['ingrediente' => $ingrediente]);
     }
+
     public function create(){
         return view('welcome');
     }
@@ -74,7 +52,6 @@ class IngredienteController extends Controller
         if ($request->type != null) {
             $ingrediente->type = $request->type;
         }
-
         if ($request->hasfile('file')) {
             $request->validate([
                 'file' => ['required', 'image'],
@@ -85,35 +62,30 @@ class IngredienteController extends Controller
             $file->move('images/', $filename);
             $ingrediente->image = $filename;
         }
-
         $ingrediente->save();
     }
 
-
     public function deleteIngediengte(Request $request, $ingredienteID)
     {
-        $zutat = Ingrediente::find($ingredienteID);
-        $zutat->delete($zutat->id);
+        $ingrediente = Ingrediente::find($ingredienteID);
+        $ingrediente->delete($ingrediente->id);
     }
 
     public function updateIngrediente(Request $request, $ingredienteID)
     {
-        $zutat = Ingrediente::find($ingredienteID);
-
+        $ingrediente = Ingrediente::find($ingredienteID);
         if ($request->name != null) {
-            $zutat->name = $request->name;
+            $ingrediente->name = $request->name;
         }
         if ($request->amount != null) {
-            $zutat->amount = $request->amount;
+            $ingrediente->amount = $request->amount;
         }
         if ($request->price != null) {
-            $zutat->price = $request->price;
+            $ingrediente->price = $request->price;
         }
         if ($request->type != null) {
-            $zutat->type = $request->type;
+            $ingrediente->type = $request->type;
         }
-
-
         if ($request->hasfile('file')) {
             $request->validate([
                 'file' => ['required', 'image'],
@@ -122,9 +94,8 @@ class IngredienteController extends Controller
             $extension = $file->getClientOriginalExtension(); // getting image extension
             $filename = time() . '.' . $extension;
             $file->move('images/', $filename);
-            $zutat->image = $filename;
+            $ingrediente->image = $filename;
         }
-
-        $zutat->save();
+        $ingrediente->save();
     }
 }

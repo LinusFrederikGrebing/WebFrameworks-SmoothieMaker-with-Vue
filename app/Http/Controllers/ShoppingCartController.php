@@ -13,19 +13,19 @@ class ShoppingCartController extends Controller
 {
     public function storeCart(Request $request, $ingredienteID)
     {
-        $zutat = Ingrediente::find($ingredienteID);
+        $ingrediente = Ingrediente::find($ingredienteID);
         $bottle = $this->getBottle($request);
         if ((Cart::count() + $request->amount) <= $bottle->amount) {
             Cart::add(
                 array(
-                    'id' => $zutat->id,
-                    'name' => $zutat->name,
+                    'id' => $ingrediente->id,
+                    'name' => $ingrediente->name,
                     'qty' => $request->amount,
-                    'price' => $zutat->price,
-                    'options' => array('image' => $zutat->image),
+                    'price' => $ingrediente->price,
+                    'options' => array('image' => $ingrediente->image),
                 )
             );
-            return response()->json(['stored' => true, 'image' => $zutat->image, 'count' => Cart::count(), 'reqCount' => $request->amount, 'amount' => $bottle->amount]);
+            return response()->json(['stored' => true, 'image' => $ingrediente->image, 'count' => Cart::count(), 'reqCount' => $request->amount, 'amount' => $bottle->amount]);
         }
         return response()->json(['stored' => false]);
     }
@@ -42,8 +42,6 @@ class ShoppingCartController extends Controller
     public function removeAllFromCard(Request $request)
     {
         Cart::destroy();
-        //  Alert::info('', 'Der Warenkorb wurde erfolgreich geleert!');
-        //return view('steps/step3ShopComponent');
     }
 
 
@@ -73,7 +71,6 @@ class ShoppingCartController extends Controller
     public function showCard(Request $request)
     {
         $bottle = $this->getBottle($request);
-
         return view('steps/step3ShopComponent')->with('bottle', $bottle);
     }
 
@@ -81,18 +78,17 @@ class ShoppingCartController extends Controller
     {
         $cartcount = Cart::count();
         $bottle = $this->getBottle($request);
-
         return response()->json(['cartCount' => $cartcount, 'bottle' => $bottle]);
-
     }
+
     public function getCartContent(Request $request)
     {
         $cart = Cart::content();
         $cartTotal = Cart::total();
         $cartSubTotal = Cart::subtotal();
         return response()->json(['cart' => $cart, 'cartTotal' => $cartTotal, 'cartSubTotal' => $cartSubTotal]);
-
     }
+
     public function getBottle(Request $request)
     {
         if ($request->session()->get('bottle') == true) {
@@ -104,9 +100,7 @@ class ShoppingCartController extends Controller
 
     public function removeAll(Request $request)
     {
-
         Cart::destroy();
-
         return response()->json(['test' => "test"]);
     }
 }

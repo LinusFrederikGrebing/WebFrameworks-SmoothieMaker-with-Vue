@@ -30,8 +30,8 @@ export default {
         this.width = this.canvas.width;
         this.height = this.canvas.height;
         this.timer = setInterval(this.loop, 10);
-        if (JSON.parse(sessionStorage.getItem("zutatenArray"))) {
-            this.balls = JSON.parse(sessionStorage.getItem("zutatenArray"));
+        if (JSON.parse(sessionStorage.getItem("ingredientsArray"))) {
+            this.balls = JSON.parse(sessionStorage.getItem("ingredientsArray"));
         }
     },
     methods: {
@@ -51,28 +51,28 @@ export default {
                         }
                     }
                 }
-            sessionStorage.setItem("zutatenArray", JSON.stringify(this.balls));
+            sessionStorage.setItem("ingredientsArray", JSON.stringify(this.balls));
         },
         removeSpecificAll(img) {
             this.balls = this.balls.filter(function (ball) {
                 return ball.img !== "/images/" + img;
             });
-            sessionStorage.setItem("zutatenArray", JSON.stringify(this.balls));
+            sessionStorage.setItem("ingredientsArray", JSON.stringify(this.balls));
         },
         removeAll() {
             this.balls = [];
-            sessionStorage.setItem("zutatenArray", JSON.stringify(this.balls));
+            sessionStorage.setItem("ingredientsArray", JSON.stringify(this.balls));
         },
         setImg(image, count) {
-            if (JSON.parse(sessionStorage.getItem("zutatenArray"))) {
-            this.balls = JSON.parse(sessionStorage.getItem("zutatenArray"));
+            if (JSON.parse(sessionStorage.getItem("ingredientsArray"))) {
+            this.balls = JSON.parse(sessionStorage.getItem("ingredientsArray"));
             }
             for (let i = 0; i < count * 2; i++) {
                 this.balls.push(new Ball(Math.random() * (265 - 0) + 0, 50, 18, 0.7, 10, image));
             }
         
-            sessionStorage.setItem("zutatenArray", JSON.stringify(this.balls));
-            this.zutatenArray = JSON.parse(sessionStorage.getItem("zutatenArray"));
+            sessionStorage.setItem("ingredientsArray", JSON.stringify(this.balls));
+            this.ingredientsArray = JSON.parse(sessionStorage.getItem("ingredientsArray"));
         },
         loop() {
             //create constants
@@ -136,7 +136,7 @@ export default {
                 this.collisionBall(this.balls[i]);
                 this.collisionWall(this.balls[i]);
             
-                sessionStorage.setItem("zutatenArray", JSON.stringify(this.balls));
+                sessionStorage.setItem("ingredientsArray", JSON.stringify(this.balls));
             }
         },
         collisionWall(ball) {

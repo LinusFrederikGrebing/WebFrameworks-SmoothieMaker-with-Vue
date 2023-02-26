@@ -1,178 +1,209 @@
 <template>
-    <div class="container">
-        <ProgressbarComponent ref="progressComponent" />
-        <SizeComponent ref="sizeComponent" />
-        <v-row class="mt-5">
-            <v-col class="mb-5" cols="12">
-                <v-card class="mx-auto d-flex flex-wrap">
-                    <v-btn color="success" class="mx-auto flex-grow-1" @click="showIngrediente()"> Weitere Zutaten hinzufügen </v-btn>
-                    <v-btn color="error" class="mx-auto flex-grow-1" @click="removeAllAlert()"> Alles aus dem Warenkorb entfernen </v-btn>
-                </v-card>
-            </v-col>
-            <v-col cols="12" md="8" class="mb-5">
-                <v-row>
-                    <v-table density="compact">
-                        <thead>
-                            <tr>
-                                <th class="text-left">Image</th>
-                                <th class="text-left">Name</th>
-                                <th class="text-left">Preis</th>
-                                <th class="text-left">Menge</th>
-                                <th class="text-left">Remove</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(cart, index) in cartContent" :key="index" >
-                                <td><img :src="'/images/' + cart.options.image" class="mt-2 mb-2" ></td>
-                                <td>{{ cart.name }}</td>
-                                <td>{{ cart.price }}</td>
-                                <td><div class="d-flex align-center"><v-icon color="red" @click="addSpecificOne(cart)">mdi-plus</v-icon><p class="mt-3" :id="'qty' + cart.id">{{ cart.qty }}</p><v-icon color="red" @click="removeSpecificOne(cart)">mdi-minus</v-icon></div></td>
-                                <td><v-btn @click="removeSpecificCart(cart)"><v-icon color="red">mdi-delete</v-icon></v-btn> </td>
-                            </tr>
-                        </tbody>
-                    </v-table>
-                </v-row>
-                <v-row>
-                    <p class="mt-8">Total: {{ cartSubTotal }}</p>
-                </v-row>
-                <v-row>
-                    <h4>Total inkl. MwSt: {{ cartTotal }}</h4>
-                </v-row>
-                <v-row>
-                    <v-btn color="success">Jetzt kaufen</v-btn>
-                </v-row>
-            </v-col>
-            <v-col cols="12" md="4">
-                <div class="mb-5" max-width="400">
-                    <MixerComponent ref="mixerComponent" />
-                </div>
-            </v-col>
+  <div class="container">
+    <ProgressbarComponent ref="progressComponent" />
+    <SizeComponent ref="sizeComponent" />
+    <v-row class="mt-5">
+      <v-col class="mb-5" cols="12">
+        <v-card class="mx-auto d-flex flex-wrap">
+          <v-btn
+            color="success"
+            class="mx-auto flex-grow-1"
+            @click="showIngrediente()"
+          >
+            Weitere Zutaten hinzufügen
+          </v-btn>
+          <v-btn
+            color="error"
+            class="mx-auto flex-grow-1"
+            @click="removeAllAlert()"
+          >
+            Alles aus dem Warenkorb entfernen
+          </v-btn>
+        </v-card>
+      </v-col>
+      <v-col cols="12" md="8" class="mb-5">
+        <v-row>
+          <v-table density="compact">
+            <thead>
+              <tr>
+                <th class="text-left">Image</th>
+                <th class="text-left">Name</th>
+                <th class="text-left">Preis</th>
+                <th class="text-left">Menge</th>
+                <th class="text-left">Remove</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(cart, index) in cartContent" :key="index">
+                <td>
+                  <img
+                    :src="'/images/' + cart.options.image"
+                    class="mt-2 mb-2"
+                  />
+                </td>
+                <td>{{ cart.name }}</td>
+                <td>{{ cart.price }}</td>
+                <td>
+                  <div class="d-flex align-center">
+                    <v-icon color="red" @click="addSpecificOne(cart)"
+                      >mdi-plus</v-icon
+                    >
+                    <p class="mt-3" :id="'qty' + cart.id">{{ cart.qty }}</p>
+                    <v-icon color="red" @click="removeSpecificOne(cart)"
+                      >mdi-minus</v-icon
+                    >
+                  </div>
+                </td>
+                <td>
+                  <v-btn @click="removeSpecificCart(cart)"
+                    ><v-icon color="red">mdi-delete</v-icon></v-btn
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </v-table>
         </v-row>
-    </div>
+        <v-row>
+          <p class="mt-8">Total: {{ cartSubTotal }}</p>
+        </v-row>
+        <v-row>
+          <h4>Total inkl. MwSt: {{ cartTotal }}</h4>
+        </v-row>
+        <v-row>
+          <v-btn color="success">Jetzt kaufen</v-btn>
+        </v-row>
+      </v-col>
+      <v-col cols="12" md="4">
+        <div class="mb-5" max-width="400">
+          <MixerComponent ref="mixerComponent" />
+        </div>
+      </v-col>
+    </v-row>
+  </div>
 </template>
 
 <script>
-import MixerComponent from '../layouts/MixerComponent.vue'
-import ProgressbarComponent from '../layouts/ProgressbarComponent.vue'
-import SizeComponent from '../layouts/SizeComponent.vue'
+import MixerComponent from "../layouts/MixerComponent.vue";
+import ProgressbarComponent from "../layouts/ProgressbarComponent.vue";
+import SizeComponent from "../layouts/SizeComponent.vue";
 export default {
-    name: "ChooseBottleSize",
-    components: {
-        MixerComponent,
-        ProgressbarComponent,
-        SizeComponent
-    },
-    data() {
-        return {
-            cartContent: [],
-            cartTotal: null,
-            cartSubTotal: null
+  name: "Step3Shop",
+  components: {
+    MixerComponent,
+    ProgressbarComponent,
+    SizeComponent,
+  },
+  data() {
+    return {
+      cartContent: [],
+      cartTotal: null,
+      cartSubTotal: null,
+    };
+  },
+  created() {
+    this.getCartContent();
+  },
+  beforeUnmount() {
+    this.$refs.mixerComponent.clearInterval();
+  },
+  methods: {
+    getCartContent() {
+      this.cartContent = [];
+      axios.get("/cartContent").then((response) => {
+        this.cartTotal = response.data.cartTotal;
+        this.cartSubTotal = response.data.cartSubTotal;
+        for (let key in response.data.cart) {
+          this.cartContent.push(response.data.cart[key]);
         }
+      });
     },
-    created() {
-        this.getCartContent()
+    removeAllFromCart() {
+      axios.get("/removeAll").then((response) => {
+        this.getCartContent();
+        this.$refs.mixerComponent.removeAll();
+        this.$refs.sizeComponent.getCartCount();
+        this.$refs.progressComponent.getProgress();
+        sessionStorage.clear();
+      });
     },
-    beforeUnmount() {
-        this.$refs.mixerComponent.clearInterval();
+    removeSpecificCart(cart) {
+      axios
+        .post("/deleteCart/" + cart.rowId, {})
+        .then((response) => {
+          this.getCartContent();
+          this.$refs.mixerComponent.removeSpecificAll(response.data.image);
+          this.$refs.sizeComponent.getCartCount();
+          this.$refs.progressComponent.getProgress();
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     },
-    methods: {
-        getCartContent(){
-            this.cartContent = [];
-            axios.get('/cartContent')
-            .then(response => {
-                this.cartTotal = response.data.cartTotal;
-                this.cartSubTotal = response.data.cartSubTotal;
-                for (let key in response.data.cart) {
-                    this.cartContent.push(response.data.cart[key])
-                }
-            })
-        },
-        removeAllFromCart(){
-            axios.get('/removeAll') .then(response => { 
-                this.getCartContent()
-                this.$refs.mixerComponent.removeAll();
-                this.$refs.sizeComponent.getCartCount();
-                this.$refs.progressComponent.getProgress();
-                sessionStorage.clear();
-            })
-        },
-        removeSpecificCart(cart){
-            axios.post("/deleteCart/" + cart.rowId, {              
-                })
-                .then((response) => {
-                    this.getCartContent()
-                    this.$refs.mixerComponent.removeSpecificAll(response.data.image);
-                    this.$refs.sizeComponent.getCartCount();
-                    this.$refs.progressComponent.getProgress();
-                })
-                .catch((error) => {
-                    console.error(error);
-                });
-        },
-        addSpecificOne(cart){
-            axios.post("/increaseCardQty/" + cart.rowId, {
-                    amount: 1,
-                })
-                .then((response) => {
-                    if(response.data.stored){
-                        this.$refs.mixerComponent.setImg(response.data.image, 1);
-                        this.$refs.sizeComponent.getCartCount();
-                        this.$refs.progressComponent.getProgress();
-                        this.setnewAmount(response.data.newqty, response.data.id);
-                    } else {
-                        this.showAlertTooMany();
-                    }
-                  
-                })
-        },
-        removeSpecificOne(cart){
-            axios.post("/decreaseCardQty/" + cart.rowId, {
-                    amount: 1,
-                })
-                .then((response) => {
-                    if(response.data.newqty > 0) {
-                        this.setnewAmount(response.data.newqty, response.data.id);
-                    } else {
-                        this.getCartContent();
-                    }
-                    this.$refs.mixerComponent.removeSpecificOne(response.data.image);
-                    this.$refs.sizeComponent.getCartCount();
-                    this.$refs.progressComponent.getProgress();
-                })
-        },
-        setnewAmount(newCounter, id) {
-                $('#qty' + id).html(newCounter);
-        },
-        showIngrediente() {
-            this.$router.push({path: '/chooseIngrediente'});
-        },
-        showAlertTooMany() {
-            Swal.fire({
-                title: "Du hast zu viele Zutaten ausgewählt!",
-                text: "",
-                icon: "error",
-                showCancelButton: false,
-                confirmButtonColor: "#6D9E1F",
-                confirmButtonText: "Okay!",
-            });
-        },
-        removeAllAlert() {
-                    Swal.fire({
-                        title: 'Bist du Dir sicher?',
-                        text: "Deine komplette Zusammenstellung wird unwiederruflich gelöscht!",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#6D9E1F',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Zusammenstellung löschen!',
-                        cancelButtonText: 'Abbrechen!'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            this.removeAllFromCart()
-                        }
-                    });
-                }
+    addSpecificOne(cart) {
+      axios
+        .post("/increaseCardQty/" + cart.rowId, {
+          amount: 1,
+        })
+        .then((response) => {
+          if (response.data.stored) {
+            this.$refs.mixerComponent.setImg(response.data.image, 1);
+            this.$refs.sizeComponent.getCartCount();
+            this.$refs.progressComponent.getProgress();
+            this.setnewAmount(response.data.newqty, response.data.id);
+          } else {
+            this.showAlertTooMany();
+          }
+        });
     },
-    mounted() { },
+    removeSpecificOne(cart) {
+      axios
+        .post("/decreaseCardQty/" + cart.rowId, {
+          amount: 1,
+        })
+        .then((response) => {
+          if (response.data.newqty > 0) {
+            this.setnewAmount(response.data.newqty, response.data.id);
+          } else {
+            this.getCartContent();
+          }
+          this.$refs.mixerComponent.removeSpecificOne(response.data.image);
+          this.$refs.sizeComponent.getCartCount();
+          this.$refs.progressComponent.getProgress();
+        });
+    },
+    setnewAmount(newCounter, id) {
+      $("#qty" + id).html(newCounter);
+    },
+    showIngrediente() {
+      this.$router.push({ path: "/chooseIngrediente" });
+    },
+    showAlertTooMany() {
+      Swal.fire({
+        title: "Du hast zu viele Zutaten ausgewählt!",
+        text: "",
+        icon: "error",
+        showCancelButton: false,
+        confirmButtonColor: "#6D9E1F",
+        confirmButtonText: "Okay!",
+      });
+    },
+    removeAllAlert() {
+      Swal.fire({
+        title: "Bist du Dir sicher?",
+        text: "Deine komplette Zusammenstellung wird unwiederruflich gelöscht!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#6D9E1F",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Zusammenstellung löschen!",
+        cancelButtonText: "Abbrechen!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.removeAllFromCart();
+        }
+      });
+    },
+  },
+  mounted() {},
 };
 </script>
