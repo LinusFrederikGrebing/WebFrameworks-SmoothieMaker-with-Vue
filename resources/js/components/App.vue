@@ -1,8 +1,8 @@
 <template>
-    <div>
+    <div class="content-container">
         <router-view />
-        <FooterTemplate />
-    </div>
+    </div> 
+    <FooterTemplate />
 </template>
 
 <script>
@@ -15,3 +15,8 @@ export default {
     },
 }
 </script>
+<style>
+.content-container {
+    min-height: 840px;
+}
+</style>

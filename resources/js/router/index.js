@@ -7,6 +7,8 @@ import UpdateIngrediente from '../components/ingrediente/updateIngrediente'
 import ChooseBottleSize from '../components/steps/Step1ChooseBottleSize'
 import step2Component  from '../components/steps/Step2ChooseIngediente'
 import step3Component  from '../components/steps/Step3ShopComponent'
+import LoginComponent  from '../components/auth/LoginComponent'
+import RegisterComponent  from '../components/auth/RegisterComponent'
 
 const routes = [
     {
@@ -38,6 +40,16 @@ const routes = [
         path: '/create',
         name: 'create',
         component: CreateIngrediente
+    },
+    {
+        path: '/login',
+        name: 'login',
+        component: LoginComponent
+    },
+    {
+        path: '/register',
+        name: 'register',
+        component: RegisterComponent
     },
     {
         path: "/update/ingrediente/:id",

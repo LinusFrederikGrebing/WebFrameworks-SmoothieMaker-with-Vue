@@ -20,7 +20,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/schritt1', [App\Http\Controllers\BottleSizeController::class, 'showInhalt']);
 Route::get('/cart/count',  [App\Http\Controllers\ShoppingCartController::class, 'getCartCount']);
-Route::get('/bottleSize', [App\Http\Controllers\BottleSizeController::class, 'showBottleSizes']);
 
 Route::get('/removeAll',  [App\Http\Controllers\ShoppingCartController::class, 'removeAll']);
 

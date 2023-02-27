@@ -1,40 +1,42 @@
-.bg-thm-grey{
+/* colors */
+.bg-thm-grey {
     background-color: #4a5c66;
 }
-
-.bg-thm-green{
+.bg-thm-green {
     background-color: #80ba24;
 }
-
-.text-thm-grey{
+.text-thm-grey {
     color: #4a5c66;
 }
-
-.text-thm-green{
+.text-thm-green {
     color: #80ba24;
 }
-
-
-
-#progressbar>div {
-    background-color: #80ba24;
-    width: 100%;
-    /* Adjust with JavaScript */
-    height: 20px;
-    border-radius: 10px;
-
+.card-color {
+    background-color: rgb(229 231 235);
 }
-.container .progress2 {
-    width: 100%;
+.green-bg {
+    background-image: linear-gradient(45deg, #6D9E1F 0%, #80ba24 51%, #96D82B 100%);
+}
+.red-bg {
+    background-image: linear-gradient(45deg, #BC0000 0%, #FF0000 51%, #E26363 100%);
+}
+.grey-active-bg {
+    background-image: linear-gradient(45deg, #283238 0%, #4a5c66 51%, #576C77 100%);
+}
+.grey-bg {
+    background-color: #808f98;
 }
 
-.progress2 {
+/* Progressbar */
+.container .progress-div {
+    width: 100%;
+}
+.progress-div {
     padding: 1px;
     background: rgba(0, 0, 0, 0.1);
     border-radius: 6px;
    
 }
-
 .progress-bar {
     height: 0.7em;
     border-radius: 4px; 
@@ -46,15 +48,14 @@
     width: 0%;
 }
 
-
-
+/* Mixer Styling */ 
 .containerMixer {
     position: relative;
     width: 240px;
     height: 650px;
   }
   
-  #mixerLogo {
+#mixerLogo {
     position: absolute;
     top: 1em;
     left: 1em;
@@ -63,7 +64,7 @@
     height: 650px;
   }
   
-  #becherLogo {
+#becherLogo {
     position: absolute;
     top: 5em;
     left: 3em;
@@ -71,22 +72,52 @@
     width: 335px;
     height: 300px;
     opacity: 0.3;
-  }
+}
   
-  #mlZahlLogo {
+#mlZahlLogo {
     position: absolute;
     top: 5em;
     left: 3em;
     z-index: 3;
     width: 380px;
     height: 300px;
-  }
+}
   
-  #myCanvas {
+#myCanvas {
     position: absolute;
     top: 4em;
     left: 2em;
     z-index: 0;
     -webkit-clip-path: polygon(100% 0, 97% 79%, 91% 100%, 12% 100%, 4% 79%, 0% 0);
     clip-path: polygon(100% 0, 97% 79%, 91% 100%, 12% 100%, 4% 79%, 0% 0); 
-  }
+}
+
+  /* custom button-style */
+.custom-btn {
+    margin-right: 1em;
+    padding: 0.75em 1.25em;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;
+    border-radius: 10px;
+    display: block;
+    border: 0px;
+    font-weight: 700;
+    box-shadow: 0px 0px 14px -7px #f09819;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+.custom-btn:hover {
+    background-position: right center;
+    color: #fff;
+    text-decoration: none;
+}
+
+.custom-btn:active {
+    transform: scale(1.5);
+}

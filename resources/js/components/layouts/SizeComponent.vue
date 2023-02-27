@@ -1,9 +1,9 @@
 <template>
     <div>
-     <v-divider class="w-75"></v-divider>
+     <v-divider class="w-100"></v-divider>
         <v-row class="d-flex align-center">
             <v-col cols="9">
-                <h4> Smoothie-Größe: {{ bottle.name }}</h4>
+                <h5 class="font-weight-bold"> Smoothie-Größe: {{ bottle.name }}</h5>
             </v-col>
             <v-col cols="3" class="text-right">
                 <v-btn text class="showBottleSizes" @click="showBottleSizes">
@@ -15,7 +15,7 @@
             <b>{{ bottle.amount }}</b> für Größe {{ bottle.name }} benötigte
             Zutaten ausgewählt.
         </p>
-        <v-divider class="w-75"></v-divider>
+        <v-divider class="w-100"></v-divider>
     </div>
 </template>
 

@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\BottleSize;
+use Cart;
 
 class BottleSizeController extends Controller
 {
     public function showBottleSizes()
     {
+        if(Cart::count() > 0) {
+            Cart::destroy();
+        }
         $bottles = BottleSize::all();
         return response()->json(['bottles' => $bottles ]);
     }

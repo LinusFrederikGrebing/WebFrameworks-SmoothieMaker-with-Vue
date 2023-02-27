@@ -24,7 +24,6 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 
 //Bottle-Size-Routes
-Route::get('/custom/bottleSize', [App\Http\Controllers\BottleSizeController::class, 'showBottleSizes'])->name('showBottleSizes');
 Route::get('/schritt1/{bottle}', [App\Http\Controllers\BottleSizeController::class, 'showInhalt'])->name('showInhalt');
 
 //Ingrediente-Routes
@@ -53,7 +52,7 @@ Route::get('/vegetables', [App\Http\Controllers\IngredienteController::class, 'g
 Route::get('/liquid', [App\Http\Controllers\IngredienteController::class, 'getLiquid']);
 Route::get('/cartContent', [App\Http\Controllers\ShoppingCartController::class, 'getCartContent']);
 Route::get('/removeAll', [App\Http\Controllers\ShoppingCartController::class, 'removeAll']);
-//Route::get('/bottleSize', [App\Http\Controllers\BottleSizeController::class, 'showBottleSizes']);
+Route::get('/bottleSize', [App\Http\Controllers\BottleSizeController::class, 'showBottleSizes']);
 
 
 Route::post('/create/ingrediente', [App\Http\Controllers\IngredienteController::class, 'store']);

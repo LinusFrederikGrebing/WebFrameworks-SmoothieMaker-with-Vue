@@ -5,20 +5,20 @@
     <v-row class="mt-5">
       <v-col class="mb-5" cols="12">
         <v-card class="mx-auto d-flex flex-wrap">
-          <v-btn
+          <button
             color="success"
-            class="mx-auto flex-grow-1"
+            class="mx-auto flex-grow-1 green-bg custom-btn"
             @click="showIngrediente()"
           >
             Weitere Zutaten hinzufügen
-          </v-btn>
-          <v-btn
+          </button>
+          <button
             color="error"
-            class="mx-auto flex-grow-1"
+            class="mx-auto flex-grow-1 red-bg custom-btn"
             @click="removeAllAlert()"
           >
             Alles aus dem Warenkorb entfernen
-          </v-btn>
+          </button>
         </v-card>
       </v-col>
       <v-col cols="12" md="8" class="mb-5">
@@ -70,7 +70,7 @@
           <h4>Total inkl. MwSt: {{ cartTotal }}</h4>
         </v-row>
         <v-row>
-          <v-btn color="success">Jetzt kaufen</v-btn>
+          <button class="green-bg custom-btn">Jetzt kaufen</button>
         </v-row>
       </v-col>
       <v-col cols="12" md="4">

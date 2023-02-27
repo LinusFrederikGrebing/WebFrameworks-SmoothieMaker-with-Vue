@@ -1,5 +1,5 @@
 <template>
-  <v-parallax height="3000" src="/images/background/bg2.svg">
+  <v-parallax height="3000" src="/images/background/bg3.svg">
     <v-container class="container">
       <v-row class="seperate">
         <v-col
@@ -14,7 +14,7 @@
           "
         >
           <v-card elevation="10">
-            <h1 class="mx-5 my-5">Smoothiemaker</h1>
+            <h1 class="mx-5 my-5 font-weight-bold">Smoothiemaker</h1>
             <h5 class="mx-5 my-5">
               Stelle Dir jetzt deinen perfekten Smoothie zusammen! Deine Auswahl
               erstreckt sich aus einer Vielzahl verschiedener Zutaten. Es gibt
@@ -24,8 +24,8 @@
               zusammenstellen. Bei Kauf errechnet sich der Preis deines Getränks
               aus den Einzelpreisen der Zutaten.
             </h5>
-            <v-btn class="mx-5 mb-5" @click="showInhalt()"
-              >Beginne mit der Zusammenstellung</v-btn
+            <button class="mx-5 mb-5 green-bg custom-btn" @click="showInhalt()"
+              >Beginne mit der Zusammenstellung</button
             >
           </v-card>
         </v-col>
@@ -47,7 +47,7 @@
       <v-card elevation="10" class="seperate my-8 mx-8">
         <v-row id="stepsheader" class="my-6 mx-6">
           <div class="ml-auto mr-auto mt-4">
-            <h2 class="text-center">
+            <h2 class="text-center font-weight-bold">
               Nur drei Schritte bis zu deinem Smoothie!
             </h2>
           </div>
@@ -97,7 +97,7 @@
           class="d-flex flex-column justify-center text-center my-6 mx-6"
         >
           <div class="my-6 mx-6">
-            <h2>Unsere Smoothie-Tipps der Woche</h2>
+            <h2 class="font-weight-bold">Unsere Smoothie-Tipps der Woche</h2>
             <p>
               Hier findest du unsere Smoothie-Geheimtipps. Lasse dich gerne von
               unseren Top-Vorschlägen inspirieren!

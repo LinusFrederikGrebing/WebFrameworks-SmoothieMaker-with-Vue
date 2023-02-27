@@ -4,23 +4,26 @@
     <SizeComponent ref="sizeComponent" />
     <v-row class="mt-5">
       <v-col class="mb-5" cols="12">
-        <v-card class="mx-auto d-flex flex-wrap">
-          <v-btn
-            class="mx-auto flex-grow-1"
+        <div class="mx-auto d-flex flex-wrap">
+          <button
             v-for="(category, index) in categories"
             :key="index"
             v-on:click="handleCategoryClick(category)"
+            :class="[
+              'mx-2 flex-grow-1 custom-btn',
+              { 'grey-bg': category.active === false },
+              { 'grey-active-bg': category.active === true },
+            ]"
           >
             <img
-              width="20"
-              height="20"
-              class="my-2"
+              width="25"
+              height="25"
               :src="category.icon"
               :alt="category.title"
             />
             {{ category.title }}
-          </v-btn>
-        </v-card>
+          </button>
+        </div>
       </v-col>
       <v-col cols="12" md="8" class="mb-2 mt-2">
         <v-row>
@@ -88,20 +91,20 @@
         <v-row>
           <v-col class="mb-5" cols="12">
             <v-card class="mx-auto d-flex flex-wrap">
-              <v-btn
+              <button
                 color="error"
-                class="mx-auto flex-grow-1"
+                class="mx-auto flex-grow-1 red-bg custom-btn"
                 @click="removeAllAlert()"
               >
                 Zurück
-              </v-btn>
-              <v-btn
+              </button>
+              <button
                 color="success"
-                class="mx-auto flex-grow-1"
+                class="mx-auto flex-grow-1 green-bg custom-btn"
                 @click="showStep3()"
               >
                 Weiter
-              </v-btn>
+              </button>
             </v-card>
           </v-col>
         </v-row>
@@ -134,16 +137,19 @@ export default {
           icon: "/images/fruitsicon.png",
           title: "Früchte",
           url: "/fruits",
+          active: true
         },
         {
           icon: "/images/vegetablesicon.png",
           title: "Gemüse",
           url: "/vegetables",
+          active: false
         },
         {
           icon: "/images/liquidicon.png",
           title: "Flüssigkeit",
           url: "/liquid",
+          active: false
         },
       ],
       ingredients: [],
@@ -156,6 +162,16 @@ export default {
   methods: {
     handleCategoryClick(category) {
       this.getIngredientsList(category.url);
+      this.setCategoriesActive(category);
+    },
+    setCategoriesActive(category) {
+      for(let i = 0; i < this.categories.length; i++){
+        if(this.categories[i] === category){
+          this.categories[i].active = true;
+        } else {
+          this.categories[i].active = false;
+        }
+      }
     },
     getIngredientsList(url) {
       axios
