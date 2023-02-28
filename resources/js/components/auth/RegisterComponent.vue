@@ -3,8 +3,8 @@
       <v-container class="py-6 d-flex flex-column justify-center">
         <v-row class="justify-center">
           <v-col cols="12" sm="8" md="6">
-            <h1 class="text-center mb-6">Registrierung</h1>
-            <v-card>
+            <h1 class="text-center font-weight-bold mb-6">Registrierung</h1>
+            <v-card elevation="10">
               <v-card-text>
                 <v-form @submit.prevent="submitForm">
                   <v-text-field

@@ -1,9 +1,8 @@
 <template>
   <div class="container">
-    <ProgressbarComponent ref="progressComponent" />
     <SizeComponent ref="sizeComponent" />
-    <v-row class="mt-5">
-      <v-col class="mb-5" cols="12">
+    <v-row class="mt-1">
+      <v-col class="mb-1" cols="12">
         <div class="mx-auto d-flex flex-wrap">
           <button
             v-for="(category, index) in categories"
@@ -25,66 +24,62 @@
           </button>
         </div>
       </v-col>
-      <v-col cols="12" md="8" class="mb-2 mt-2">
-        <v-row>
+      <v-col cols="12" md="8" class="mb-1 mt-1">
+        <v-row class="item-list">
           <v-col
             v-for="(ingrediente, index) in ingredients"
             :key="index"
-            cols="12"
+            cols="15"
             sm="6"
-            md="4"
-            lg="3"
+            md="3"
+            lg="auto"
           >
-            <v-card class="mx-auto mb-4" max-width="400">
+            <v-card class="mx-auto" max-width="400">
+             <div>
               <v-img
-                class="white--text align-end"
-                height="150px"
+                class="white--text align-end ml-auto mr-auto mt-1 mb-1"
+                height="90px"
+                width="90px"
                 :src="'/images/' + ingrediente.image"
               >
-                <v-card-title>
-                  <span class="font-weight-bold">{{ ingrediente.name }}</span>
-                  <div>Preis: {{ ingrediente.price }}€</div>
-                </v-card-title>
               </v-img>
-              <v-card-actions>
+              <div class="d-flex justify-center">
+                <hr>
+                <p class="font-weight-bold ml-1 mr-1">
+                  {{ ingrediente.name }}:
+                </p>
+                <hr>
+                <p>{{ ingrediente.price }}€/g</p>
+              </div>
                 <v-form enctype="multipart/form-data" method="post">
-                  <v-container>
-                    <v-row>
-                      <v-input v-model="selectedAmounts[index]">
-                        <div class="d-flex align-items-center">
-                          <v-btn
-                            icon
-                            width="45"
-                            @click.prevent="increaseSelectedAmount(index)"
-                            ><v-icon>mdi-plus</v-icon></v-btn
-                          >
-                          <div width="15" :complete="false">
-                            {{ selectedAmounts[index] }}
-                          </div>
-                          <v-btn
-                            icon
-                            width="45"
-                            @click.prevent="decreaseSelectedAmount(index)"
-                            ><v-icon>mdi-minus</v-icon>
-                          </v-btn>
-                          <v-btn
-                            class="white--text"
-                            color="primary"
-                            type="submit"
-                            @click.prevent="
-                              addToCart(ingrediente, selectedAmounts[index])
-                            "
-                          >
-                            <i style="color: black" class="material-icons"
-                              >shopping_cart</i
-                            >
-                          </v-btn>
-                        </div>
-                      </v-input>
-                    </v-row>
-                  </v-container>
+                  <div class="d-flex align-items-center mb-2">
+                    <button
+                      class="w-30px"
+                      @click.prevent="increaseSelectedAmount(index)"
+                      ><v-icon>mdi-plus</v-icon></button
+                    >
+                    <div width="15" :complete="false">
+                      {{ selectedAmounts[index] }}
+                    </div>
+                    <button
+                      class="w-30px"
+                      @click.prevent="decreaseSelectedAmount(index)"
+                      ><v-icon>mdi-minus</v-icon>
+                    </button>
+                    <button
+                      class="white--text bg-white w-40px"
+                      type="submit"
+                      @click.prevent="
+                        addToCart(ingrediente, selectedAmounts[index])
+                      "
+                    >
+                      <i style="color: black" class="material-icons"
+                        >shopping_cart</i
+                      >
+                    </button>
+                  </div>
                 </v-form>
-              </v-card-actions>
+            </div>
             </v-card>
           </v-col>
         </v-row>
@@ -110,8 +105,9 @@
         </v-row>
       </v-col>
       <v-col cols="12" md="4">
-        <div class="mb-5" max-width="400">
-          <MixerComponent ref="mixerComponent" />
+        <div max-width="400">
+          <MixerComponent ref="mixerComponent" />  
+          <ProgressbarComponent ref="progressComponent" />
         </div>
       </v-col>
     </v-row>
@@ -137,19 +133,19 @@ export default {
           icon: "/images/fruitsicon.png",
           title: "Früchte",
           url: "/fruits",
-          active: true
+          active: true,
         },
         {
           icon: "/images/vegetablesicon.png",
           title: "Gemüse",
           url: "/vegetables",
-          active: false
+          active: false,
         },
         {
           icon: "/images/liquidicon.png",
           title: "Flüssigkeit",
           url: "/liquid",
-          active: false
+          active: false,
         },
       ],
       ingredients: [],
@@ -165,8 +161,8 @@ export default {
       this.setCategoriesActive(category);
     },
     setCategoriesActive(category) {
-      for(let i = 0; i < this.categories.length; i++){
-        if(this.categories[i] === category){
+      for (let i = 0; i < this.categories.length; i++) {
+        if (this.categories[i] === category) {
           this.categories[i].active = true;
         } else {
           this.categories[i].active = false;
@@ -250,3 +246,18 @@ export default {
   },
 };
 </script>
+<style scoped>
+p {
+  margin-bottom: 0;
+}
+.w-30px {
+  width: 39px
+}
+.w-40px {
+  width: 61px
+}
+.item-list {
+  height: 42em;
+  overflow-y: scroll;
+}
+</style>

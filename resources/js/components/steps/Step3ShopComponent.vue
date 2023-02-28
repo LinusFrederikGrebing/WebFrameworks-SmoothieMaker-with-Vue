@@ -1,9 +1,8 @@
 <template>
   <div class="container">
-    <ProgressbarComponent ref="progressComponent" />
     <SizeComponent ref="sizeComponent" />
-    <v-row class="mt-5">
-      <v-col class="mb-5" cols="12">
+    <v-row class="mt-2">
+      <v-col class="mb-2" cols="12">
         <v-card class="mx-auto d-flex flex-wrap">
           <button
             color="success"
@@ -23,7 +22,7 @@
       </v-col>
       <v-col cols="12" md="8" class="mb-5">
         <v-row>
-          <v-table density="compact">
+          <v-table density="compact" class="w-100">
             <thead>
               <tr>
                 <th class="text-left">Image</th>
@@ -37,19 +36,21 @@
               <tr v-for="(cart, index) in cartContent" :key="index">
                 <td>
                   <img
+                    width="75"
+                    height="75"
                     :src="'/images/' + cart.options.image"
                     class="mt-2 mb-2"
                   />
                 </td>
                 <td>{{ cart.name }}</td>
-                <td>{{ cart.price }}</td>
+                <td>{{ cart.price }} €/g </td>
                 <td>
                   <div class="d-flex align-center">
-                    <v-icon color="red" @click="addSpecificOne(cart)"
+                    <v-icon color="black" @click="addSpecificOne(cart)"
                       >mdi-plus</v-icon
                     >
-                    <p class="mt-3" :id="'qty' + cart.id">{{ cart.qty }}</p>
-                    <v-icon color="red" @click="removeSpecificOne(cart)"
+                    <p class="mt-3 mx-2" :id="'qty' + cart.id">{{ cart.qty }}</p>
+                    <v-icon color="black" @click="removeSpecificOne(cart)"
                       >mdi-minus</v-icon
                     >
                   </div>
@@ -74,8 +75,9 @@
         </v-row>
       </v-col>
       <v-col cols="12" md="4">
-        <div class="mb-5" max-width="400">
+        <div class="mb-1" max-width="400">
           <MixerComponent ref="mixerComponent" />
+          <ProgressbarComponent ref="progressComponent" />
         </div>
       </v-col>
     </v-row>
@@ -207,3 +209,4 @@ export default {
   mounted() {},
 };
 </script>
+

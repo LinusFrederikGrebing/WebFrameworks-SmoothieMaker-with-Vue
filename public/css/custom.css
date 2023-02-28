@@ -26,10 +26,15 @@
 .grey-bg {
     background-color: #808f98;
 }
+.bg-white {
+    background-color: #ffffff;
+}
 
 /* Progressbar */
 .container .progress-div {
-    width: 100%;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
 }
 .progress-div {
     padding: 1px;
@@ -38,7 +43,7 @@
    
 }
 .progress-bar {
-    height: 0.7em;
+    height: 1em;
     border-radius: 4px; 
     width: 0%;
     background-color: #80ba24;
@@ -52,7 +57,9 @@
 .containerMixer {
     position: relative;
     width: 240px;
-    height: 650px;
+    height: 630px;
+    top: -30px;
+    left: 30px;
   }
   
 #mixerLogo {
@@ -61,7 +68,7 @@
     left: 1em;
     z-index: 1;
     width: 380px;
-    height: 650px;
+    height: 630px;
   }
   
 #becherLogo {
@@ -80,16 +87,16 @@
     left: 3em;
     z-index: 3;
     width: 380px;
-    height: 300px;
+    height: 270px;
 }
   
 #myCanvas {
     position: absolute;
-    top: 4em;
+    top: 2.8em;
     left: 2em;
     z-index: 0;
-    -webkit-clip-path: polygon(100% 0, 97% 79%, 91% 100%, 12% 100%, 4% 79%, 0% 0);
-    clip-path: polygon(100% 0, 97% 79%, 91% 100%, 12% 100%, 4% 79%, 0% 0); 
+    -webkit-clip-path: polygon(100% 0, 97% 79%, 91% 100%, 9% 100%, 4% 79%, 0% 0);
+    clip-path: polygon(100% 0, 97% 79%, 91% 100%, 9% 100%, 4% 79%, 0% 0); 
 }
 
   /* custom button-style */
