@@ -3,7 +3,7 @@
     <SizeComponent ref="sizeComponent" />
     <v-row class="mt-2">
       <v-col class="mb-2" cols="12">
-        <v-card class="mx-auto d-flex flex-wrap">
+        <div class="mx-auto d-flex flex-wrap">
           <button
             color="success"
             class="mx-auto flex-grow-1 green-bg custom-btn"
@@ -18,7 +18,7 @@
           >
             Alles aus dem Warenkorb entfernen
           </button>
-        </v-card>
+        </div>
       </v-col>
       <v-col cols="12" md="8" class="mb-5">
         <v-row>

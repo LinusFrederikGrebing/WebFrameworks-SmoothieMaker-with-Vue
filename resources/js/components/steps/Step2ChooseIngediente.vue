@@ -34,7 +34,7 @@
             md="3"
             lg="auto"
           >
-            <v-card class="mx-auto" max-width="400">
+            <v-card elevation="5" class="mx-auto" max-width="400">
              <div>
               <v-img
                 class="white--text align-end ml-auto mr-auto mt-1 mb-1"
@@ -85,7 +85,7 @@
         </v-row>
         <v-row>
           <v-col class="mb-5" cols="12">
-            <v-card class="mx-auto d-flex flex-wrap">
+            <div class="mx-auto d-flex flex-wrap">
               <button
                 color="error"
                 class="mx-auto flex-grow-1 red-bg custom-btn"
@@ -100,7 +100,7 @@
               >
                 Weiter
               </button>
-            </v-card>
+            </div>
           </v-col>
         </v-row>
       </v-col>

@@ -41,12 +41,11 @@ export default {
         removeSpecificOne(image) {
             var count = 0;
                 for (var i = 0; i < this.balls.length; i++) {
-                    console.log(count);
                     if (this.balls[i].img === "/images/" + image) {
                         this.balls.splice(i, 1);
                         count++;
                         i--;
-                    if (count === 2) {
+                    if (count === 1) {
                             break;
                         }
                     }
@@ -67,7 +66,7 @@ export default {
             if (JSON.parse(sessionStorage.getItem("ingredientsArray"))) {
             this.balls = JSON.parse(sessionStorage.getItem("ingredientsArray"));
             }
-            for (let i = 0; i < count * 2; i++) {
+            for (let i = 0; i < count; i++) {
                 this.balls.push(new Ball(Math.random() * (265 - 0) + 0, 50, 18, 0.7, 10, image));
             }
         
