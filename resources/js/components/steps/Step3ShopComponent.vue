@@ -133,7 +133,7 @@ export default {
         .post("/deleteCart/" + cart.rowId, {})
         .then((response) => {
           this.getCartContent();
-          this.$refs.mixerComponent.removeSpecificAll(response.data.image);
+          this.$refs.mixerComponent.removeSpecificAll(response.data.piece);
           this.$refs.sizeComponent.getCartCount();
           this.$refs.progressComponent.getProgress();
         })
@@ -148,7 +148,7 @@ export default {
         })
         .then((response) => {
           if (response.data.stored) {
-            this.$refs.mixerComponent.setImg(response.data.image, 1);
+            this.$refs.mixerComponent.setImg(response.data.piece, 1);
             this.$refs.sizeComponent.getCartCount();
             this.$refs.progressComponent.getProgress();
             this.setnewAmount(response.data.newqty, response.data.id);
@@ -168,7 +168,7 @@ export default {
           } else {
             this.getCartContent();
           }
-          this.$refs.mixerComponent.removeSpecificOne(response.data.image);
+          this.$refs.mixerComponent.removeSpecificOne(response.data.piece);
           this.$refs.sizeComponent.getCartCount();
           this.$refs.progressComponent.getProgress();
         });

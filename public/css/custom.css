@@ -62,7 +62,7 @@
     left: 30px;
   }
   
-#mixerLogo {
+  #mixerLogo {
     position: absolute;
     top: 1em;
     left: 1em;
@@ -71,7 +71,7 @@
     height: 630px;
   }
   
-#becherLogo {
+  #becherLogo {
     position: absolute;
     top: 5em;
     left: 3em;
@@ -79,25 +79,45 @@
     width: 335px;
     height: 300px;
     opacity: 0.3;
-}
+  }
   
-#mlZahlLogo {
+  #mlZahlLogo {
     position: absolute;
     top: 5em;
     left: 3em;
     z-index: 3;
     width: 380px;
     height: 270px;
-}
+  }
   
-#myCanvas {
+  #myCanvas {
     position: absolute;
-    top: 2.8em;
+    top: 3.6em;
     left: 2em;
     z-index: 0;
     -webkit-clip-path: polygon(100% 0, 97% 79%, 91% 100%, 9% 100%, 4% 79%, 0% 0);
     clip-path: polygon(100% 0, 97% 79%, 91% 100%, 9% 100%, 4% 79%, 0% 0); 
-}
+  }
+  
+  .becherWrapper {
+    position: absolute;
+    z-index: 2;
+    width: 335px;
+    height: 600px;
+    overflow: hidden;
+  }
+  
+  .inner-image {
+    position: absolute;
+    margin-top: -10em;
+    width: 335px;
+    height: 600px;
+    transform: translateY(-100%);
+    object-fit: contain;
+    opacity: 0;
+    -webkit-clip-path: polygon(100% 0, 97% 79%, 91% 100%, 9% 100%, 4% 79%, 0% 0);
+    clip-path: polygon(100% 0, 97% 79%, 91% 100%, 9% 100%, 4% 79%, 0% 0); 
+  }
 
   /* custom button-style */
 .custom-btn {

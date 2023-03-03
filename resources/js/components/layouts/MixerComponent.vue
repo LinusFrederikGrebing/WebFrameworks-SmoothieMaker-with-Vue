@@ -1,232 +1,274 @@
 <template>
     <div class="containerMixer">
-        <canvas class="mx-8" id="myCanvas" width="240" height="330"></canvas>
-        <img id="mixerLogo" src="/images/mixer2.png" class="mixer mt-2">
-        <img id="becherLogo" src="/images/becher.png" class="mixer mt-2">
-        <img id="mlZahlLogo" src="/images/mlzahl.png" class="mixer mt-2">
+      <canvas class="mx-8" id="myCanvas" width="240" height="330"></canvas>
+      <img id="mixerLogo" src="/images/mixer2.png" class="mixer mt-2" />
+      <div class="becherWrapper">
+        <img id="becherLogo" src="/images/becher.png" class="mixer mt-2" />
+        <img id="innerImage" src="/images/smoothierot.png" class="inner-image" />
+ 
+      </div>
+      <img id="mlZahlLogo" src="/images/mlzahl.png" class="mixer mt-2" />
     </div>
-</template>
+  </template>
 
 <script>
+import gsap from "gsap";
 export default {
-    data() {
-        return {
-            canvas: null,
-            ctx: null,
-            fps: 1 / 60, //60 FPS
-            timer: false,
-            Cd: 0.47,
-            rho: 1.22, //kg/m^3
-            mouse: { x: 0, y: 0, isDown: false },
-            ag: 9.81, //m/s^2 acceleration due to gravity on earth = 9.81 m/s^2.
-            width: 0,
-            height: 0,
-            balls: [],
-        };
+  data() {
+    return {
+      canvas: null,
+      ctx: null,
+      fps: 1 / 60, //60 FPS
+      timer: false,
+      Cd: 0.47,
+      rho: 1.22, //kg/m^3
+      mouse: { x: 0, y: 0, isDown: false },
+      ag: 9.81, //m/s^2 acceleration due to gravity on earth = 9.81 m/s^2.
+      width: 0,
+      height: 0,
+      balls: [],
+      mixAnimationBool: false
+    };
+  },
+  mounted() {
+    this.canvas = document.getElementById("myCanvas");
+    this.ctx = this.canvas.getContext("2d");
+    this.width = this.canvas.width;
+    this.height = this.canvas.height;
+    this.timer = setInterval(this.loop, 15);
+    if (JSON.parse(sessionStorage.getItem("ingredientsArray"))) {
+      this.balls = JSON.parse(sessionStorage.getItem("ingredientsArray"));
+    }
+  },
+  methods: {
+
+    clearInterval() {
+      sessionStorage.setItem("ingredientsArray", JSON.stringify(this.balls));
+      clearInterval(this.timer);
     },
-    mounted() {
-        this.canvas = document.getElementById("myCanvas");
-        this.ctx = this.canvas.getContext("2d");
-        this.width = this.canvas.width;
-        this.height = this.canvas.height;
-        this.timer = setInterval(this.loop, 10);
-        if (JSON.parse(sessionStorage.getItem("ingredientsArray"))) {
-            this.balls = JSON.parse(sessionStorage.getItem("ingredientsArray"));
-        }
-    },
-    methods: {
-        clearInterval(){
-            clearInterval(this.timer);
-        },
-        removeSpecificOne(image) {
-            var count = 0;
-                for (var i = 0; i < this.balls.length; i++) {
-                    if (this.balls[i].img === "/images/piece/" + image) {
-                        this.balls.splice(i, 1);
-                        count++;
-                        i--;
-                    if (count === 1) {
-                            break;
-                        }
-                    }
-                }
-            sessionStorage.setItem("ingredientsArray", JSON.stringify(this.balls));
-        },
-        removeSpecificAll(img) {
-            this.balls = this.balls.filter(function (ball) {
-                return ball.img !== "/images/piece/" + img;
-            });
-            sessionStorage.setItem("ingredientsArray", JSON.stringify(this.balls));
-        },
-        removeAll() {
-            this.balls = [];
-            sessionStorage.setItem("ingredientsArray", JSON.stringify(this.balls));
-        },
-        setImg(image, count) {
-            if (JSON.parse(sessionStorage.getItem("ingredientsArray"))) {
-            this.balls = JSON.parse(sessionStorage.getItem("ingredientsArray"));
-            }
-            for (let i = 0; i < count *2; i++) {
-                this.balls.push(new Ball(Math.random() * (265 - 0) + 0, 50, 14, 0.7, 10, image));
-            }
+    mixAnimation(){
+        this.mixAnimationBool = true;
+        // Erstellen Sie eine neue Timeline
+        const tl = gsap.timeline();
+        tl.play();
+        // Fügen Sie die Animation hinzu, um den Container hin und her zu wackeln
+        tl.to(".containerMixer", { duration: 0.1, rotate: -1 })
+        .to(".containerMixer", { duration: 0.1, rotate: 1 })
+        .repeat(-1);
         
-            sessionStorage.setItem("ingredientsArray", JSON.stringify(this.balls));
-            this.ingredientsArray = JSON.parse(sessionStorage.getItem("ingredientsArray"));
-        },
-        loop() {
-            //create constants
-            const gravity = 0.7;
-            const density = 1;
-            const drag = 1;
-           
-            //Clear window at the beginning of every frame
-            this.ctx.clearRect(0, 0, this.width, this.height);
-            for (let i = 0; i < this.balls.length; i++) {
-                if (!this.mouse.isDown || i != this.balls.length - 1) {
-                    //physics - calculating the aerodynamic forces to drag
-                    // -0.5 * Cd * A * v^2 * rho
-                    let fx =
-                        (-0.5 *
-                            drag *
-                            density *
-                            this.balls[i].area *
-                            this.balls[i].velocity.x *
-                            this.balls[i].velocity.x *
-                            (this.balls[i].velocity.x / Math.abs(this.balls[i].velocity.x))) || 0;
-                    let fy =
-                        (-0.5 *
-                            drag *
-                            density *
-                            this.balls[i].area *
-                            this.balls[i].velocity.y *
-                            this.balls[i].velocity.y *
-                            (this.balls[i].velocity.y / Math.abs(this.balls[i].velocity.y))) || 0;
 
-                    //Calculating the acceleration of the ball
-                    //F = ma or a = F/m
-                    let ax = fx / this.balls[i].mass;
-                    let ay = this.ag * gravity + fy / this.balls[i].mass;
+        /*gsap.set('#innerImage', {opacity: 1, y: "100%", scale: 0.8, transformOrigin: "bottom center" });
+        gsap.to('#innerImage', { duration: 1, y: "0%", ease: "power3.out" }); */
 
-                    //Calculating the ball velocity
-                    this.balls[i].velocity.x += ax * this.fps;
-                    this.balls[i].velocity.y += ay * this.fps;
-
-                    //Calculating the position of the ball
-                    this.balls[i].position.x += this.balls[i].velocity.x * this.fps * 100;
-                    this.balls[i].position.y += this.balls[i].velocity.y * this.fps * 100;
-                }
-                const img = new Image();
-                //Rendering the ball
-                img.src = this.balls[i].img;
-                this.ctx.beginPath();
-
-                this.ctx.drawImage(
-                    img,
-                    this.balls[i].position.x - this.balls[i].radius * 1.7,
-                    this.balls[i].position.y - this.balls[i].radius * 1.8,
-                    40,40
-                ); 
-                // this.ctx.arc(this.balls[i].position.x, this.balls[i].position.y, this.balls[i].radius, 0, 2 * Math.PI, true);
-                // this.ctx.fill();
-                this.ctx.closePath();
-
-                //Handling the ball collisions
-                this.collisionBall(this.balls[i]);
-                this.collisionWall(this.balls[i]);
-            
-                sessionStorage.setItem("ingredientsArray", JSON.stringify(this.balls));
-            }
-        },
-        collisionWall(ball) {
-            if (ball.position.x > this.width - ball.radius) {
-                ball.velocity.x *= ball.e;
-                ball.position.x = this.width - ball.radius;
-            }
-            if (ball.position.y > this.height - ball.radius) {
-                ball.velocity.y *= ball.e;
-                ball.position.y = this.height - ball.radius;
-            }
-            if (ball.position.x < ball.radius) {
-                ball.velocity.x *= ball.e;
-                ball.position.x = ball.radius;
-            }
-            if (ball.position.y < ball.radius) {
-                ball.velocity.y *= ball.e;
-                ball.position.y = ball.radius;
-            }
-        },
-        collisionBall(b1) {
-            for (let i = 0; i < this.balls.length; i++) {
-                const b2 = this.balls[i];
-                if (b1.position.x != b2.position.x && b1.position.y != b2.position.y) {
-                    //quick check for potential collisions using AABBs
-                    if (
-                        b1.position.x + b1.radius + b2.radius > b2.position.x &&
-                        b1.position.x < b2.position.x + b1.radius + b2.radius &&
-                        b1.position.y + b1.radius + b2.radius > b2.position.y &&
-                        b1.position.y < b2.position.y + b1.radius + b2.radius
-                    ) {
-                        //pythagoras
-                        const distX = b1.position.x - b2.position.x;
-                        const distY = b1.position.y - b2.position.y;
-                        const d = Math.sqrt(distX * distX + distY * distY);
-
-                        //checking circle vs circle collision
-                        if (d < b1.radius + b2.radius) {
-                            const nx = (b2.position.x - b1.position.x) / d;
-                            const ny = (b2.position.y - b1.position.y) / d;
-                            const p =
-                                (2 *
-                                    (b1.velocity.x * nx +
-                                        b1.velocity.y * ny -
-                                        b2.velocity.x * nx -
-                                        b2.velocity.y * ny)) /
-                                (b1.mass + b2.mass);
-
-                            // calulating the point of collision
-                            const colPointX =
-                                (b1.position.x * b2.radius + b2.position.x * b1.radius) /
-                                (b1.radius + b2.radius);
-                            const colPointY =
-                                (b1.position.y * b2.radius + b2.position.y * b1.radius) /
-                                (b1.radius + b2.radius);
-
-                            //stoping overlap
-                            b1.position.x =
-                                colPointX +
-                                (b1.radius * (b1.position.x - b2.position.x)) / d;
-                            b1.position.y =
-                                colPointY +
-                                (b1.radius * (b1.position.y - b2.position.y)) / d;
-                            b2.position.x =
-                                colPointX +
-                                (b2.radius * (b2.position.x - b1.position.x)) / d;
-                            b2.position.y =
-                                colPointY +
-                                (b2.radius * (b2.position.y - b1.position.y)) / d;
-
-                            //updating velocity to reflect collision
-                            b1.velocity.x -= p * b1.mass * nx;
-                            b1.velocity.y -= p * b1.mass * ny;
-                            b2.velocity.x += p * b2.mass * nx;
-                            b2.velocity.y += p * b2.mass * ny;
-                        }
-                    }
-                }
-            }
+        // Starten Sie die Animation
+       
+    },
+    removeSpecificOne(image) {
+      var count = 0;
+      for (var i = 0; i < this.balls.length; i++) {
+        if (this.balls[i].img === "/images/piece/" + image) {
+          this.balls.splice(i, 1);
+          count++;
+          i--;
+          if (count === 3) {
+            break;
+          }
         }
-    }
-}
+      }
+      sessionStorage.setItem("ingredientsArray", JSON.stringify(this.balls));
+    },
+    removeSpecificAll(img) {
+      this.balls = this.balls.filter(function (ball) {
+        return ball.img !== "/images/piece/" + img;
+      });
+      sessionStorage.setItem("ingredientsArray", JSON.stringify(this.balls));
+    },
+    removeAll() {
+      this.balls = [];
+      sessionStorage.setItem("ingredientsArray", JSON.stringify(this.balls));
+    },
+    setImg(image, count) {
+      sessionStorage.setItem("ingredientsArray", JSON.stringify(this.balls));
+      this.balls = JSON.parse(sessionStorage.getItem("ingredientsArray"));
+
+      for (let i = 0; i < count * 3; i++) {
+        this.balls.push(
+          new Ball(Math.random() * (265 - 0) + 0, 50, 14, 0.7, 10, image)
+        );
+      }
+
+      sessionStorage.setItem("ingredientsArray", JSON.stringify(this.balls));
+            this.ingredientsArray = JSON.parse(sessionStorage.getItem("ingredientsArray"));
+    },
+    loop() {
+      //create constants
+      const gravity = 0.7;
+      const density = 1;
+      const drag = 1;
+      //Clear window at the beginning of every frame
+      this.ctx.clearRect(0, 0, this.width, this.height);
+      for (let i = 0; i < this.balls.length; i++) {
+        //physics - calculating the aerodynamic forces to drag
+        // -0.5 * Cd * A * v^2 * rho
+        let fx =
+          -0.5 *
+            drag *
+            density *
+            this.balls[i].area *
+            this.balls[i].velocity.x *
+            this.balls[i].velocity.x *
+            (this.balls[i].velocity.x / Math.abs(this.balls[i].velocity.x)) ||
+          0;
+        let fy =
+          -0.5 *
+            drag *
+            density *
+            this.balls[i].area *
+            this.balls[i].velocity.y *
+            this.balls[i].velocity.y *
+            (this.balls[i].velocity.y / Math.abs(this.balls[i].velocity.y)) ||
+          0;
+
+        //Calculating the acceleration of the ball
+        //F = ma or a = F/m
+        let ax = fx / this.balls[i].mass;
+        let ay = this.ag * gravity + fy / this.balls[i].mass;
+
+        //Calculating the ball velocity
+        this.balls[i].velocity.x += ax * this.fps;
+        this.balls[i].velocity.y += ay * this.fps;
+
+        //Calculating the position of the ball
+        this.balls[i].position.x += this.balls[i].velocity.x * this.fps * 100;
+        this.balls[i].position.y += this.balls[i].velocity.y * this.fps * 100;
+
+        const img = new Image();
+        //Rendering the ball
+        img.src = this.balls[i].img;
+        this.ctx.beginPath();
+
+        var angleInRadians = this.balls[i].rotation;
+        var ballX = this.balls[i].position.x - this.balls[i].radius * 1.3;
+        var ballY = this.balls[i].position.y - this.balls[i].radius * 1.3;
+        var ballRadius = this.balls[i].radius;
+
+        this.ctx.translate(ballX + ballRadius, ballY + ballRadius);
+
+        this.ctx.rotate(angleInRadians);
+
+        if (this.mixAnimationBool) {
+          this.balls[i].rotation =
+            angleInRadians + 0.5;
+        }
+        if (this.balls[i].velocity.y > 2) {
+          this.balls[i].rotation =
+            angleInRadians - this.balls[i].rotationDegree;
+        }
+
+        this.ctx.drawImage(img, -ballRadius, -ballRadius, 40, 40);
+
+        this.ctx.rotate(-angleInRadians);
+        this.ctx.translate(-(ballX + ballRadius), -(ballY + ballRadius));
+
+        //this.ctx.arc(this.balls[i].position.x, this.balls[i].position.y, this.balls[i].radius, 0, 2 * Math.PI, true);
+        //this.ctx.fill();
+        this.ctx.closePath();
+
+        //Handling the ball collisions
+
+        this.collisionBall(this.balls[i]);
+        this.collisionWall(this.balls[i]);
+      }
+    },
+    collisionWall(ball) {
+      if (ball.position.x > this.width - ball.radius) {
+        ball.velocity.x *= ball.e;
+        ball.position.x = this.width - ball.radius;
+      }
+      if (ball.position.y > this.height - ball.radius) {
+        ball.velocity.y *= ball.e;
+        ball.position.y = this.height - ball.radius;
+      }
+      if (ball.position.x < ball.radius) {
+        ball.velocity.x *= ball.e;
+        ball.position.x = ball.radius;
+      }
+      if (ball.position.y < ball.radius) {
+        ball.velocity.y *= ball.e;
+        ball.position.y = ball.radius;
+      }
+    },
+    collisionBall(b1) {
+      for (let i = 0; i < this.balls.length; i++) {
+        const b2 = this.balls[i];
+        if (b1.position.x != b2.position.x && b1.position.y != b2.position.y) {
+          //quick check for potential collisions using AABBs
+          if (
+            b1.position.x + b1.radius + b2.radius > b2.position.x &&
+            b1.position.x < b2.position.x + b1.radius + b2.radius &&
+            b1.position.y + b1.radius + b2.radius > b2.position.y &&
+            b1.position.y < b2.position.y + b1.radius + b2.radius
+          ) {
+            //pythagoras
+            const distX = b1.position.x - b2.position.x;
+            const distY = b1.position.y - b2.position.y;
+            const d = Math.sqrt(distX * distX + distY * distY);
+
+            //checking circle vs circle collision
+            if (d < b1.radius + b2.radius) {
+              const nx = (b2.position.x - b1.position.x) / d;
+              const ny = (b2.position.y - b1.position.y) / d;
+              const p =
+                (2 *
+                  (b1.velocity.x * nx +
+                    b1.velocity.y * ny -
+                    b2.velocity.x * nx -
+                    b2.velocity.y * ny)) /
+                (b1.mass + b2.mass);
+
+              // calulating the point of collision
+              const colPointX =
+                (b1.position.x * b2.radius + b2.position.x * b1.radius) /
+                (b1.radius + b2.radius);
+              const colPointY =
+                (b1.position.y * b2.radius + b2.position.y * b1.radius) /
+                (b1.radius + b2.radius);
+
+              //stoping overlap
+              b1.position.x =
+                colPointX + (b1.radius * (b1.position.x - b2.position.x)) / d;
+              b1.position.y =
+                colPointY + (b1.radius * (b1.position.y - b2.position.y)) / d;
+              b2.position.x =
+                colPointX + (b2.radius * (b2.position.x - b1.position.x)) / d;
+              b2.position.y =
+                colPointY + (b2.radius * (b2.position.y - b1.position.y)) / d;
+
+              //updating velocity to reflect collision
+              b1.velocity.x -= p * b1.mass * nx;
+              b1.velocity.y -= p * b1.mass * ny;
+              b2.velocity.x += p * b2.mass * nx;
+              b2.velocity.y += p * b2.mass * ny;
+            }
+          }
+        }
+      }
+    },
+  },
+};
 class Ball {
-    constructor(x, y, radius, e, mass, image) {
-        this.position = { x: x, y: y }; //m
-        this.velocity = { x: 0, y: 0 }; // m/s
-        this.e = -e; // has no units
-        this.mass = mass; //kg
-        this.radius = radius; //m
-        this.area = (Math.PI * radius * radius) / 100; //m^2
-        this.img = "/images/piece/" + image;
-    }
+  constructor(x, y, radius, e, mass, image) {
+    this.position = { x: x, y: y }; //m
+    this.velocity = { x: 0, y: 0 }; // m/s
+    this.e = -e; // has no units
+    this.mass = mass; //kg
+    this.radius = radius; //m
+    this.area = (Math.PI * radius * radius) / 100; //m^2
+    this.img = "/images/piece/" + image;
+    this.rotation = 0;
+    this.rotationDegree =
+      ((Math.floor(Math.random() * 11) - 5) * Math.PI) / 270;
+  }
 }
 </script>
 

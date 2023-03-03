@@ -40,7 +40,7 @@
                 class="white--text align-end ml-auto mr-auto mt-1 mb-1"
                 height="60px"
                 width="60px"
-                :src="'/images/' + ingrediente.image"
+                :src="'/images/piece/' + ingrediente.piece"
               >
               </v-img>
               <div class="d-flex justify-center">
@@ -100,6 +100,13 @@
               >
                 Weiter
               </button>
+              <button
+                color="success"
+                class="mx-auto flex-grow-1 green-bg custom-btn"
+                @click="mixAnimation()"
+              >
+                MixerBeispiel
+              </button>
             </div>
           </v-col>
         </v-row>
@@ -156,6 +163,9 @@ export default {
     this.$refs.mixerComponent.clearInterval();
   },
   methods: {
+    mixAnimation(){
+      this.$refs.mixerComponent.mixAnimation();
+    },
     handleCategoryClick(category) {
       this.getIngredientsList(category.url);
       this.setCategoriesActive(category);

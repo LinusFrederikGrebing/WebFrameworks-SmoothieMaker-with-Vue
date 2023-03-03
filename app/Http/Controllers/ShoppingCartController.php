@@ -32,10 +32,10 @@ class ShoppingCartController extends Controller
     public function deleteCart(Request $request, $ingredienteID)
     {
         $bottle = $this->getBottle($request);
-        $image = Cart::get($ingredienteID)->options->image;
+        $piece = Cart::get($ingredienteID)->options->piece;
         $count = Cart::count() - Cart::get($ingredienteID)->qty;
         Cart::remove($ingredienteID);
-        return response()->json(['image' => $image, 'count' => $count, 'amount' => $bottle->amount]);
+        return response()->json(['piece' => $piece, 'count' => $count, 'amount' => $bottle->amount]);
     }
 
     public function removeAllFromCard(Request $request)
@@ -51,7 +51,7 @@ class ShoppingCartController extends Controller
             $id = Cart::get($ingredienteID)->id;
             $newqty = Cart::get($ingredienteID)->qty + 1;
             Cart::update($ingredienteID, $newqty); // Will update the quantity
-            return response()->json(['stored' => true, 'image' => Cart::get($ingredienteID)->options->image, 'count' => Cart::count(), 'newqty' => $newqty, 'amount' => $bottle->amount, 'id' => $id]);
+            return response()->json(['stored' => true, 'piece' => Cart::get($ingredienteID)->options->piece, 'count' => Cart::count(), 'newqty' => $newqty, 'amount' => $bottle->amount, 'id' => $id]);
         }
         return response()->json(['stored' => false]);
     }
@@ -59,12 +59,12 @@ class ShoppingCartController extends Controller
     public function decreaseCardQty(Request $request, $ingredienteID)
     {
         $bottle = $this->getBottle($request);
-        $image = Cart::get($ingredienteID)->options->image;
+        $piece = Cart::get($ingredienteID)->options->piece;
         $id = Cart::get($ingredienteID)->id;
         $count = Cart::count() - 1;
         $newqty = Cart::get($ingredienteID)->qty - 1;
         Cart::update($ingredienteID, $newqty); // Will update the quantity
-        return response()->json(['image' => $image, 'count' => $count, 'newqty' => $newqty, 'amount' => $bottle->amount, 'id' => $id]);
+        return response()->json(['piece' => $piece, 'count' => $count, 'newqty' => $newqty, 'amount' => $bottle->amount, 'id' => $id]);
     }
 
     public function showCard(Request $request)
