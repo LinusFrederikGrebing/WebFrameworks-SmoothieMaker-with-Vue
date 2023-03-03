@@ -38,8 +38,8 @@
              <div>
               <v-img
                 class="white--text align-end ml-auto mr-auto mt-1 mb-1"
-                height="90px"
-                width="90px"
+                height="60px"
+                width="60px"
                 :src="'/images/' + ingrediente.image"
               >
               </v-img>
@@ -201,8 +201,8 @@ export default {
         .post(`/addCart/${ingredient.id}`, { amount })
         .then((response) => {
           if (response.data.stored) {
-            const { image, reqCount } = response.data;
-            this.$refs.mixerComponent.setImg(image, reqCount);
+            const { piece, reqCount } = response.data;
+            this.$refs.mixerComponent.setImg(piece, reqCount);
             this.$refs.sizeComponent.getCartCount();
             this.$refs.progressComponent.getProgress();
           } else {

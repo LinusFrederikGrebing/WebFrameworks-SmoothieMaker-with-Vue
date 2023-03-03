@@ -14,7 +14,8 @@ class Ingrediente extends Model
         'amount',
         'image',
         'price',
-        'type'
+        'type',
+        'piece'
     ];
     public $timestamps = false;
 }

@@ -21,10 +21,10 @@ class ShoppingCartController extends Controller
                     'name' => $ingrediente->name,
                     'qty' => $request->amount,
                     'price' => $ingrediente->price,
-                    'options' => array('image' => $ingrediente->image),
+                    'options' => array('image' => $ingrediente->image, 'piece' => $ingrediente->piece),
                 )
             );
-            return response()->json(['stored' => true, 'image' => $ingrediente->image, 'count' => Cart::count(), 'reqCount' => $request->amount, 'amount' => $bottle->amount]);
+            return response()->json(['stored' => true, 'image' => $ingrediente->image, 'piece' => $ingrediente->piece, 'count' => Cart::count(), 'reqCount' => $request->amount, 'amount' => $bottle->amount]);
         }
         return response()->json(['stored' => false]);
     }

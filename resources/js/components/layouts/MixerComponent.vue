@@ -41,7 +41,7 @@ export default {
         removeSpecificOne(image) {
             var count = 0;
                 for (var i = 0; i < this.balls.length; i++) {
-                    if (this.balls[i].img === "/images/" + image) {
+                    if (this.balls[i].img === "/images/piece/" + image) {
                         this.balls.splice(i, 1);
                         count++;
                         i--;
@@ -54,7 +54,7 @@ export default {
         },
         removeSpecificAll(img) {
             this.balls = this.balls.filter(function (ball) {
-                return ball.img !== "/images/" + img;
+                return ball.img !== "/images/piece/" + img;
             });
             sessionStorage.setItem("ingredientsArray", JSON.stringify(this.balls));
         },
@@ -66,8 +66,8 @@ export default {
             if (JSON.parse(sessionStorage.getItem("ingredientsArray"))) {
             this.balls = JSON.parse(sessionStorage.getItem("ingredientsArray"));
             }
-            for (let i = 0; i < count; i++) {
-                this.balls.push(new Ball(Math.random() * (265 - 0) + 0, 50, 18, 0.7, 10, image));
+            for (let i = 0; i < count *2; i++) {
+                this.balls.push(new Ball(Math.random() * (265 - 0) + 0, 50, 14, 0.7, 10, image));
             }
         
             sessionStorage.setItem("ingredientsArray", JSON.stringify(this.balls));
@@ -124,8 +124,7 @@ export default {
                     img,
                     this.balls[i].position.x - this.balls[i].radius * 1.7,
                     this.balls[i].position.y - this.balls[i].radius * 1.8,
-                    60,
-                    60
+                    40,40
                 ); 
                 // this.ctx.arc(this.balls[i].position.x, this.balls[i].position.y, this.balls[i].radius, 0, 2 * Math.PI, true);
                 // this.ctx.fill();
@@ -226,7 +225,7 @@ class Ball {
         this.mass = mass; //kg
         this.radius = radius; //m
         this.area = (Math.PI * radius * radius) / 100; //m^2
-        this.img = "/images/" + image;
+        this.img = "/images/piece/" + image;
     }
 }
 </script>
