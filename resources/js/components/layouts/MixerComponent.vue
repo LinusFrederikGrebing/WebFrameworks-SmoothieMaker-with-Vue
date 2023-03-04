@@ -34,6 +34,7 @@ export default {
       mixAnimationBool: false,
       rgbList: [],
       sumColor: null,
+      darkerRgbColor: null,
     };
   },
   mounted() {
@@ -90,6 +91,9 @@ export default {
       clearInterval(this.timer);
     },
     mixAnimation() {
+      clearInterval(this.timer);
+      this.timer = setInterval(this.loop, 15);
+
       this.mixAnimationBool = true;
       // Erstellen Sie eine neue Timeline
       const tl = gsap.timeline();
@@ -114,15 +118,17 @@ export default {
       const paths = svgDoc.getElementsByTagName("path");
       setTimeout(() => {
         svg.style.backgroundColor = this.sumColor;
+        const rgbArray = this.sumColor.slice(4, -1).split(",").map(Number);
+        const darkerRgbArray = rgbArray.map((val) => Math.round(val * 0.6));
+        this.darkerRgbColor = `rgb(${darkerRgbArray.join(",")})`;
         for (let i = 0; i < paths.length; i++) {
-          paths[i].style.fill = "black";
+          paths[i].style.fill = this.darkerRgbColor;
         }
-        gsap.set("#innerImage", {
-          opacity: 1,
-          y: "100%",
-          transformOrigin: "bottom center",
-        });
-        gsap.to("#innerImage", { duration: 10, y: "37%", ease: "power3.out" });
+        gsap.fromTo(
+          "#innerImage",
+          { opacity: 1, y: "100%", transformOrigin: "bottom center" },
+          { duration: 10, opacity: 1, y: "35%", ease: "power3.out" }
+        );
       }, 300);
     },
     getSumColor() {

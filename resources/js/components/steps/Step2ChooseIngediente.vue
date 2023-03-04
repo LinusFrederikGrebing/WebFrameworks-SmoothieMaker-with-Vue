@@ -100,13 +100,6 @@
               >
                 Weiter
               </button>
-              <button
-                color="success"
-                class="mx-auto flex-grow-1 green-bg custom-btn"
-                @click="mixAnimation()"
-              >
-                MixerBeispiel
-              </button>
             </div>
           </v-col>
         </v-row>
@@ -147,13 +140,7 @@ export default {
           title: "Gemüse",
           url: "/vegetables",
           active: false,
-        },
-        {
-          icon: "/images/liquidicon.png",
-          title: "Flüssigkeit",
-          url: "/liquid",
-          active: false,
-        },
+        }
       ],
       ingredients: [],
       selectedAmounts: [],
@@ -163,9 +150,6 @@ export default {
     this.$refs.mixerComponent.clearInterval();
   },
   methods: {
-    mixAnimation(){
-      this.$refs.mixerComponent.mixAnimation();
-    },
     handleCategoryClick(category) {
       this.getIngredientsList(category.url);
       this.setCategoriesActive(category);
@@ -201,7 +185,7 @@ export default {
       }
     },
     showStep3() {
-      this.$router.push({ path: "/shop" });
+      this.$router.push({ path: "/chooseLiquid" });
     },
     showBottleSize() {
       this.$router.push({ path: "/chooseBottleSize" });

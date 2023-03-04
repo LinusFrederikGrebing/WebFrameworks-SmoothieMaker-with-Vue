@@ -58,6 +58,10 @@ Route::get('/bottleSize', [App\Http\Controllers\BottleSizeController::class, 'sh
 Route::post('/create/ingrediente', [App\Http\Controllers\IngredienteController::class, 'store']);
 Route::post('/addCart/{ingrediente}', [App\Http\Controllers\ShoppingCartController::class, 'storeCart']);
 
+Route::get('/getAktLiquid', [App\Http\Controllers\ShoppingCartController::class, 'getLiquid']);
+Route::post('/addLiquidToCart/{ingrediente}', [App\Http\Controllers\ShoppingCartController::class, 'storeLiquidToCart']);
+
+
 // needed to refer to the vue router
 Route::get('{any}', function () {
     return view('welcome');

@@ -21,8 +21,9 @@
         </div>
       </v-col>
       <v-col cols="12" md="8" class="mb-5">
+        <div class="item-list">
         <v-row>
-          <v-table density="compact" class="w-100">
+          <v-table density="compact" class="w-95 ml-3 mt-3">
             <thead>
               <tr>
                 <th class="text-left">Image</th>
@@ -33,37 +34,90 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(cart, index) in cartContent" :key="index">
-                <td>
-                  <img
-                    width="75"
-                    height="75"
-                    :src="'/images/' + cart.options.image"
-                    class="mt-2 mb-2"
-                  />
-                </td>
-                <td>{{ cart.name }}</td>
-                <td>{{ cart.price }} €/g </td>
-                <td>
-                  <div class="d-flex align-center">
-                    <v-icon color="black" @click="addSpecificOne(cart)"
-                      >mdi-plus</v-icon
-                    >
-                    <p class="mt-3 mx-2" :id="'qty' + cart.id">{{ cart.qty }}</p>
-                    <v-icon color="black" @click="removeSpecificOne(cart)"
-                      >mdi-minus</v-icon
-                    >
-                  </div>
-                </td>
-                <td>
-                  <v-btn @click="removeSpecificCart(cart)"
-                    ><v-icon color="red">mdi-delete</v-icon></v-btn
-                  >
-                </td>
-              </tr>
+                <tr
+                  v-for="(cart, cartIndex) in ingredienteContent"
+                  :key="cartIndex"
+                >
+                  <td>
+                    <img
+                      width="75"
+                      height="75"
+                      :src="'/images/' + cart.options.image"
+                      class="mt-2 mb-2"
+                    />
+                  </td>
+                  <td>{{ cart.name }}</td>
+                  <td>{{ cart.price }} €/g</td>
+                  <td>
+                    <div class="d-flex align-center">
+                      <v-icon color="black" @click="addSpecificOne(cart)"
+                        >mdi-plus</v-icon
+                      >
+                      <p class="mt-3 mx-2" :id="'qty' + cart.id">
+                        {{ cart.qty }}
+                      </p>
+                      <v-icon color="black" @click="removeSpecificOne(cart)"
+                        >mdi-minus</v-icon
+                      >
+                    </div>
+                  </td>
+                  <td>
+                    <v-btn @click="removeSpecificCart(cart)">
+                      <v-icon color="red">mdi-delete</v-icon>
+                    </v-btn>
+                  </td>
+                </tr>
             </tbody>
           </v-table>
         </v-row>
+        <v-row>
+           <button
+            color="success"
+            class="ml-3 mr-8 mb-3 mt-5 w-95 flex-grow-1 green-bg custom-btn"
+            @click="showStep3()"
+          >
+            Flüssigkeit ändern
+          </button>
+        </v-row>
+        <v-row>
+          <v-table density="compact" class="w-95 ml-3">
+            <thead>
+              <tr>
+                <th class="text-left">Image</th>
+                <th class="text-left">Name</th>
+                <th class="text-left">Preis</th>
+                <th class="text-left">Menge</th>
+                <th class="text-left">Remove</th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr
+                  v-for="(cart, cartIndex) in liquidContent"
+                  :key="cartIndex"
+                >
+                  <td>
+                    <img
+                      width="75"
+                      height="75"
+                      :src="'/images/' + cart.options.image"
+                      class="mt-2 mb-2"
+                    />
+                  </td>
+                  <td>{{ cart.name }}</td>
+                  <td>{{ cart.price }} €/g</td>
+                  <td>   
+                        {{ cart.qty }}
+                  </td>
+                  <td>
+                    <v-btn @click="removeSpecificCart(cart)">
+                      <v-icon color="red">mdi-delete</v-icon>
+                    </v-btn>
+                  </td>
+                </tr>
+            </tbody>
+          </v-table>
+        </v-row>
+      </div>   
         <v-row>
           <p class="mt-8">Total: {{ cartSubTotal }}</p>
         </v-row>
@@ -71,7 +125,9 @@
           <h4>Total inkl. MwSt: {{ cartTotal }}</h4>
         </v-row>
         <v-row>
-          <button class="green-bg custom-btn">Jetzt kaufen</button>
+          <button class="green-bg custom-btn" @click="mixAnimation()">
+            Jetzt kaufen
+          </button>
         </v-row>
       </v-col>
       <v-col cols="12" md="4">
@@ -100,6 +156,8 @@ export default {
       cartContent: [],
       cartTotal: null,
       cartSubTotal: null,
+      ingredienteContent: [],
+      liquidContent: []
     };
   },
   created() {
@@ -109,14 +167,33 @@ export default {
     this.$refs.mixerComponent.clearInterval();
   },
   methods: {
+    showStep3() {
+      this.$router.push({ path: "/chooseLiquid" });
+    },
+    getCartOfType(type) {
+      return this.cartContent.filter((cart) => {
+        return cart.options.type === type;
+      });
+    },
+    mixAnimation() {
+      this.$refs.mixerComponent.mixAnimation();
+    },
     getCartContent() {
       this.cartContent = [];
+      this.ingredienteContent = [];
+      this.liquidContent = [];
       axios.get("/cartContent").then((response) => {
         this.cartTotal = response.data.cartTotal;
         this.cartSubTotal = response.data.cartSubTotal;
         for (let key in response.data.cart) {
           this.cartContent.push(response.data.cart[key]);
         }
+        this.cartContent.forEach((cart) => {
+        if(cart.options.type === 'liquid') {
+          this.liquidContent.push(cart);
+        } else {
+          this.ingredienteContent.push(cart);
+        }});
       });
     },
     removeAllFromCart() {
@@ -137,9 +214,6 @@ export default {
           this.$refs.sizeComponent.getCartCount();
           this.$refs.progressComponent.getProgress();
         })
-        .catch((error) => {
-          console.error(error);
-        });
     },
     addSpecificOne(cart) {
       axios
@@ -206,7 +280,17 @@ export default {
       });
     },
   },
-  mounted() {},
 };
 </script>
+<style>
+.item-list {
+  height: 35em;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.w-95 {
+  width: 95%;
+}
+</style>
 

@@ -7,6 +7,7 @@ import UpdateIngrediente from '../components/ingrediente/updateIngrediente'
 import ChooseBottleSize from '../components/steps/Step1ChooseBottleSize'
 import step2Component  from '../components/steps/Step2ChooseIngediente'
 import step3Component  from '../components/steps/Step3ShopComponent'
+import Step3ChooseLiquid  from '../components/steps/Step3ChooseLiquid'
 import LoginComponent  from '../components/auth/LoginComponent'
 import RegisterComponent  from '../components/auth/RegisterComponent'
 
@@ -27,8 +28,13 @@ const routes = [
         component: step2Component
     },
     {
-        path: '/shop',
+        path: '/chooseLiquid',
         name: 'step3',
+        component: Step3ChooseLiquid
+    },
+    {
+        path: '/shop',
+        name: 'shop',
         component: step3Component
     },
     {

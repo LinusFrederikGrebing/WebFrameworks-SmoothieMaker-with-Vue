@@ -219,6 +219,20 @@ class IngredienteSeed extends Seeder
         /* LIQUIDS */
         Ingrediente::factory()->create([
             'name' => 'Milch',
+            'price' => 1.7,
+            'image' => "milch.svg",
+            'type' => IngredienteType::LIQUID,
+            'piece' => "banana-piece.png",
+        ]);
+        Ingrediente::factory()->create([
+            'name' => 'Wasser',
+            'price' => 0.2,
+            'image' => "milch.svg",
+            'type' => IngredienteType::LIQUID,
+            'piece' => "banana-piece.png",
+        ]);
+        Ingrediente::factory()->create([
+            'name' => 'Hafermilch',
             'price' => 2.2,
             'image' => "milch.svg",
             'type' => IngredienteType::LIQUID,
