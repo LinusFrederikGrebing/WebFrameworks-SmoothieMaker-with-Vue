@@ -1,15 +1,19 @@
 <template>
-    <div class="containerMixer">
-      <canvas class="mx-8" id="myCanvas" width="240" height="330"></canvas>
-      <img id="mixerLogo" src="/images/mixer2.png" class="mixer mt-2" />
-      <div class="becherWrapper">
-        <img id="becherLogo" src="/images/becher.png" class="mixer mt-2" />
-        <img id="innerImage" src="/images/smoothierot.png" class="inner-image" />
- 
-      </div>
-      <img id="mlZahlLogo" src="/images/mlzahl.png" class="mixer mt-2" />
+  <div class="containerMixer">
+    <canvas class="mx-8" id="myCanvas" width="240" height="330"></canvas>
+    <img id="mixerLogo" src="/images/mixer2.png" class="mixer mt-2" />
+    <img id="becherLogo" src="/images/becher.png" class="mixer mt-2" />
+    <div class="becherWrapper">
+      <object
+        id="innerImage"
+        type="image/svg+xml"
+        data="/images/29.svg"
+        class="inner-image"
+      ></object>
     </div>
-  </template>
+    <img id="mlZahlLogo" src="/images/mlzahl.png" class="mixer mt-2" />
+  </div>
+</template>
 
 <script>
 import gsap from "gsap";
@@ -27,7 +31,9 @@ export default {
       width: 0,
       height: 0,
       balls: [],
-      mixAnimationBool: false
+      mixAnimationBool: false,
+      rgbList: [],
+      sumColor: null,
     };
   },
   mounted() {
@@ -41,27 +47,108 @@ export default {
     }
   },
   methods: {
+    getRGBList() {
+      this.rgbList = [];
+      this.balls.forEach((ball) => {
+        const img = new Image();
+        img.crossOrigin = "Anonymous";
+        img.src = ball.img;
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          const context = canvas.getContext("2d");
+          context.drawImage(img, 0, 0);
+          const imageData = context.getImageData(0, 0, img.width, img.height);
+          const pixels = imageData.data;
+          const colorCounts = {};
+          for (let i = 0; i < pixels.length; i += 4) {
+            const r = pixels[i];
+            const g = pixels[i + 1];
+            const b = pixels[i + 2];
 
+            // Check if the color is not black
+            if (r !== 0 && g !== 0 && b !== 0) {
+              const rgb = `${r},${g},${b}`;
+              if (rgb in colorCounts) {
+                colorCounts[rgb] += 1;
+              } else {
+                colorCounts[rgb] = 1;
+              }
+            }
+          }
+          const maxCount = Math.max(...Object.values(colorCounts));
+          const maxColor = Object.keys(colorCounts).find(
+            (key) => colorCounts[key] === maxCount
+          );
+          this.rgbList.push(maxColor);
+          this.sumColor = this.getSumColor();
+        };
+      });
+    },
     clearInterval() {
+      this.ctx.clearRect(0, 0, this.width, this.height);
       sessionStorage.setItem("ingredientsArray", JSON.stringify(this.balls));
       clearInterval(this.timer);
     },
-    mixAnimation(){
-        this.mixAnimationBool = true;
-        // Erstellen Sie eine neue Timeline
-        const tl = gsap.timeline();
-        tl.play();
-        // Fügen Sie die Animation hinzu, um den Container hin und her zu wackeln
-        tl.to(".containerMixer", { duration: 0.1, rotate: -1 })
+    mixAnimation() {
+      this.mixAnimationBool = true;
+      // Erstellen Sie eine neue Timeline
+      const tl = gsap.timeline();
+
+      this.juiceAnimation();
+      tl.play();
+      // Fügen Sie die Animation hinzu, um den Container hin und her zu wackeln
+      tl.to(".containerMixer", { duration: 0.1, rotate: -1 })
         .to(".containerMixer", { duration: 0.1, rotate: 1 })
-        .repeat(-1);
-        
+        .repeat(30)
+        .eventCallback("onComplete", () => {
+          this.clearInterval();
+        });
 
-        /*gsap.set('#innerImage', {opacity: 1, y: "100%", scale: 0.8, transformOrigin: "bottom center" });
-        gsap.to('#innerImage', { duration: 1, y: "0%", ease: "power3.out" }); */
+      // Starten Sie die Animation
+    },
+    juiceAnimation() {
+      this.getRGBList();
 
-        // Starten Sie die Animation
-       
+      const svg = document.querySelector("object");
+      const svgDoc = svg.contentDocument;
+      const paths = svgDoc.getElementsByTagName("path");
+      setTimeout(() => {
+        svg.style.backgroundColor = this.sumColor;
+        for (let i = 0; i < paths.length; i++) {
+          paths[i].style.fill = "black";
+        }
+        gsap.set("#innerImage", {
+          opacity: 1,
+          y: "100%",
+          transformOrigin: "bottom center",
+        });
+        gsap.to("#innerImage", { duration: 10, y: "37%", ease: "power3.out" });
+      }, 300);
+    },
+    getSumColor() {
+      const numColors = this.rgbList.length;
+
+      // Initialisierung der Summenvariablen für die RGB-Werte
+      let sumR = 0;
+      let sumG = 0;
+      let sumB = 0;
+
+      // Schleife, um alle RGB-Werte der Farben zu addieren
+      this.rgbList.forEach((color) => {
+        const rgb = color.split(",").map(Number);
+        sumR += rgb[0];
+        sumG += rgb[1];
+        sumB += rgb[2];
+      });
+
+      // Berechnung des Durchschnitts der RGB-Werte
+      const avgR = Math.round(sumR / numColors);
+      const avgG = Math.round(sumG / numColors);
+      const avgB = Math.round(sumB / numColors);
+
+      // Erstellung einer gemeinsamen Farbe
+      const commonColor = `rgb(${avgR},${avgG},${avgB})`;
+      return commonColor;
     },
     removeSpecificOne(image) {
       var count = 0;
@@ -98,7 +185,9 @@ export default {
       }
 
       sessionStorage.setItem("ingredientsArray", JSON.stringify(this.balls));
-            this.ingredientsArray = JSON.parse(sessionStorage.getItem("ingredientsArray"));
+      this.ingredientsArray = JSON.parse(
+        sessionStorage.getItem("ingredientsArray")
+      );
     },
     loop() {
       //create constants
@@ -157,8 +246,7 @@ export default {
         this.ctx.rotate(angleInRadians);
 
         if (this.mixAnimationBool) {
-          this.balls[i].rotation =
-            angleInRadians + 0.5;
+          this.balls[i].rotation = angleInRadians + 0.5;
         }
         if (this.balls[i].velocity.y > 2) {
           this.balls[i].rotation =

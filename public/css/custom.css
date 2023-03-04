@@ -88,8 +88,8 @@
     z-index: 3;
     width: 380px;
     height: 270px;
-  }
-  
+  }  
+
   #myCanvas {
     position: absolute;
     top: 3.6em;
@@ -101,22 +101,22 @@
   
   .becherWrapper {
     position: absolute;
-    z-index: 2;
-    width: 335px;
-    height: 600px;
+    z-index: 0;
+    width: 240px;
+    height: 330px;
+    top: 3.6em;
+    left: 2em;
+    z-index: 0;
+    margin-left: 32px;
+    margin-right: 32px;
+    -webkit-clip-path: polygon(100% 0, 97% 79%, 91% 100%, 9% 100%, 4% 79%, 0% 0);
+    clip-path: polygon(100% 0, 97% 79%, 91% 100%, 9% 100%, 4% 79%, 0% 0); 
     overflow: hidden;
   }
   
   .inner-image {
-    position: absolute;
-    margin-top: -10em;
-    width: 335px;
-    height: 600px;
-    transform: translateY(-100%);
-    object-fit: contain;
     opacity: 0;
-    -webkit-clip-path: polygon(100% 0, 97% 79%, 91% 100%, 9% 100%, 4% 79%, 0% 0);
-    clip-path: polygon(100% 0, 97% 79%, 91% 100%, 9% 100%, 4% 79%, 0% 0); 
+    object-fit: contain;
   }
 
   /* custom button-style */
