@@ -5,8 +5,10 @@
         Wähle jetzt abschließend deine Flüssigkeit!
       </h2>
     </div>
-    <v-row class="mx-auto ml-16 mb-8 w-70" no-gutters>
-      <v-col
+    <v-row no-gutters>
+      <v-col cols="12" md="8" class="mb-1 mt-1">
+        <v-row class="item-list">
+          <v-col
         sm="12"
         md="12"
         xl="6"
@@ -17,7 +19,7 @@
       >
         <v-card
           :class="{ 'selected-card': liquid.id === selectedCard }"
-          class="my-4 mx-4 card-color"
+          class="my-2 mx-2 card-color"
           elevation="10"
         >
           <div>
@@ -25,19 +27,19 @@
               class="white--text align-end ml-auto mr-auto mt-1 mb-1"
               height="60px"
               width="60px"
-              :src="'/images/' + liquid.image"
+              :src="'/images/piece/' + liquid.image"
             >
             </v-img>
             <div class="d-flex justify-center">
               <hr />
               <p class="font-weight-bold ml-1 mr-1">{{ liquid.name }}:</p>
               <hr />
-              <p>{{ liquid.price }}€/g</p>
+              <p>{{ liquid.price }}€ / 50g</p>
             </div>
             <div class="d-flex align-items-center mb-2">
               <button
                 color="success"
-                class="ml-4 mr-4 flex-grow-1 green-bg custom-btn"
+                class="ml-4 mr-4 flex-grow-1 grey-active-bg custom-btn"
                 @click="selectCard(liquid)"
               >
                 Wählen!
@@ -46,24 +48,32 @@
           </div>
         </v-card>
       </v-col>
-    </v-row>
-    <v-row>
-      <v-col class="mb-5" cols="12">
-        <div class="mx-auto d-flex flex-wrap">
-          <button
-            color="error"
-            class="mx-auto flex-grow-1 red-bg custom-btn"
-            @click="showStep2()"
-          >
-            Zurück
-          </button>
-          <button
-            color="success"
-            class="mx-auto flex-grow-1 green-bg custom-btn"
-            @click="showStep3()"
-          >
-            Weiter
-          </button>
+        </v-row>
+        <v-row>
+          <v-col class="mb-5" cols="12">
+            <div class="mx-auto d-flex flex-wrap">
+              <button
+                color="error"
+                class="mx-auto flex-grow-1 red-bg custom-btn"
+                @click="showStep2()"
+              >
+                Zurück
+              </button>
+              <button
+                color="success"
+                class="mx-auto flex-grow-1 green-bg custom-btn"
+                @click="showStep3()"
+              >
+                Weiter
+              </button>
+            </div>
+          </v-col>
+        </v-row>
+      </v-col>
+      <v-col cols="12" md="4">
+        <div max-width="400">
+          <MixerComponent ref="mixerComponent" />  
+          <ProgressbarComponent ref="progressComponent" />
         </div>
       </v-col>
     </v-row>
@@ -96,18 +106,26 @@ export default {
       };
     },
   },
-  async created() {
+  mounted() {
     axios.get("/liquid").then((response) => { this.liquids = response.data.ingrediente; })
     axios.get("/getAktLiquid").then((response) => { 
       var response = response.data.liquidItems;
+      console.log("test");
       Object.keys(response).forEach((key) => {
         this.liquid = response[key];
+        this.selectCard(this.liquid);
+        this.$refs.mixerComponent.liquidAnimation(this.liquid.options.image);
       });
-      this.selectCard(this.liquid) 
-    })
+    
+    });
   },
   methods: {
+    liquidAnimation(liquid) {
+      console.log(liquid);
+      this.$refs.mixerComponent.liquidAnimation(liquid.image);
+    },
     selectCard(liquid) {
+      this.liquidAnimation(liquid);
       this.liquid = liquid;
       this.selectedCard = liquid.id;
     },
@@ -136,10 +154,14 @@ export default {
 .size-image {
   margin-left: -1em;
 }
+.item-list {
+  height: 42em;
+  overflow-y: scroll;
+}
 .card-color {
   background-color: rgb(229 231 235);
 }
 .selected-card {
-  border: 3px solid #80ba24;
+  border: 4px solid #80ba24;
 }
 </style>

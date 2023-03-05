@@ -9,8 +9,8 @@
 
     <p>
       Aktuell hast du <b class="cart-count"> {{ cartCount }} </b> von
-      <b>{{ bottle.amount }}</b> für Größe {{ bottle.name }} benötigte Zutaten
-      ausgewählt.
+      <b>{{ bottle.amount }}</b> benötigte Zutaten
+      und <b>{{ liquidCount }}</b> von <b>1</b> benötigte Flüssigkeit für Größe <b>{{ bottle.name }}</b> ausgewählt.
     </p>
   </div>
 </template>
@@ -23,9 +23,9 @@ export default {
     return {
       cartCount: null,
       bottle: {},
+      liquidCount: null,
     };
   },
-  created() {},
   mounted() {
     this.getCartCount();
   },
@@ -36,6 +36,7 @@ export default {
         .then((response) => {
           this.cartCount = response.data.cartCount;
           this.bottle = response.data.bottle;
+          this.liquidCount = response.data.liquidCount;
         })
         .catch((err) => {
           console.log(err);

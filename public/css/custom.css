@@ -84,10 +84,10 @@
   #mlZahlLogo {
     position: absolute;
     top: 5em;
-    left: 3em;
+    left: 2em;
     z-index: 3;
     width: 380px;
-    height: 270px;
+    height: 300px;
   }  
 
   #myCanvas {

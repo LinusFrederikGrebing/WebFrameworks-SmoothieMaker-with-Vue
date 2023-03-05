@@ -40,7 +40,7 @@
                 class="white--text align-end ml-auto mr-auto mt-1 mb-1"
                 height="60px"
                 width="60px"
-                :src="'/images/piece/' + ingrediente.piece"
+                :src="'/images/piece/' + ingrediente.image"
               >
               </v-img>
               <div class="d-flex justify-center">
@@ -49,7 +49,7 @@
                   {{ ingrediente.name }}:
                 </p>
                 <hr>
-                <p>{{ ingrediente.price }}€/g</p>
+                <p>{{ ingrediente.price }}€ / 50g</p>
               </div>
                 <v-form enctype="multipart/form-data" method="post">
                   <div class="d-flex align-items-center mb-2">
@@ -144,6 +144,7 @@ export default {
       ],
       ingredients: [],
       selectedAmounts: [],
+      liquid: null,
     };
   },
   beforeUnmount() {
@@ -195,8 +196,8 @@ export default {
         .post(`/addCart/${ingredient.id}`, { amount })
         .then((response) => {
           if (response.data.stored) {
-            const { piece, reqCount } = response.data;
-            this.$refs.mixerComponent.setImg(piece, reqCount);
+            const { image, reqCount } = response.data;
+            this.$refs.mixerComponent.setImg(image, reqCount);
             this.$refs.sizeComponent.getCartCount();
             this.$refs.progressComponent.getProgress();
           } else {
@@ -237,6 +238,13 @@ export default {
   },
   created() {
     this.getIngredientsList("/fruits");
+    axios.get("/getAktLiquid").then((response) => { 
+      var response = response.data.liquidItems;
+      Object.keys(response).forEach((key) => {
+        this.liquid = response[key];
+        this.$refs.mixerComponent.liquidAnimation(this.liquid.options.image);
+      });
+    })
   },
 };
 </script>
@@ -248,7 +256,7 @@ p {
   width: 39px
 }
 .w-40px {
-  width: 61px
+  width: 60px
 }
 .item-list {
   height: 42em;

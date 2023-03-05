@@ -42,12 +42,12 @@
                     <img
                       width="75"
                       height="75"
-                      :src="'/images/' + cart.options.image"
+                      :src="'/images/piece/' + cart.options.image"
                       class="mt-2 mb-2"
                     />
                   </td>
                   <td>{{ cart.name }}</td>
-                  <td>{{ cart.price }} €/g</td>
+                  <td>{{ cart.price }}€ / 50g</td>
                   <td>
                     <div class="d-flex align-center">
                       <v-icon color="black" @click="addSpecificOne(cart)"
@@ -99,12 +99,12 @@
                     <img
                       width="75"
                       height="75"
-                      :src="'/images/' + cart.options.image"
+                      :src="'/images/piece/' + cart.options.image"
                       class="mt-2 mb-2"
                     />
                   </td>
                   <td>{{ cart.name }}</td>
-                  <td>{{ cart.price }} €/g</td>
+                  <td>{{ cart.price }}€ / 50g</td>
                   <td>   
                         {{ cart.qty }}
                   </td>
@@ -157,11 +157,19 @@ export default {
       cartTotal: null,
       cartSubTotal: null,
       ingredienteContent: [],
-      liquidContent: []
+      liquidContent: [],
+      liquid: null,
     };
   },
   created() {
     this.getCartContent();
+    axios.get("/getAktLiquid").then((response) => { 
+      var response = response.data.liquidItems;
+      Object.keys(response).forEach((key) => {
+        this.liquid = response[key];
+      });
+      this.$refs.mixerComponent.liquidAnimation(this.liquid.options.image);
+    })
   },
   beforeUnmount() {
     this.$refs.mixerComponent.clearInterval();
@@ -209,8 +217,12 @@ export default {
       axios
         .post("/deleteCart/" + cart.rowId, {})
         .then((response) => {
+          console.log(response);
+          if(response.data.wasLiquid == true){
+            this.$refs.mixerComponent.clearLiquid();
+          }
           this.getCartContent();
-          this.$refs.mixerComponent.removeSpecificAll(response.data.piece);
+          this.$refs.mixerComponent.removeSpecificAll(response.data.image);
           this.$refs.sizeComponent.getCartCount();
           this.$refs.progressComponent.getProgress();
         })
@@ -222,7 +234,7 @@ export default {
         })
         .then((response) => {
           if (response.data.stored) {
-            this.$refs.mixerComponent.setImg(response.data.piece, 1);
+            this.$refs.mixerComponent.setImg(response.data.image, 1);
             this.$refs.sizeComponent.getCartCount();
             this.$refs.progressComponent.getProgress();
             this.setnewAmount(response.data.newqty, response.data.id);
@@ -242,7 +254,7 @@ export default {
           } else {
             this.getCartContent();
           }
-          this.$refs.mixerComponent.removeSpecificOne(response.data.piece);
+          this.$refs.mixerComponent.removeSpecificOne(response.data.image);
           this.$refs.sizeComponent.getCartCount();
           this.$refs.progressComponent.getProgress();
         });

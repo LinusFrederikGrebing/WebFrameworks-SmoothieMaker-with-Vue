@@ -5,9 +5,17 @@
     <img id="becherLogo" src="/images/becher.png" class="mixer mt-2" />
     <div class="becherWrapper">
       <object
+        id="liquidImage"
+        type="image/svg+xml"
+        data="/images/liquid.svg"
+        class="inner-image"
+      ></object>
+    </div>
+    <div class="becherWrapper">
+      <object
         id="innerImage"
         type="image/svg+xml"
-        data="/images/29.svg"
+        data="/images/smoothie-juice.svg"
         class="inner-image"
       ></object>
     </div>
@@ -46,49 +54,78 @@ export default {
     if (JSON.parse(sessionStorage.getItem("ingredientsArray"))) {
       this.balls = JSON.parse(sessionStorage.getItem("ingredientsArray"));
     }
+    this.clearLiquid();
   },
-  methods: {
-    getRGBList() {
-      this.rgbList = [];
-      this.balls.forEach((ball) => {
-        const img = new Image();
-        img.crossOrigin = "Anonymous";
-        img.src = ball.img;
-        img.onload = () => {
-          const canvas = document.createElement("canvas");
-          const context = canvas.getContext("2d");
-          context.drawImage(img, 0, 0);
-          const imageData = context.getImageData(0, 0, img.width, img.height);
-          const pixels = imageData.data;
-          const colorCounts = {};
-          for (let i = 0; i < pixels.length; i += 4) {
-            const r = pixels[i];
-            const g = pixels[i + 1];
-            const b = pixels[i + 2];
 
-            // Check if the color is not black
-            if (r !== 0 && g !== 0 && b !== 0) {
-              const rgb = `${r},${g},${b}`;
-              if (rgb in colorCounts) {
-                colorCounts[rgb] += 1;
-              } else {
-                colorCounts[rgb] = 1;
-              }
-            }
-          }
-          const maxCount = Math.max(...Object.values(colorCounts));
-          const maxColor = Object.keys(colorCounts).find(
-            (key) => colorCounts[key] === maxCount
-          );
-          this.rgbList.push(maxColor);
-          this.sumColor = this.getSumColor();
-        };
-      });
+  methods: {
+    clearLiquid(){
+      gsap.set("#innerImage, #liquidImage", {
+      opacity: 0,
+      y: "100%",
+      transformOrigin: "bottom center",
+    });
     },
     clearInterval() {
       this.ctx.clearRect(0, 0, this.width, this.height);
       sessionStorage.setItem("ingredientsArray", JSON.stringify(this.balls));
       clearInterval(this.timer);
+    },
+    getRGBList() {
+      this.rgbList = [];
+      Promise.all(
+        this.balls.map((ball) => {
+          return new Promise((resolve) => {
+            const img = new Image();
+            img.crossOrigin = "Anonymous";
+            img.src = ball.img;
+            img.onload = () => {
+              const color = this.getMaxColor(img);
+              this.rgbList.push(color);
+              resolve(color);
+            };
+          });
+        })
+      ).then((colors) => {
+        this.sumColor = this.getSumColor();
+      });
+
+      console.log(this.rgbList);
+    },
+    getMaxColor(img) {
+      const canvas = document.createElement("canvas");
+      const context = canvas.getContext("2d");
+      context.drawImage(img, 0, 0);
+      const imageData = context.getImageData(0, 0, img.width, img.height);
+      const pixels = imageData.data;
+      const colorCounts = {};
+      for (let i = 0; i < pixels.length; i += 4) {
+        const r = pixels[i];
+        const g = pixels[i + 1];
+        const b = pixels[i + 2];
+
+        // Check if the color is not black
+        if (r + g + b > 0) {
+          const rgb = `${r},${g},${b}`;
+          if (rgb in colorCounts) {
+            colorCounts[rgb] += 1;
+          } else {
+            colorCounts[rgb] = 1;
+          }
+        }
+      }
+      const maxCount = Math.max(...Object.values(colorCounts));
+      const maxColor = Object.keys(colorCounts).find(
+        (key) => colorCounts[key] === maxCount
+      );
+      return maxColor;
+    },
+    juice() {
+      const tl = gsap.timeline();
+      tl.play();
+      tl.to("#innerImage", { duration: 1, rotate: -1 })
+        .to("#innerImage", { duration: 4, rotate: 1 })
+        .to("#innerImage", { duration: 1, rotate: 0 })
+        .repeat(-1);
     },
     mixAnimation() {
       clearInterval(this.timer);
@@ -106,14 +143,36 @@ export default {
         .repeat(30)
         .eventCallback("onComplete", () => {
           this.clearInterval();
+          this.juice();
         });
 
       // Starten Sie die Animation
     },
+    liquidAnimation(image) {
+      console.log(image)
+      const img = new Image();
+      img.crossOrigin = "Anonymous";
+      img.src = "/images/piece/" + image;
+      img.onload = () => {
+        const svg = document.getElementById("liquidImage");
+        setTimeout(() => {
+          let color = this.getMaxColor(img);
+          const rgb = color.split(",").map(Number);
+          console.log(rgb);
+          svg.style.backgroundColor =
+            "rgb(" + rgb[0] + "," + rgb[1] + "," + rgb[2] + ")";
+
+          gsap.fromTo(
+            "#liquidImage",
+            { opacity: 0.8, y: "100%", transformOrigin: "bottom center" },
+            { duration: 3, opacity: 0.8, y: "80%", ease: "power3.out" }
+          );
+        }, 300);
+      };
+    },
     juiceAnimation() {
       this.getRGBList();
-
-      const svg = document.querySelector("object");
+      const svg = document.getElementById("innerImage");
       const svgDoc = svg.contentDocument;
       const paths = svgDoc.getElementsByTagName("path");
       setTimeout(() => {
@@ -133,7 +192,7 @@ export default {
     },
     getSumColor() {
       const numColors = this.rgbList.length;
-
+      console.log(numColors);
       // Initialisierung der Summenvariablen für die RGB-Werte
       let sumR = 0;
       let sumG = 0;
@@ -177,6 +236,7 @@ export default {
       sessionStorage.setItem("ingredientsArray", JSON.stringify(this.balls));
     },
     removeAll() {
+      this.clearLiquid();
       this.balls = [];
       sessionStorage.setItem("ingredientsArray", JSON.stringify(this.balls));
     },

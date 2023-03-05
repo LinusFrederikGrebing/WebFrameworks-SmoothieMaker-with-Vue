@@ -21,7 +21,6 @@ class Ingrediente extends Migration
             $table->string('image');
             $table->float('price');
             $table->enum('type', [IngredienteType::FRUITS, IngredienteType::VEGETABLES, IngredienteType::LIQUID]);
-            $table->string('piece'); 
         });
     }
 
