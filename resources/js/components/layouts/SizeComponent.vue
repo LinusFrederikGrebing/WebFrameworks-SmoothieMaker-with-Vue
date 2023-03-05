@@ -38,9 +38,6 @@ export default {
           this.bottle = response.data.bottle;
           this.liquidCount = response.data.liquidCount;
         })
-        .catch((err) => {
-          console.log(err);
-        });
     },
     showBottleSizes() {
       Swal.fire({

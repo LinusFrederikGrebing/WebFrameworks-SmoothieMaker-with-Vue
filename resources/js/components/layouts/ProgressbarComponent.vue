@@ -22,9 +22,7 @@
                 this.cartCount = response.data.cartCount;
                 this.bottle = response.data.bottle;
                 this.setNewProgress();
-            }).catch((err) => {
-                console.log(err);
-            });
+            })
         },
         setNewProgress(){
             const progressbar = this.$refs.progressbar;

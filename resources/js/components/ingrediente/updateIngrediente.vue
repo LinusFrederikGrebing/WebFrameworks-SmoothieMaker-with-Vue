@@ -65,11 +65,7 @@ export default {
         .post(`/update/ingrediente/${this.id}`, {})
         .then((response) => {
           this.ingrediente = response.data.ingrediente;
-          console.log(this.ingrediente);
         })
-        .catch((error) => {
-          console.error(error);
-        });
     },
     updateIngrediente() {
       const config = {

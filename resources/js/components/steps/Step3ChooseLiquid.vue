@@ -110,18 +110,15 @@ export default {
     axios.get("/liquid").then((response) => { this.liquids = response.data.ingrediente; })
     axios.get("/getAktLiquid").then((response) => { 
       var response = response.data.liquidItems;
-      console.log("test");
       Object.keys(response).forEach((key) => {
         this.liquid = response[key];
         this.selectCard(this.liquid);
         this.$refs.mixerComponent.liquidAnimation(this.liquid.options.image);
       });
-    
     });
   },
   methods: {
     liquidAnimation(liquid) {
-      console.log(liquid);
       this.$refs.mixerComponent.liquidAnimation(liquid.image);
     },
     selectCard(liquid) {

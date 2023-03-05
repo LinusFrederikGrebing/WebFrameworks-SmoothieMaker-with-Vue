@@ -58,12 +58,12 @@ export default {
   },
 
   methods: {
-    clearLiquid(){
+    clearLiquid() {
       gsap.set("#innerImage, #liquidImage", {
-      opacity: 0,
-      y: "100%",
-      transformOrigin: "bottom center",
-    });
+        opacity: 0,
+        y: "100%",
+        transformOrigin: "bottom center",
+      });
     },
     clearInterval() {
       this.ctx.clearRect(0, 0, this.width, this.height);
@@ -85,11 +85,9 @@ export default {
             };
           });
         })
-      ).then((colors) => {
+      ).then(() => {
         this.sumColor = this.getSumColor();
       });
-
-      console.log(this.rgbList);
     },
     getMaxColor(img) {
       const canvas = document.createElement("canvas");
@@ -142,6 +140,7 @@ export default {
         .to(".containerMixer", { duration: 0.1, rotate: 1 })
         .repeat(30)
         .eventCallback("onComplete", () => {
+          gsap.to(".containerMixer", { duration: 0, rotate: 0 })
           this.clearInterval();
           this.juice();
         });
@@ -149,25 +148,21 @@ export default {
       // Starten Sie die Animation
     },
     liquidAnimation(image) {
-      console.log(image)
       const img = new Image();
       img.crossOrigin = "Anonymous";
       img.src = "/images/piece/" + image;
       img.onload = () => {
         const svg = document.getElementById("liquidImage");
-        setTimeout(() => {
-          let color = this.getMaxColor(img);
-          const rgb = color.split(",").map(Number);
-          console.log(rgb);
-          svg.style.backgroundColor =
-            "rgb(" + rgb[0] + "," + rgb[1] + "," + rgb[2] + ")";
+        let color = this.getMaxColor(img);
+        const rgb = color.split(",").map(Number);
+        svg.style.backgroundColor =
+          "rgb(" + rgb[0] + "," + rgb[1] + "," + rgb[2] + ")";
 
-          gsap.fromTo(
-            "#liquidImage",
-            { opacity: 0.8, y: "100%", transformOrigin: "bottom center" },
-            { duration: 3, opacity: 0.8, y: "80%", ease: "power3.out" }
-          );
-        }, 300);
+        gsap.fromTo(
+          "#liquidImage",
+          { opacity: 0.8, y: "100%", transformOrigin: "bottom center" },
+          { duration: 1, opacity: 0.8, y: "80%", ease: "power3.out" }
+        );
       };
     },
     juiceAnimation() {
@@ -192,7 +187,6 @@ export default {
     },
     getSumColor() {
       const numColors = this.rgbList.length;
-      console.log(numColors);
       // Initialisierung der Summenvariablen für die RGB-Werte
       let sumR = 0;
       let sumG = 0;

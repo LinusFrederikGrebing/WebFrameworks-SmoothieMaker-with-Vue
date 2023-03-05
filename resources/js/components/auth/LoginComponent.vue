@@ -50,14 +50,11 @@
     methods: {
       submitForm() {
         axios.post('/login', this.form)
-          .then(response => {
+          .then(() => {
             this.$router.push('/home').then(() => {
             location.reload();
             });
           })
-          .catch(error => {
-            console.log(error);
-          });
       },
     },
   };

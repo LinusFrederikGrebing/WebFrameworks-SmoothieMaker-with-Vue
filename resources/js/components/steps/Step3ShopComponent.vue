@@ -23,7 +23,8 @@
       <v-col cols="12" md="8" class="mb-5">
         <div class="item-list">
         <v-row>
-          <v-table density="compact" class="w-95 ml-3 mt-3">
+         <v-card elevation="5" class="w-95 ml-5 mt-3">
+          <v-table density="compact">
             <thead>
               <tr>
                 <th class="text-left">Image</th>
@@ -69,6 +70,7 @@
                 </tr>
             </tbody>
           </v-table>
+          </v-card>
         </v-row>
         <v-row>
            <button
@@ -80,7 +82,8 @@
           </button>
         </v-row>
         <v-row>
-          <v-table density="compact" class="w-95 ml-3">
+         <v-card elevation="5" class="w-95 ml-5 mt-3 mb-3">
+          <v-table density="compact">
             <thead>
               <tr>
                 <th class="text-left">Image</th>
@@ -116,6 +119,7 @@
                 </tr>
             </tbody>
           </v-table>
+         </v-card>
         </v-row>
       </div>   
         <v-row>
@@ -164,11 +168,11 @@ export default {
   created() {
     this.getCartContent();
     axios.get("/getAktLiquid").then((response) => { 
-      var response = response.data.liquidItems;
+      var response = response.data.liquidItems; 
       Object.keys(response).forEach((key) => {
         this.liquid = response[key];
+        this.$refs.mixerComponent.liquidAnimation(this.liquid.options.image);
       });
-      this.$refs.mixerComponent.liquidAnimation(this.liquid.options.image);
     })
   },
   beforeUnmount() {
@@ -217,7 +221,6 @@ export default {
       axios
         .post("/deleteCart/" + cart.rowId, {})
         .then((response) => {
-          console.log(response);
           if(response.data.wasLiquid == true){
             this.$refs.mixerComponent.clearLiquid();
           }
