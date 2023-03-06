@@ -171,9 +171,6 @@ export default {
           this.ingredients = response.data.ingrediente;
           this.selectedAmounts = Array(this.ingredients.length).fill(1);
         })
-        .catch((err) => {
-          console.log(err);
-        });
     },
     increaseSelectedAmount(index) {
       if (this.selectedAmounts[index] < 20) {
@@ -204,9 +201,16 @@ export default {
             this.showAlertTooMany();
           }
         })
-        .catch((error) => {
-          console.error(error);
-        });
+    },
+    getActLiquid(){
+      axios.get("/getAktLiquid").then((response) => { 
+      var response = response.data.liquidItems;
+      Object.keys(response).forEach((key) => {
+        this.liquid = response[key];
+        this.selectCard(this.liquid);
+        this.$refs.mixerComponent.liquidAnimation(this.liquid.options.image);
+      });
+    });
     },
     removeAllAlert() {
       Swal.fire({
@@ -238,13 +242,7 @@ export default {
   },
   created() {
     this.getIngredientsList("/fruits");
-    axios.get("/getAktLiquid").then((response) => { 
-      var response = response.data.liquidItems;
-      Object.keys(response).forEach((key) => {
-        this.liquid = response[key];
-        this.$refs.mixerComponent.liquidAnimation(this.liquid.options.image);
-      });
-    })
+    this.getActLiquid();
   },
 };
 </script>

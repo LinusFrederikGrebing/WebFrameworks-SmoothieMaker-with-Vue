@@ -133,13 +133,13 @@ class ShoppingCartController extends Controller
         $liquidCount = ($liquidItems->isNotEmpty()) ?  1 : 0;
         return response()->json(['cartCount' => $cartcount, 'bottle' => $bottle, 'liquidCount' => $liquidCount]);
     }
-
     public function getCartContent(Request $request)
     {
         $cart = Cart::content();
         $cartTotal = Cart::total();
         $cartSubTotal = Cart::subtotal();
-        return response()->json(['cart' => $cart, 'cartTotal' => $cartTotal, 'cartSubTotal' => $cartSubTotal]);
+        $bottle = $this->getBottle($request);
+        return response()->json(['cart' => $cart, 'cartTotal' => $cartTotal, 'cartSubTotal' => $cartSubTotal, 'bottle' => $bottle]);
     }
 
     public function getBottle(Request $request)
@@ -163,6 +163,6 @@ class ShoppingCartController extends Controller
     public function removeAll(Request $request)
     {
         Cart::destroy();
-        return response()->json(['test' => "test"]);
+        return [];
     }
 }

@@ -58,6 +58,20 @@ export default {
   },
 
   methods: {
+    showAlertSuccess(title, text) {
+      Swal.fire({
+        title: title,
+        text: text,
+        icon: "success",
+        showCancelButton: false,
+        confirmButtonColor: "#6D9E1F",
+        confirmButtonText: "Weiter!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.$router.push({ path: `/` });
+        }
+      });
+    },
     clearLiquid() {
       gsap.set("#innerImage, #liquidImage", {
         opacity: 0,
@@ -125,17 +139,15 @@ export default {
         .to("#innerImage", { duration: 1, rotate: 0 })
         .repeat(-1);
     },
-    mixAnimation() {
+    mixAnimation(amount) {
       clearInterval(this.timer);
       this.timer = setInterval(this.loop, 15);
 
       this.mixAnimationBool = true;
-      // Erstellen Sie eine neue Timeline
       const tl = gsap.timeline();
 
-      this.juiceAnimation();
+      this.juiceAnimation(amount);
       tl.play();
-      // Fügen Sie die Animation hinzu, um den Container hin und her zu wackeln
       tl.to(".containerMixer", { duration: 0.1, rotate: -1 })
         .to(".containerMixer", { duration: 0.1, rotate: 1 })
         .repeat(30)
@@ -143,9 +155,8 @@ export default {
           gsap.to(".containerMixer", { duration: 0, rotate: 0 })
           this.clearInterval();
           this.juice();
+         this.showAlertSuccess("Vielen Dank für deine Zusammenstellung!", "Klicke auf weiter um wieder zur Startseite zu gelangen!")
         });
-
-      // Starten Sie die Animation
     },
     liquidAnimation(image) {
       const img = new Image();
@@ -161,11 +172,12 @@ export default {
         gsap.fromTo(
           "#liquidImage",
           { opacity: 0.8, y: "100%", transformOrigin: "bottom center" },
-          { duration: 1, opacity: 0.8, y: "80%", ease: "power3.out" }
+          { duration: 1, opacity: 0.8, y: "88%", ease: "power3.out" }
         );
       };
     },
-    juiceAnimation() {
+    juiceAnimation(amount) {
+      const amountInPercent = 100. - 2.6 * amount;
       this.getRGBList();
       const svg = document.getElementById("innerImage");
       const svgDoc = svg.contentDocument;
@@ -177,11 +189,11 @@ export default {
         this.darkerRgbColor = `rgb(${darkerRgbArray.join(",")})`;
         for (let i = 0; i < paths.length; i++) {
           paths[i].style.fill = this.darkerRgbColor;
-        }
+        }  
         gsap.fromTo(
           "#innerImage",
           { opacity: 1, y: "100%", transformOrigin: "bottom center" },
-          { duration: 10, opacity: 1, y: "35%", ease: "power3.out" }
+          { duration: 10, opacity: 1, y: amountInPercent+"%", ease: "power3.out" }
         );
       }, 300);
     },

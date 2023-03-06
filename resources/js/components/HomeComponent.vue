@@ -155,9 +155,6 @@ export default {
         .then((response) => {
           this.ingredients = response.data.ingrediente;
         })
-        .catch((err) => {
-          console.log(err);
-        });
     },
   },
 };

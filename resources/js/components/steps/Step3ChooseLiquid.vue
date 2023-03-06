@@ -107,8 +107,15 @@ export default {
     },
   },
   mounted() {
-    axios.get("/liquid").then((response) => { this.liquids = response.data.ingrediente; })
-    axios.get("/getAktLiquid").then((response) => { 
+    this.getLiquidList();
+    this.getActLiquid();
+  },
+  methods: {
+    getLiquidList(){
+      axios.get("/liquid").then((response) => { this.liquids = response.data.ingrediente; })
+    },
+    getActLiquid(){
+      axios.get("/getAktLiquid").then((response) => { 
       var response = response.data.liquidItems;
       Object.keys(response).forEach((key) => {
         this.liquid = response[key];
@@ -116,8 +123,7 @@ export default {
         this.$refs.mixerComponent.liquidAnimation(this.liquid.options.image);
       });
     });
-  },
-  methods: {
+    },
     liquidAnimation(liquid) {
       this.$refs.mixerComponent.liquidAnimation(liquid.image);
     },
