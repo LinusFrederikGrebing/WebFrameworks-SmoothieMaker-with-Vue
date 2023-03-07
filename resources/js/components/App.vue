@@ -1,7 +1,10 @@
 <template>
-    <div class="content-container">
-        <router-view />
-    </div> 
+    <div class="bg-color1">
+        <v-card elevation="24" class="content-container ml-auto mr-auto">
+            <router-view />
+        </v-card> 
+    </div>
+   
     <FooterTemplate />
 </template>
 
@@ -18,5 +21,7 @@ export default {
 <style>
 .content-container {
     min-height: 840px;
+    width: 80%;
 }
+
 </style>

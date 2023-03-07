@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="text-center my-4 mx-4">
-      <h2 class="font-weight-bold">
+      <h2 class="font-weight-bold mt-8">
         Wähle jetzt abschließend deine Flüssigkeit!
       </h2>
     </div>
@@ -18,6 +18,8 @@
         :key="liquid.id"
       >
         <v-card
+          @mouseenter="hoverEnter($event)"
+          @mouseleave="hoverLeave($event)" 
           :class="{ 'selected-card': liquid.id === selectedCard }"
           class="my-2 mx-2 card-color"
           elevation="10"
@@ -39,7 +41,7 @@
             <div class="d-flex align-items-center mb-2">
               <button
                 color="success"
-                class="ml-4 mr-4 flex-grow-1 grey-active-bg custom-btn"
+                class="ml-4 mr-4 flex-grow-1 green-bg custom-btn"
                 @click="selectCard(liquid)"
               >
                 Wählen!
@@ -81,6 +83,7 @@
 </template>
 
 <script>
+import gsap from "gsap";
 import MixerComponent from "../layouts/MixerComponent.vue";
 import ProgressbarComponent from "../layouts/ProgressbarComponent.vue";
 import SizeComponent from "../layouts/SizeComponent.vue";
@@ -111,6 +114,18 @@ export default {
     this.getActLiquid();
   },
   methods: {
+    hoverEnter(obj) {
+      gsap.to(obj.target, {
+        duration: 0.2,
+        scale: 1.05,
+        y: 0,
+        x: 0,
+        opacity: 1,
+      });
+    },
+    hoverLeave(obj) {
+      gsap.to(obj.target, { duration: 0.2, scale: 1, y: 0, x: 0, opacity: 1 });
+    },
     getLiquidList(){
       axios.get("/liquid").then((response) => { this.liquids = response.data.ingrediente; })
     },

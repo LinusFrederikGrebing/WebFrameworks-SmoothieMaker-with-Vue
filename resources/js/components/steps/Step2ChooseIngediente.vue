@@ -34,7 +34,10 @@
             md="3"
             lg="auto"
           >
-            <v-card elevation="5" class="mx-auto" max-width="400">
+            <v-card  
+            @mouseenter="hoverEnter($event)"
+            @mouseleave="hoverLeave($event)" 
+            :id="'ingrediente-card'+ index"  elevation="5" class="mx-auto ingrediente-item" max-width="400">
              <div>
               <v-img
                 class="white--text align-end ml-auto mr-auto mt-1 mb-1"
@@ -43,14 +46,13 @@
                 :src="'/images/piece/' + ingrediente.image"
               >
               </v-img>
-              <div class="d-flex justify-center">
-                <hr>
-                <p class="font-weight-bold ml-1 mr-1">
+              <div class="text-center">
+                 <p class="font-weight-bold ml-1 mr-1">
                   {{ ingrediente.name }}:
                 </p>
-                <hr>
                 <p>{{ ingrediente.price }}€ / 50g</p>
               </div>
+               
                 <v-form enctype="multipart/form-data" method="post">
                   <div class="d-flex align-items-center mb-2">
                     <button
@@ -115,6 +117,7 @@
 </template>
 
 <script>
+import gsap from "gsap";
 import MixerComponent from "../layouts/MixerComponent.vue";
 import ProgressbarComponent from "../layouts/ProgressbarComponent.vue";
 import SizeComponent from "../layouts/SizeComponent.vue";
@@ -164,12 +167,45 @@ export default {
         }
       }
     },
+    hoverEnter(obj) {
+      gsap.to(obj.target, {
+        duration: 0.2,
+        scale: 1.05,
+        y: 0,
+        x: 0,
+        opacity: 1,
+      });
+    },
+    hoverLeave(obj) {
+      gsap.to(obj.target, { duration: 0.2, scale: 1, y: 0, x: 0, opacity: 1 });
+    },
+    enterGrid() {
+      for (let i = 0; i < this.ingredients.length; i++) {
+          let element = document.getElementById("ingrediente-card" + i)
+            gsap.fromTo(
+              element,
+              {
+                y: -1000,
+                x: -1000,
+              },
+              {
+                delay: Math.random() / 2,
+                duration: 2,
+                y: 0,
+                x: 0,
+              }
+            );
+      }
+    },
     getIngredientsList(url) {
       axios
         .get(url)
         .then((response) => {
           this.ingredients = response.data.ingrediente;
           this.selectedAmounts = Array(this.ingredients.length).fill(1);
+          setTimeout(() => {
+            this.enterGrid()
+          }, 0);
         })
     },
     increaseSelectedAmount(index) {
@@ -241,9 +277,18 @@ export default {
     },
   },
   created() {
-    this.getIngredientsList("/fruits");
     this.getActLiquid();
   },
+  mounted() {
+    this.getIngredientsList("/fruits");
+
+  },
+  watch: {
+    //The Watcher "color" makes sure the color property is update on change
+    ingredients() {
+      this.enterGrid();
+    },
+  }
 };
 </script>
 <style scoped>

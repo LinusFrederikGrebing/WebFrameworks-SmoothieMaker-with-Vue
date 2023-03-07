@@ -177,7 +177,7 @@ export default {
       };
     },
     juiceAnimation(amount) {
-      const amountInPercent = 100. - 2.6 * amount;
+      const amountInPercent = 87. - 2.6 * amount;
       this.getRGBList();
       const svg = document.getElementById("innerImage");
       const svgDoc = svg.contentDocument;

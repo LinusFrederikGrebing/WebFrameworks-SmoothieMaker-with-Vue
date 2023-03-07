@@ -184,14 +184,15 @@ export default {
       this.$router.push({ path: "/chooseLiquid" });
     },
     mixAnimation() {
-      console.log(this.liquidContent);
-      console.log(this.ingredienteContent);
       const ingredienteContentSum = this.ingredienteContent.reduce((sum, ingredient) => sum + ingredient.qty, 0);
       if(ingredienteContentSum == this.bottle.amount && this.liquidContent.length == 1){
         this.$refs.mixerComponent.mixAnimation(this.bottle.amount);
       } else {
-        const missingIngredients = this.bottle.amount - ingredienteContentSum;
-        var errorMessage = `Füge noch ${missingIngredients} Zutaten hinzu, um deine Zusammenstellung abzuschließen. `;
+        var errorMessage = "";
+        if(ingredienteContentSum !== this.bottle.amount) {
+          const missingIngredients = this.bottle.amount - ingredienteContentSum;
+          errorMessage = `Füge noch ${missingIngredients} Zutaten hinzu, um deine Zusammenstellung abzuschließen. `;
+        }
         if(this.liquidContent.length == 0) {
           errorMessage =  errorMessage + "Beachte, dass eine Flüssigkeit ausgewühlt sein muss!"
         }
