@@ -1,20 +1,15 @@
 <template>
-  <v-parallax height="3000" src="/images/background/bg3.svg">
+  <v-parallax height="3000" width="100%" src="/images/background/bg3.svg">
     <v-container class="container">
       <v-row class="seperate">
         <v-col
           cols="6"
-          md="12"
+          md="10"
           xl="6"
-          sm="12"
-
-          style="
-            transform: scale(1) perspective(1040px) rotateY(21deg)
-              rotateX(-2deg) rotate(-2deg);
-          "
+          sm="10"
         >
-          <v-card elevation="10">
-            <h1 class="mx-5 my-5 font-weight-bold">Smoothiemaker</h1>
+          <div elevation="10">
+            <h1 class="mx-5 mt-5 font-weight-bold">Smoothiemaker</h1>
             <h5 class="mx-5 my-5">
               Stelle Dir jetzt deinen perfekten Smoothie zusammen! Deine Auswahl
               erstreckt sich aus einer Vielzahl verschiedener Zutaten. Es gibt
@@ -27,13 +22,13 @@
             <button class="mx-5 mb-5 green-bg custom-btn" @click="showInhalt()"
               >Beginne mit der Zusammenstellung</button
             >
-          </v-card>
+          </div>
         </v-col>
         <v-col
           cols="6"
           xl="6"
-          md="12"
-          sm="12"
+          md="10"
+          sm="10"
           style="
             transform: scale(1) perspective(1040px) rotateY(-11deg)
               rotateX(2deg) rotate(2deg);
@@ -44,7 +39,7 @@
           </v-card>
         </v-col>
       </v-row>
-      <v-card elevation="10" class="seperate my-8 mx-8">
+      <div elevation="10" class="seperate my-8 mx-8">
         <v-row id="stepsheader" class="my-6 mx-6">
           <div class="ml-auto mr-auto mt-4">
             <h2 class="text-center font-weight-bold">
@@ -90,9 +85,9 @@
             </div>
           </v-col>
         </v-row>
-      </v-card>
+      </div>
       <div id="tipsheader" class="seperate">
-        <v-card
+        <div
           elevation="10"
           class="d-flex flex-column justify-center text-center my-6 mx-6"
         >
@@ -103,7 +98,7 @@
               unseren Top-Vorschlägen inspirieren!
             </p>
           </div>
-        </v-card>
+        </div>
         <v-row>
           <v-col cols="12">
             <v-divider></v-divider>

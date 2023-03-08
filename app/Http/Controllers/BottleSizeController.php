@@ -15,12 +15,10 @@ class BottleSizeController extends Controller
         $bottles = BottleSize::all();
         return response()->json(['bottles' => $bottles ]);
     }
-
     public function showInhalt(Request $request, $bottleID)
     { 
         $bottle = BottleSize::findOrFail($bottleID);
         $request->session()->put('bottle', $bottle);
-        $bottleSes = $request->session()->get('bottle');
-        return response()->json(['bottles' => $bottleSes  ]);
+        return response()->json([]);
     }
 }

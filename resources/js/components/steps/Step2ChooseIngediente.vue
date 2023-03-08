@@ -34,39 +34,45 @@
             md="3"
             lg="auto"
           >
-            <v-card  
-            @mouseenter="hoverEnter($event)"
-            @mouseleave="hoverLeave($event)" 
-            :id="'ingrediente-card'+ index"  elevation="5" class="mx-auto ingrediente-item" max-width="400">
-             <div>
-              <v-img
-                class="white--text align-end ml-auto mr-auto mt-1 mb-1"
-                height="60px"
-                width="60px"
-                :src="'/images/piece/' + ingrediente.image"
-              >
-              </v-img>
-              <div class="text-center">
-                 <p class="font-weight-bold ml-1 mr-1">
-                  {{ ingrediente.name }}:
-                </p>
-                <p>{{ ingrediente.price }}€ / 50g</p>
-              </div>
-               
+            <v-card
+              @mouseenter="hoverEnter($event)"
+              @mouseleave="hoverLeave($event)"
+              :id="'ingrediente-card' + index"
+              elevation="5"
+              class="mx-auto ingrediente-item"
+              max-width="400"
+            >
+              <div>
+                <v-img
+                  class="white--text align-end ml-auto mr-auto mt-1 mb-1"
+                  height="60px"
+                  width="60px"
+                  :src="'/images/piece/' + ingrediente.image"
+                >
+                </v-img>
+                <div class="text-center">
+                  <p class="font-weight-bold ml-1 mr-1">
+                    {{ ingrediente.name }}:
+                  </p>
+                  <p>{{ ingrediente.price }}€ / 50g</p>
+                </div>
+
                 <v-form enctype="multipart/form-data" method="post">
                   <div class="d-flex align-items-center mb-2">
                     <button
                       class="w-30px"
                       @click.prevent="increaseSelectedAmount(index)"
-                      ><v-icon>mdi-plus</v-icon></button
                     >
+                      <v-icon>mdi-plus</v-icon>
+                    </button>
                     <div width="15" :complete="false">
                       {{ selectedAmounts[index] }}
                     </div>
                     <button
                       class="w-30px"
                       @click.prevent="decreaseSelectedAmount(index)"
-                      ><v-icon>mdi-minus</v-icon>
+                    >
+                      <v-icon>mdi-minus</v-icon>
                     </button>
                     <button
                       class="white--text bg-white w-40px"
@@ -81,7 +87,7 @@
                     </button>
                   </div>
                 </v-form>
-            </div>
+              </div>
             </v-card>
           </v-col>
         </v-row>
@@ -108,7 +114,7 @@
       </v-col>
       <v-col cols="12" md="4">
         <div max-width="400">
-          <MixerComponent ref="mixerComponent" />  
+          <MixerComponent ref="mixerComponent" />
           <ProgressbarComponent ref="progressComponent" />
         </div>
       </v-col>
@@ -135,19 +141,21 @@ export default {
         {
           icon: "/images/fruitsicon.png",
           title: "Früchte",
-          url: "/fruits",
+          list: "fruitsList",
           active: true,
         },
         {
           icon: "/images/vegetablesicon.png",
           title: "Gemüse",
-          url: "/vegetables",
+          list: "vegetablesList",
           active: false,
-        }
+        },
       ],
       ingredients: [],
       selectedAmounts: [],
       liquid: null,
+      vegetablesList: null,
+      fruitsList: null,
     };
   },
   beforeUnmount() {
@@ -155,7 +163,7 @@ export default {
   },
   methods: {
     handleCategoryClick(category) {
-      this.getIngredientsList(category.url);
+      this.changeIngredientsList(category.list);
       this.setCategoriesActive(category);
     },
     setCategoriesActive(category) {
@@ -171,42 +179,39 @@ export default {
       gsap.to(obj.target, {
         duration: 0.2,
         scale: 1.05,
-        y: 0,
-        x: 0,
-        opacity: 1,
       });
     },
     hoverLeave(obj) {
-      gsap.to(obj.target, { duration: 0.2, scale: 1, y: 0, x: 0, opacity: 1 });
+      gsap.to(obj.target, { duration: 0.2, scale: 1 });
     },
     enterGrid() {
       for (let i = 0; i < this.ingredients.length; i++) {
-          let element = document.getElementById("ingrediente-card" + i)
-            gsap.fromTo(
-              element,
-              {
-                y: -1000,
-                x: -1000,
-              },
-              {
-                delay: Math.random() / 2,
-                duration: 2,
-                y: 0,
-                x: 0,
-              }
-            );
+        let element = document.getElementById("ingrediente-card" + i);
+        gsap.fromTo(
+          element,
+          {
+            y: -1000,
+            x: -1000,
+          },
+          {
+            delay: Math.random() / 2,
+            duration: 2,
+            y: 0,
+            x: 0,
+          }
+        );
       }
     },
-    getIngredientsList(url) {
-      axios
-        .get(url)
-        .then((response) => {
-          this.ingredients = response.data.ingrediente;
-          this.selectedAmounts = Array(this.ingredients.length).fill(1);
-          setTimeout(() => {
-            this.enterGrid()
-          }, 0);
-        })
+    getIngredientsList() {
+      axios.get('/getIngredientsList').then((response) => {
+        this.fruitsList = response.data.ingredientsList.filter((cartItem) => cartItem.type === "fruits");
+        this.vegetablesList =response.data.ingredientsList.filter((cartItem) => cartItem.type === "vegetables");
+        this.ingredients = this.fruitsList;
+        this.selectedAmounts = Array(this.ingredients.length).fill(1);
+      });
+    },
+    changeIngredientsList(list){
+        this.ingredients = this[list];
     },
     increaseSelectedAmount(index) {
       if (this.selectedAmounts[index] < 20) {
@@ -225,28 +230,27 @@ export default {
       this.$router.push({ path: "/chooseBottleSize" });
     },
     addToCart(ingredient, amount) {
-      axios
-        .post(`/addCart/${ingredient.id}`, { amount })
-        .then((response) => {
-          if (response.data.stored) {
-            const { image, reqCount } = response.data;
-            this.$refs.mixerComponent.setImg(image, reqCount);
-            this.$refs.sizeComponent.getCartCount();
-            this.$refs.progressComponent.getProgress();
-          } else {
-            this.showAlertTooMany();
-          }
-        })
-    },
-    getActLiquid(){
-      axios.get("/getAktLiquid").then((response) => { 
-      var response = response.data.liquidItems;
-      Object.keys(response).forEach((key) => {
-        this.liquid = response[key];
-        this.selectCard(this.liquid);
-        this.$refs.mixerComponent.liquidAnimation(this.liquid.options.image);
+      axios.post(`/addCart/${ingredient.id}`, { amount }).then((response) => {
+        if (response.data.stored) {
+          this.$refs.mixerComponent.setImg(response.data.image, amount);
+          this.$refs.sizeComponent.getCartCount();
+          this.$refs.progressComponent.getProgress();
+        } else {
+          this.showAlertTooMany();
+        }
       });
-    });
+    },
+    getActLiquid() {
+      axios.get("/getCurrentLiquid").then((response) => {
+        if (Object.keys(response.data).length === 0) {
+          return;
+        }
+        var response = response.data.liquidItems;
+        Object.keys(response).forEach((key) => {
+          this.liquid = response[key];
+          this.$refs.mixerComponent.liquidAnimation(this.liquid.options.image);
+        });
+      });
     },
     removeAllAlert() {
       Swal.fire({
@@ -264,7 +268,6 @@ export default {
         }
       });
     },
-
     showAlertTooMany() {
       Swal.fire({
         title: "Du hast zu viele Zutaten ausgewählt!",
@@ -276,19 +279,17 @@ export default {
       });
     },
   },
-  created() {
+  mounted() {
+    this.getIngredientsList();
     this.getActLiquid();
   },
-  mounted() {
-    this.getIngredientsList("/fruits");
-
-  },
   watch: {
-    //The Watcher "color" makes sure the color property is update on change
     ingredients() {
-      this.enterGrid();
+      setTimeout(() => {
+        this.enterGrid();
+      }, 0);
     },
-  }
+  },
 };
 </script>
 <style scoped>
@@ -296,10 +297,10 @@ p {
   margin-bottom: 0;
 }
 .w-30px {
-  width: 39px
+  width: 39px;
 }
 .w-40px {
-  width: 60px
+  width: 60px;
 }
 .item-list {
   height: 42em;

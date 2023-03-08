@@ -109,6 +109,9 @@ export default {
       };
     },
   },
+  beforeUnmount() {
+    this.$refs.mixerComponent.clearInterval();
+  },
   mounted() {
     this.getLiquidList();
     this.getActLiquid();
@@ -127,14 +130,16 @@ export default {
       gsap.to(obj.target, { duration: 0.2, scale: 1, y: 0, x: 0, opacity: 1 });
     },
     getLiquidList(){
-      axios.get("/liquid").then((response) => { this.liquids = response.data.ingrediente; })
+      axios.get("/liquid").then((response) => { this.liquids = response.data.ingredientsList; })
     },
     getActLiquid(){
-      axios.get("/getAktLiquid").then((response) => { 
-      var response = response.data.liquidItems;
+      axios.get("/getCurrentLiquid").then((response) => {
+      if (Object.keys(response.data).length === 0) {
+        return;
+      }
+      var response = response.data.liquidItems;  
       Object.keys(response).forEach((key) => {
         this.liquid = response[key];
-        this.selectCard(this.liquid);
         this.$refs.mixerComponent.liquidAnimation(this.liquid.options.image);
       });
     });
@@ -149,7 +154,7 @@ export default {
     },
     showStep3() {
       this.$router.push({ path: "/shop" });
-      if(this.liquid !== []) {
+      if (Object.keys(this.liquid).length !== 0) {
         this.addToCart(this.liquid, 1);
       }
     },
@@ -160,7 +165,7 @@ export default {
       sessionStorage.setItem("ingredientsArray", JSON.stringify([]));
     },
     addToCart(ingredient, amount) {
-      axios.post(`/addLiquidToCart/${ingredient.id}`, { amount });
+      axios.post(`/addCart/${ingredient.id}`, { amount });
     },
   },
 };

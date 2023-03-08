@@ -24,7 +24,7 @@
           <v-row>
             <div class="d-flex">
               <img
-                class="size-image"
+                class="size-image mt-4"
                 :src="'/images/' + bottle.image"
                 :alt="bottle.name"
                 style="width: 17em; height: 100%; object-fit: contain"
@@ -73,18 +73,14 @@ export default {
       gsap.to(obj.target, {
         duration: 0.2,
         scale: 1.05,
-        y: 0,
-        x: 0,
-        opacity: 1,
       });
     },
     hoverLeave(obj) {
-      gsap.to(obj.target, { duration: 0.2, scale: 1, y: 0, x: 0, opacity: 1 });
+      gsap.to(obj.target, { duration: 0.2, scale: 1 });
     },
     enterGrid() {
       for (let i = 1; i <= this.bottles.length; i++) {
         let element = document.getElementById("bottle-card" + i);
-        console.log(element);
         let start = 1400;
         if(i % 2 == 0) { start = -1400 } 
         gsap.fromTo(

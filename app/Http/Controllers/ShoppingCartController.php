@@ -10,159 +10,125 @@ use App\Models\Ingrediente;
 
 class ShoppingCartController extends Controller
 {
-    public function storeCart(Request $request, $ingredienteID)
+    public function storeIngredienteToCart(Request $request, $ingredienteID)
     {
         $ingrediente = Ingrediente::findOrFail($ingredienteID); 
-        $bottle = $this->getBottle($request);
-        $liquidItems = Cart::content()->filter(function($item) {
-            return $item->options->type == 'liquid';
-        });
-        $amount = ($liquidItems->isNotEmpty()) ? $bottle->amount + 1 : $bottle->amount;
-        if ((Cart::count() + $request->amount) <= $amount) {
-            Cart::add([
-                'id' => $ingrediente->id,
-                'name' => $ingrediente->name,
-                'qty' => $request->amount,
-                'price' => $ingrediente->price,
-                'options' => [
-                    'image' => $ingrediente->image,
-                    'type' =>  $ingrediente->type,
-                ],
-            ]);
-            return response()->json([
-                'stored' => true,
-                'image' => $ingrediente->image,
-                'count' => Cart::count(),
-                'reqCount' => $request->amount,
-                'amount' => $bottle->amount,
-            ]);
-        }
-        return response()->json(['stored' => false]);
-    }
-    
-    public function storeLiquidToCart(Request $request, $ingredienteID)
-    {
-        $ingrediente = Ingrediente::findOrFail($ingredienteID);
-        $liquidItems = Cart::content()->filter(function($item) {
-            return $item->options->type == 'liquid';
-        });
-        foreach ($liquidItems as $item) { 
-            Cart::remove($item->rowId);
-        }
-        Cart::add([
-            'id' => $ingrediente->id,
-            'name' => $ingrediente->name,
-            'qty' => $request->amount,
-            'price' => $ingrediente->price,
-            'options' => [
-                'image' => $ingrediente->image,
-                'type' =>  $ingrediente->type,
-            ],
-        ]);
-        return response()->json(['stored' => true]);
-    }
 
+        $bottle = $this->getBottle($request);
+
+        $liquidItems = $this->getCurrentLiquidItem();
+          
+        $total_amount = ($liquidItems->isNotEmpty()) ? $bottle->amount + 1 : $bottle->amount;
+    
+        if($ingrediente->type == 'liquid'){
+            foreach ($liquidItems as $item) { 
+                Cart::remove($item->rowId);
+            }
+            $this->addToCart($ingrediente, $request->amount);
+        } else {
+            $can_add_to_cart = (Cart::count() + $request->amount) <= $total_amount;
+            if($can_add_to_cart){
+               $this->addToCart($ingrediente, $request->amount);
+            } else {
+               return response()->json(['stored' => false]);
+            }
+        }
+        return response()->json(['stored' => true, 'image' => $ingrediente->image]);
+    }
     /**
      * Delete item from the cart
      */
     public function deleteCart(Request $request, $ingredienteID)
     {
-        // Get the bottle and item details
-        $bottle = $this->getBottle($request);
         $item = Cart::get($ingredienteID);
-        // Remove the item from the cart
-       
-        if($item->options->type == 'liquid'){
-            $wasLiquid = true;
-        } else {
-            $wasLiquid = false;
-        }
-         Cart::remove($ingredienteID);
-        // Return response with updated details
+        $wasLiquid = ($item->options->type == 'liquid') ? true : false;
         $image = $item->options->image;
-        $count = Cart::count();
-        $amount = $bottle->amount; 
-      
-        return response()->json(['image' => $image, 'count' => $count, 'amount' => $amount, 'wasLiquid' => $wasLiquid]);
+        Cart::remove($ingredienteID);
+        return response()->json(['image' => $image, 'wasLiquid' => $wasLiquid]);
     }
-
-    /**
-     * Remove all items from the cart
-     */
-    public function removeAllFromCart(Request $request)
-    {
-        Cart::destroy();
-    }
-
     /**
      * Increase item quantity in the cart
      */
     public function increaseCardQty(Request $request, $ingredienteID)
     {   
         $bottle = $this->getBottle($request);
-        $liquidItems = Cart::content()->filter(function($item) {
-            return $item->options->type == 'liquid';
-        });
-        $amount = ($liquidItems->isNotEmpty()) ? $bottle->amount + 1 : $bottle->amount;
+        $liquidItems = $this->getCurrentLiquidItem();
+        $total_amount = ($liquidItems->isNotEmpty()) ? $bottle->amount + 1 : $bottle->amount;
    
-        if (Cart::count() < $amount) {
-            $id = Cart::get($ingredienteID)->id;
-            $newqty = Cart::get($ingredienteID)->qty + 1;
-            Cart::update($ingredienteID, $newqty); // Will update the quantity
-            return response()->json(['stored' => true, 'image' => Cart::get($ingredienteID)->options->image, 'count' => Cart::count(), 'newqty' => $newqty, 'amount' => $amount, 'id' => $id]);
+        if (Cart::count() < $total_amount) {
+            Cart::update($ingredienteID, Cart::get($ingredienteID)->qty + 1); 
+            return response()->json(['stored' => true, 'image' => Cart::get($ingredienteID)->options->image]);
         }
         return response()->json(['stored' => false]);
     }
     public function decreaseCardQty(Request $request, $ingredienteID)
     {
-        $bottle = $this->getBottle($request);
-        $image = Cart::get($ingredienteID)->options->image;
-        $id = Cart::get($ingredienteID)->id;
-        $count = Cart::count() - 1;
-        $newqty = Cart::get($ingredienteID)->qty - 1;
-        Cart::update($ingredienteID, $newqty); // Will update the quantity
-        return response()->json(['image' => $image, 'count' => $count, 'newqty' => $newqty, 'amount' => $bottle->amount, 'id' => $id]);
+        $cart_item =  Cart::get($ingredienteID);
+        $image = $cart_item->options->image;
+        $newqty = $cart_item->qty - 1;
+        Cart::update($ingredienteID, $newqty); 
+        return response()->json(['image' => $image, 'newqty' => $newqty]);
     }
-    public function getCartCount(Request $request)
+    public function removeAllFromCartList(Request $request)
+    {
+        Cart::destroy();
+        return [];
+    }
+    public function getCurrentCartTotal(Request $request)
+    {
+        $cartTotal = Cart::total();
+        $cartSubTotal = Cart::subtotal();
+        return response()->json(['cartTotal' => $cartTotal, 'cartSubTotal' => $cartSubTotal]);
+    }
+    public function getCurrentCartCount(Request $request)
     {
         $bottle = $this->getBottle($request);
-        $liquidItems = Cart::content()->filter(function($item) {
-            return $item->options->type == 'liquid';
-        });
+        $liquidItems = $this->getCurrentLiquidItem();
         $cartcount = ($liquidItems->isNotEmpty()) ?  Cart::count() - 1 : Cart::count();
         $liquidCount = ($liquidItems->isNotEmpty()) ?  1 : 0;
         return response()->json(['cartCount' => $cartcount, 'bottle' => $bottle, 'liquidCount' => $liquidCount]);
     }
-    public function getCartContent(Request $request)
+    public function getCurrentLiquid(Request $request)
+    {
+        $liquidItems = Cart::content()->filter(function($item) {
+            return $item->options->type === 'liquid';
+        });
+        return response()->json(['liquidItems' => $liquidItems], 200);
+    }
+    public function getCurrentCartContent(Request $request)
     {
         $cart = Cart::content();
-        $cartTotal = Cart::total();
-        $cartSubTotal = Cart::subtotal();
-        $bottle = $this->getBottle($request);
-        return response()->json(['cart' => $cart, 'cartTotal' => $cartTotal, 'cartSubTotal' => $cartSubTotal, 'bottle' => $bottle]);
+        return response()->json(['cart' => $cart]);
     }
-
-    public function getBottle(Request $request)
+    public function getCurrentBottle(Request $request)
+    {
+        $bottle = $this->getBottle($request);
+        return response()->json(['bottle' => $bottle]);
+    }
+    private function getBottle(Request $request)
     {
         if ($request->session()->get('bottle') == true) {
             return $request->session()->get('bottle');
         } else {
             return BottleSize::findOrFail("4");
         }
-
     }
-
-    public function getLiquid(Request $request)
-    {
-        $liquidItems = collect(Cart::content())->filter(function($item) {
+    private function getCurrentLiquidItem(){
+        return Cart::content()->filter(function($item) {
             return $item->options->type == 'liquid';
         });
-        return response()->json(compact('liquidItems'));
     }
-
-    public function removeAll(Request $request)
-    {
-        Cart::destroy();
-        return [];
+    
+    private function addToCart($ingrediente, $amount){
+        Cart::add([
+            'id' => $ingrediente->id,
+            'name' => $ingrediente->name,
+            'qty' => $amount,
+            'price' => $ingrediente->price,
+            'options' => [
+                'image' => $ingrediente->image,
+                'type' =>  $ingrediente->type,
+            ],
+        ]);
     }
 }

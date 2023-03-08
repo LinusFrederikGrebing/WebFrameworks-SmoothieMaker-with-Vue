@@ -25,41 +25,28 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 //Bottle-Size-Routes
 Route::get('/schritt1/{bottle}', [App\Http\Controllers\BottleSizeController::class, 'showInhalt'])->name('showInhalt');
+Route::get('/bottleSize', [App\Http\Controllers\BottleSizeController::class, 'showBottleSizes']);
 
 //Ingrediente-Routes
-Route::get('/custom/fruits', [App\Http\Controllers\IngredienteController::class, 'showFruits'])->name('showFruits');
-Route::get('/custom/veggie', [App\Http\Controllers\IngredienteController::class, 'showVeggie'])->name('showVeggie');
-Route::get('/custom/liquids', [App\Http\Controllers\IngredienteController::class, 'showLiquids'])->name('showLiquids');
 Route::get('/create', [App\Http\Controllers\IngredienteController::class, 'create'])->name('create');
 Route::post('/delete/ingrediente/{ingrediente}', [App\Http\Controllers\IngredienteController::class, 'deleteIngediengte'])->name('deleteZutat');
 Route::post('/updated/ingrediente/{ingrediente}', [App\Http\Controllers\IngredienteController::class, 'updateIngrediente']);
 Route::post('/update/ingrediente/{ingrediente}', [App\Http\Controllers\IngredienteController::class, 'showUpdateField'])->name('update');
+Route::post('/create/ingrediente', [App\Http\Controllers\IngredienteController::class, 'store']);
+Route::get('/getIngredientsList', [App\Http\Controllers\IngredienteController::class, 'getIngredientsList']);
+Route::get('/liquid', [App\Http\Controllers\IngredienteController::class, 'getLiquidList']);
 
 //ShoppingCard-Routes
-Route::post('/addCart/{ingredienteID}', [App\Http\Controllers\ShoppingCartController::class, 'storeCart'])->name('storeInCart');
 Route::post('/deleteCart/{carditem}', [App\Http\Controllers\ShoppingCartController::class, 'deleteCart'])->name('deleteCart');
-Route::get('/removeAll', [App\Http\Controllers\ShoppingCartController::class, 'removeAllFromCard'])->name('removeAll');
 Route::post('/increaseCardQty/{carditem}', [App\Http\Controllers\ShoppingCartController::class, 'increaseCardQty'])->name('increaseCardQty');
 Route::post('/decreaseCardQty/{carditem}', [App\Http\Controllers\ShoppingCartController::class, 'decreaseCardQty'])->name('decreaseCardQty');
-Route::get('/showCard', [App\Http\Controllers\ShoppingCartController::class, 'showCard'])->name('showCard');
-
-
-
-//Route::get('/cart/count',  [App\Http\Controllers\ShoppingCartController::class, 'getCartCount']);
-Route::get('/cart/count',  [App\Http\Controllers\ShoppingCartController::class, 'getCartCount']);
-Route::get('/fruits', [App\Http\Controllers\IngredienteController::class, 'getFruits']);
-Route::get('/vegetables', [App\Http\Controllers\IngredienteController::class, 'getVegetables']);
-Route::get('/liquid', [App\Http\Controllers\IngredienteController::class, 'getLiquid']);
-Route::get('/cartContent', [App\Http\Controllers\ShoppingCartController::class, 'getCartContent']);
-Route::get('/removeAll', [App\Http\Controllers\ShoppingCartController::class, 'removeAll']);
-Route::get('/bottleSize', [App\Http\Controllers\BottleSizeController::class, 'showBottleSizes']);
-
-
-Route::post('/create/ingrediente', [App\Http\Controllers\IngredienteController::class, 'store']);
-Route::post('/addCart/{ingrediente}', [App\Http\Controllers\ShoppingCartController::class, 'storeCart']);
-
-Route::get('/getAktLiquid', [App\Http\Controllers\ShoppingCartController::class, 'getLiquid']);
-Route::post('/addLiquidToCart/{ingrediente}', [App\Http\Controllers\ShoppingCartController::class, 'storeLiquidToCart']);
+Route::get('/cart/count', [App\Http\Controllers\ShoppingCartController::class, 'getCurrentCartCount']);
+Route::get('/cartContent', [App\Http\Controllers\ShoppingCartController::class, 'getCurrentCartContent']);
+Route::get('/cartTotal', [App\Http\Controllers\ShoppingCartController::class, 'getCurrentCartTotal']);
+Route::post('/addCart/{ingrediente}', [App\Http\Controllers\ShoppingCartController::class, 'storeIngredienteToCart']);
+Route::get('/removeAll', [App\Http\Controllers\ShoppingCartController::class, 'removeAllFromCartList']);
+Route::get('/getCurrentLiquid', [App\Http\Controllers\ShoppingCartController::class, 'getCurrentLiquid']);
+Route::get('/getCurrentBottle', [App\Http\Controllers\ShoppingCartController::class, 'getCurrentBottle']);
 
 
 // needed to refer to the vue router

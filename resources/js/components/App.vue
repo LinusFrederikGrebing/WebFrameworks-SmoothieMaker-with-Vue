@@ -1,11 +1,10 @@
 <template>
-    <div class="bg-color1">
+    <div>
         <v-card elevation="24" class="content-container ml-auto mr-auto">
             <router-view />
         </v-card> 
     </div>
-   
-    <FooterTemplate />
+     <FooterTemplate />
 </template>
 
 <script>
@@ -21,7 +20,7 @@ export default {
 <style>
 .content-container {
     min-height: 840px;
-    width: 80%;
+    width: 90%;
 }
 
 </style>

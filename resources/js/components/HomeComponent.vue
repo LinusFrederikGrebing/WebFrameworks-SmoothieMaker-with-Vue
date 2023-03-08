@@ -50,7 +50,7 @@
           <v-card class="mx-auto mb-4" max-width="400">
             <v-img
               class="white--text align-end"
-              :src="'/images/' + ingrediente.image"
+              :src="'/images/piece/' + ingrediente.image"
               height="150px"
             >
               <v-card-title>
@@ -80,19 +80,19 @@ const categories = [
   {
     icon: "/images/fruitsicon.png",
     title: "Früchte",
-    method: "getFruitsIngredientsList",
+    list: "fruitsList",
     active: true
   },
   {
     icon: "/images/vegetablesicon.png",
     title: "Gemüse",
-    method: "getVeggieIngredientsList",
+    list: "vegetablesList",
     active: false
   },
   {
     icon: "/images/liquidicon.png",
     title: "Flüssigkeit",
-    method: "getLiquidIngredientsList",
+    list: "liquidList",
     active: false
   },
 ];
@@ -101,12 +101,17 @@ export default {
   name: "Dashboard",
   data() {
     return {
-      ingredients: {},
+      ingredients: [],
       categories,
+      vegetablesList: null,
+      fruitsList: null,
+      liquidList: null,
     };
   },
-  created() {
-    this.getFruitsIngredientsList();
+  mounted() {
+    this.getIngredientsList().then(() => {
+      this.ingredients = this.fruitsList;
+    });
   },
   methods: {
     changeRouteCreate() {
@@ -116,8 +121,7 @@ export default {
       this.$router.push({ path: `/update/ingrediente/${ingrediente.id}` });
     },
     handleCategoryClick(category) {
-      // Rufe die entsprechende Methode basierend auf der Kategorie auf
-      this[category.method]()
+      this.changeIngredientsList(category.list);
       this.setCategoriesActive(category)
     },
     setCategoriesActive(category) {
@@ -131,30 +135,28 @@ export default {
     },
     deleteIngrediente(id) {
       axios.post(`/delete/ingrediente/${id}`);
+      this.getIngredientsList();
       this.getActiveIngredienteList();
     },
     getActiveIngredienteList() {
       for(let i = 0; i < this.categories.length; i++){
         if(this.categories[i].active){
-          this[this.categories[i].method]()
+          this.ingredients = this.categories[i].list;
         }
       }
     },
-    getFruitsIngredientsList() {
-      this.getIngredientsList("/fruits");
+    getIngredientsList() {
+      return new Promise((resolve, reject) => {
+        axios.get('/getIngredientsList').then((response) => {
+          this.fruitsList = response.data.ingredientsList.filter((cartItem) => cartItem.type === "fruits");
+          this.vegetablesList = response.data.ingredientsList.filter((cartItem) => cartItem.type === "vegetables");
+          this.liquidList = response.data.ingredientsList.filter((cartItem) => cartItem.type === "liquid");
+          resolve();
+        });
+      });
     },
-    getVeggieIngredientsList() {
-      this.getIngredientsList("/vegetables");
-    },
-    getLiquidIngredientsList() {
-      this.getIngredientsList("/liquid");
-    },
-    getIngredientsList(path) {
-      axios
-        .get(path)
-        .then((response) => {
-          this.ingredients = response.data.ingrediente;
-        })
+    changeIngredientsList(list){
+        this.ingredients = this[list];
     },
   },
 };

@@ -166,20 +166,27 @@ export default {
       bottle: null,
     };
   },
-  created() {
+  mounted() {
     this.getCartContent();
-    axios.get("/getAktLiquid").then((response) => {
-      var response = response.data.liquidItems;
-      Object.keys(response).forEach((key) => {
-        this.liquid = response[key];
-        this.$refs.mixerComponent.liquidAnimation(this.liquid.options.image);
-      });
-    });
+    this.getAktLiquid();
+    this.getBottleContent();
   },
   beforeUnmount() {
     this.$refs.mixerComponent.clearInterval();
   },
   methods: {
+    getAktLiquid(){
+      axios.get("/getCurrentLiquid").then((response) => {
+      if (Object.keys(response.data).length === 0) {
+        return;
+      }
+      var response = response.data.liquidItems;  
+      Object.keys(response).forEach((key) => {
+        this.liquid = response[key];
+        this.$refs.mixerComponent.liquidAnimation(this.liquid.options.image);
+      });
+    });
+    },
     showStep3() {
       this.$router.push({ path: "/chooseLiquid" });
     },
@@ -206,13 +213,21 @@ export default {
     },
     getCartContent() {
       axios.get("/cartContent").then((response) => {
-        const { cartTotal, cartSubTotal, cart, bottle } = response.data;
-        this.cartTotal = cartTotal;
-        this.cartSubTotal = cartSubTotal;
-        this.bottle = bottle;
-        this.cartContent = Object.values(cart);
+        this.cartContent = Object.values(response.data.cart);
         this.liquidContent = this.cartContent.filter((cartItem) => cartItem.options.type === "liquid");
         this.ingredienteContent = this.cartContent.filter((cartItem) => cartItem.options.type !== "liquid");
+        this.getCartTotal();
+      });
+    },
+    getBottleContent() {
+      axios.get("/getCurrentBottle").then((response) => {
+        this.bottle = response.data.bottle;
+      });
+    },
+    getCartTotal() {
+      axios.get("/cartTotal").then((response) => {
+        this.cartTotal = response.data.cartTotal;
+        this.cartSubTotal = response.data.cartSubTotal;
       });
     },
     async removeCartItems() {
@@ -241,11 +256,12 @@ export default {
       const response = await axios.post("/increaseCardQty/" + cart.rowId, {
         amount: 1,
       });
-      const { stored, image, newqty, id} = response.data;
+      const { stored, image } = response.data;
       if (stored) {
         this.$refs.mixerComponent.setImg(image, 1);
         this.resetComponents();
         this.setnewAmount(cart.rowId, 1)
+        this.getCartTotal();
       } else {
         this.showAlertError("Du hast zu viele Zutaten ausgewählt!", "");
       }
@@ -254,11 +270,12 @@ export default {
       const response = await axios.post("/decreaseCardQty/" + cart.rowId, {
         amount: 1,
       });
-      const {newqty, image, id} = response.data;
+      const {newqty, image} = response.data;
       if (newqty > 0) {
-        this.setnewAmount(cart.rowId, -1)
+        this.setnewAmount(cart.rowId, -1);
+        this.getCartTotal();
       } else {
-        await this.getCartContent();
+        this.getCartContent();
       }
       this.$refs.mixerComponent.removeSpecificOne(image);
       this.resetComponents();

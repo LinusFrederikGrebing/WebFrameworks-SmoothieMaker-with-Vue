@@ -9,24 +9,16 @@ use App\Models\Ingrediente;
 
 class IngredienteController extends Controller
 {
-    public function getFruits(Request $request)
+    public function getIngredientsList(Request $request)
     {
-        $ingrediente = Ingrediente::where('type', IngredienteType::FRUITS)->get();
-        return response()->json(['ingrediente' => $ingrediente]);
+        $ingredientsList = Ingrediente::all();
+        return response()->json(['ingredientsList' => $ingredientsList]);
     }
-
-    public function getVegetables(Request $request)
+    public function getLiquidList(Request $request)
     {
-        $ingrediente = Ingrediente::where('type', IngredienteType::VEGETABLES)->get();
-        return response()->json(['ingrediente' => $ingrediente]);
+        $ingredientsList = Ingrediente::where('type', IngredienteType::LIQUID)->get();
+        return response()->json(['ingredientsList' => $ingredientsList]);
     }
-
-    public function getLiquid(Request $request)
-    {
-        $ingrediente = Ingrediente::where('type', IngredienteType::LIQUID)->get();
-        return response()->json(['ingrediente' => $ingrediente]);
-    }
-
     public function showUpdateField(Request $request, $ingredienteID)
     {
         $ingrediente = Ingrediente::findOrFail($ingredienteID);
@@ -40,6 +32,15 @@ class IngredienteController extends Controller
     public function store(Request $request)
     {
         $ingrediente = new Ingrediente;
+        $this->storeOrUpdateIngrediente($request, $ingrediente);
+    }
+    public function updateIngrediente(Request $request, $ingredienteID)
+    {
+        $ingrediente = Ingrediente::find($ingredienteID);
+        $this->storeOrUpdateIngrediente($request, $ingrediente);
+    }
+    public function storeOrUpdateIngrediente(Request $request, Ingrediente $ingrediente)
+    { 
         if ($request->name != null) {
             $ingrediente->name = $request->name;
         }
@@ -59,7 +60,7 @@ class IngredienteController extends Controller
             $file = $request->file('file');
             $extension = $file->getClientOriginalExtension(); // getting image extension
             $filename = time() . '.' . $extension;
-            $file->move('images/', $filename);
+            $file->move('images/piece/', $filename);
             $ingrediente->image = $filename;
         }
         $ingrediente->save();
@@ -71,31 +72,4 @@ class IngredienteController extends Controller
         $ingrediente->delete($ingrediente->id);
     }
 
-    public function updateIngrediente(Request $request, $ingredienteID)
-    {
-        $ingrediente = Ingrediente::find($ingredienteID);
-        if ($request->name != null) {
-            $ingrediente->name = $request->name;
-        }
-        if ($request->amount != null) {
-            $ingrediente->amount = $request->amount;
-        }
-        if ($request->price != null) {
-            $ingrediente->price = $request->price;
-        }
-        if ($request->type != null) {
-            $ingrediente->type = $request->type;
-        }
-        if ($request->hasfile('file')) {
-            $request->validate([
-                'file' => ['required', 'image'],
-            ]);
-            $file = $request->file('file');
-            $extension = $file->getClientOriginalExtension(); // getting image extension
-            $filename = time() . '.' . $extension;
-            $file->move('images/', $filename);
-            $ingrediente->image = $filename;
-        }
-        $ingrediente->save();
-    }
 }
