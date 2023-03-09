@@ -29,7 +29,7 @@
           <v-col
             v-for="(ingrediente, index) in ingredients"
             :key="index"
-            cols="15"
+            cols="12"
             sm="6"
             md="3"
             lg="auto"

@@ -21,7 +21,7 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 //Bottle-Size-Routes
-Route::get('/schritt1/{bottle}', [App\Http\Controllers\BottleSizeController::class, 'showInhalt'])->name('showInhalt');
+Route::get('/schritt1/{bottle}', [App\Http\Controllers\BottleSizeController::class, 'storeBottleSize'])->name('storeBottleSize');
 Route::get('/bottleSize', [App\Http\Controllers\BottleSizeController::class, 'showBottleSizes']);
 
 //ShoppingCard-Routes
