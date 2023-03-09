@@ -12,8 +12,6 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-
 Route::get('/', function () {
     return view('welcome');
 });
@@ -22,19 +20,9 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-
 //Bottle-Size-Routes
 Route::get('/schritt1/{bottle}', [App\Http\Controllers\BottleSizeController::class, 'showInhalt'])->name('showInhalt');
 Route::get('/bottleSize', [App\Http\Controllers\BottleSizeController::class, 'showBottleSizes']);
-
-//Ingrediente-Routes
-Route::get('/create', [App\Http\Controllers\IngredienteController::class, 'create'])->name('create');
-Route::post('/delete/ingrediente/{ingrediente}', [App\Http\Controllers\IngredienteController::class, 'deleteIngediengte'])->name('deleteZutat');
-Route::post('/updated/ingrediente/{ingrediente}', [App\Http\Controllers\IngredienteController::class, 'updateIngrediente']);
-Route::post('/update/ingrediente/{ingrediente}', [App\Http\Controllers\IngredienteController::class, 'showUpdateField'])->name('update');
-Route::post('/create/ingrediente', [App\Http\Controllers\IngredienteController::class, 'store']);
-Route::get('/getIngredientsList', [App\Http\Controllers\IngredienteController::class, 'getIngredientsList']);
-Route::get('/liquid', [App\Http\Controllers\IngredienteController::class, 'getLiquidList']);
 
 //ShoppingCard-Routes
 Route::post('/deleteCart/{carditem}', [App\Http\Controllers\ShoppingCartController::class, 'deleteCart'])->name('deleteCart');
@@ -47,7 +35,6 @@ Route::post('/addCart/{ingrediente}', [App\Http\Controllers\ShoppingCartControll
 Route::get('/removeAll', [App\Http\Controllers\ShoppingCartController::class, 'removeAllFromCartList']);
 Route::get('/getCurrentLiquid', [App\Http\Controllers\ShoppingCartController::class, 'getCurrentLiquid']);
 Route::get('/getCurrentBottle', [App\Http\Controllers\ShoppingCartController::class, 'getCurrentBottle']);
-
 
 // needed to refer to the vue router
 Route::get('{any}', function () {

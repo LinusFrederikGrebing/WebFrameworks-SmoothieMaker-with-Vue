@@ -2,13 +2,8 @@
   <v-parallax height="3000" width="100%" src="/images/background/bg3.svg">
     <v-container class="container">
       <v-row class="seperate">
-        <v-col
-          cols="6"
-          md="10"
-          xl="6"
-          sm="10"
-        >
-          <div elevation="10">
+        <v-col cols="6" md="10" xl="6" sm="10">
+          <div elevation="10" id="left-text">
             <h1 class="mx-5 mt-5 font-weight-bold">Smoothiemaker</h1>
             <h5 class="mx-5 my-5">
               Stelle Dir jetzt deinen perfekten Smoothie zusammen! Deine Auswahl
@@ -19,9 +14,9 @@
               zusammenstellen. Bei Kauf errechnet sich der Preis deines Getränks
               aus den Einzelpreisen der Zutaten.
             </h5>
-            <button class="mx-5 mb-5 green-bg custom-btn" @click="showInhalt()"
-              >Beginne mit der Zusammenstellung</button
-            >
+            <button class="mx-5 mb-5 green-bg custom-btn" @click="showStep1()">
+              Beginne mit der Zusammenstellung
+            </button>
           </div>
         </v-col>
         <v-col
@@ -34,7 +29,7 @@
               rotateX(2deg) rotate(2deg);
           "
         >
-          <v-card elevation="10 mt-8">
+          <v-card elevation="10 mt-8" id="right-img">
             <v-img src="/images/smoothie.jpg"></v-img>
           </v-card>
         </v-col>
@@ -56,10 +51,11 @@
             v-for="(item, index) in items"
             :key="index"
             :id="'step' + (index + 1)"
-            ><div
+          >
+            <div
               class="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-indigo-50 sm:w-20 sm:h-20"
             >
-              <span class="material-symbols-outlined test">
+              <span class="material-symbols-outlined item-icon">
                 {{ item.icon }}
               </span>
             </div>
@@ -195,13 +191,47 @@ export default {
     };
   },
   methods: {
-    showInhalt() {
+    showStep1() {
       this.$router.push({ path: "/chooseBottleSize" });
+    },
+    fadeInAnimation() {
+      gsap.fromTo(
+        "#left-text",
+        {
+          scale: 0,
+          opacity: 0,
+          y: 200,
+        },
+        {
+          y: 0,
+          delay: 0.2,
+          duration: 2,
+          scale: 1,
+          opacity: 1,
+          ease: "power3.out",
+        }
+      );
+      gsap.fromTo(
+        "#right-img",
+        {
+          x: 500,
+          scale: 0,
+          opacity: 0,
+        },
+        {
+          x: 0,
+          delay: 0.2,
+          duration: 2,
+          scale: 1,
+          opacity: 1,
+          ease: "power3.out",
+        }
+      );
     },
   },
   mounted() {
+    this.fadeInAnimation();
     const tips = document.querySelectorAll(".tip");
-
     tips.forEach((tip, index) => {
       gsap.fromTo(
         tip,
@@ -299,7 +329,8 @@ export default {
   margin-bottom: 15em !important;
   margin-top: 10em !important;
 }
-.test {
+
+.item-icon {
   scale: 2.5;
 }
 </style>

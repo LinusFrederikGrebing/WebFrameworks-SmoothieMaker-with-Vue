@@ -79,7 +79,7 @@ export default {
       data.append("name", this.form.name);
       data.append("price", this.form.price);
       data.append("type", this.form.type);
-      axios.post("/create/ingrediente", data).then(() => {
+      axios.post("/api/create/ingrediente", data).then(() => {
         this.$router.push({ path: "/home" });
       });
     },

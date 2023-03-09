@@ -110,7 +110,7 @@ export default {
   },
   mounted() {
     this.getIngredientsList().then(() => {
-      this.ingredients = this.fruitsList;
+      this.getActiveIngredienteList();
     });
   },
   methods: {
@@ -125,29 +125,24 @@ export default {
       this.setCategoriesActive(category)
     },
     setCategoriesActive(category) {
-      for(let i = 0; i < this.categories.length; i++){
-        if(this.categories[i] === category){
-          this.categories[i].active = true;
-        } else {
-          this.categories[i].active = false;
-        }
-      }
+      this.categories.forEach((c, i) => c.active = (c === category));
     },
     deleteIngrediente(id) {
-      axios.post(`/delete/ingrediente/${id}`);
-      this.getIngredientsList();
-      this.getActiveIngredienteList();
+      axios.post(`api/delete/ingrediente/${id}`);
+      this.getIngredientsList().then(() => {
+        this.getActiveIngredienteList();
+      });;
     },
     getActiveIngredienteList() {
       for(let i = 0; i < this.categories.length; i++){
         if(this.categories[i].active){
-          this.ingredients = this.categories[i].list;
+          this.ingredients = this[categories[i].list];
         }
       }
     },
     getIngredientsList() {
       return new Promise((resolve, reject) => {
-        axios.get('/getIngredientsList').then((response) => {
+        axios.get('/api/getIngredientsList').then((response) => {
           this.fruitsList = response.data.ingredientsList.filter((cartItem) => cartItem.type === "fruits");
           this.vegetablesList = response.data.ingredientsList.filter((cartItem) => cartItem.type === "vegetables");
           this.liquidList = response.data.ingredientsList.filter((cartItem) => cartItem.type === "liquid");

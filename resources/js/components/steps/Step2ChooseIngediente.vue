@@ -161,6 +161,17 @@ export default {
   beforeUnmount() {
     this.$refs.mixerComponent.clearInterval();
   },
+  mounted() {
+    this.getIngredientsList();
+    this.getActLiquid();
+  },
+  watch: {
+    ingredients() {
+      setTimeout(() => {
+        this.enterGrid();
+      }, 0);
+    },
+  },
   methods: {
     handleCategoryClick(category) {
       this.changeIngredientsList(category.list);
@@ -203,7 +214,7 @@ export default {
       }
     },
     getIngredientsList() {
-      axios.get('/getIngredientsList').then((response) => {
+      axios.get('/api/getIngredientsList').then((response) => {
         this.fruitsList = response.data.ingredientsList.filter((cartItem) => cartItem.type === "fruits");
         this.vegetablesList =response.data.ingredientsList.filter((cartItem) => cartItem.type === "vegetables");
         this.ingredients = this.fruitsList;
@@ -278,18 +289,7 @@ export default {
         confirmButtonText: "Okay!",
       });
     },
-  },
-  mounted() {
-    this.getIngredientsList();
-    this.getActLiquid();
-  },
-  watch: {
-    ingredients() {
-      setTimeout(() => {
-        this.enterGrid();
-      }, 0);
-    },
-  },
+  }
 };
 </script>
 <style scoped>

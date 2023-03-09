@@ -62,7 +62,7 @@ export default {
     },
     getIngrediente() {
       axios
-        .post(`/update/ingrediente/${this.id}`, {})
+        .post(`/api/update/ingrediente/${this.id}`, {})
         .then((response) => {
           this.ingrediente = response.data.ingrediente;
         })
@@ -79,7 +79,7 @@ export default {
       data.append("price", this.ingrediente.price);
       data.append("type", this.ingrediente.type);
       axios
-        .post(`/updated/ingrediente/${this.id}`, data, config)
+        .post(`/api/updated/ingrediente/${this.id}`, data, config)
         .then(() => {
           this.$router.push({ path: "/home" });
         })

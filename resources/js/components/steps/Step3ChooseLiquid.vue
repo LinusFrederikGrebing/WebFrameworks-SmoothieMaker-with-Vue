@@ -130,7 +130,7 @@ export default {
       gsap.to(obj.target, { duration: 0.2, scale: 1, y: 0, x: 0, opacity: 1 });
     },
     getLiquidList(){
-      axios.get("/liquid").then((response) => { this.liquids = response.data.ingredientsList; })
+      axios.get("/api/liquid").then((response) => { this.liquids = response.data.ingredientsList; })
     },
     getActLiquid(){
       axios.get("/getCurrentLiquid").then((response) => {
