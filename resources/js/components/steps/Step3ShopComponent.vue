@@ -1,6 +1,21 @@
 <template>
   <div class="container">
-    <SizeComponent ref="sizeComponent" />
+    <div class="d-flex">
+      <div class="w-70">
+        <SizeComponent ref="sizeComponent" />
+      </div>
+      <div class="d-flex w-30">
+        <v-text-field
+          class="mt-3 shrink"
+          v-model="presetName"
+          type="text"
+          placeholder="Preset-Name"
+          required
+        >
+        </v-text-field>
+        <v-btn class="mt-4" @click="storeAsPreset()">Preset erstellen!</v-btn>
+      </div>
+    </div>
     <v-row class="mt-2">
       <v-col class="mb-2" cols="12">
         <div class="mx-auto d-flex flex-wrap">
@@ -157,6 +172,7 @@ export default {
   },
   data() {
     return {
+      presetName: "",
       cartContent: [],
       cartTotal: null,
       cartSubTotal: null,
@@ -175,33 +191,65 @@ export default {
     this.$refs.mixerComponent.clearInterval();
   },
   methods: {
-    getAktLiquid(){
-      axios.get("/getCurrentLiquid").then((response) => {
-      if (Object.keys(response.data).length === 0) {
-        return;
+    storeAsPreset() {
+      if (this.presetName == "") {
+        this.showAlertError("Du hast kein Presetnamen gewählt!", "");
+      } else {
+        axios
+          .post(`/storeAsPreset`, {
+            name: this.presetName,
+          })
+          .then((response) => {
+            console.log(response);
+            if (response.data.auth == false) {
+              this.showAlertError(
+                "Du must angemeldet sein, um dir spezifische Presets erstellen zu können!",
+                ""
+              );
+            } else {
+              this.showAlertSuccess(
+                "Das Preset wurde erfolgreich erstellt!",
+                "Auf der Startseite kannst du das Preset auswählen und deine Zusammenstellung aufrufen!"
+              );
+            }
+          });
       }
-      var response = response.data.liquidItems;  
-      Object.keys(response).forEach((key) => {
-        this.liquid = response[key];
-        this.$refs.mixerComponent.liquidAnimation(this.liquid.options.image);
+    },
+    getAktLiquid() {
+      axios.get("/getCurrentLiquid").then((response) => {
+        if (Object.keys(response.data).length === 0) {
+          return;
+        }
+        var response = response.data.liquidItems;
+        Object.keys(response).forEach((key) => {
+          this.liquid = response[key];
+          this.$refs.mixerComponent.liquidAnimation(this.liquid.options.image);
+        });
       });
-    });
     },
     showStep3() {
       this.$router.push({ path: "/chooseLiquid" });
     },
     mixAnimation() {
-      const ingredienteContentSum = this.ingredienteContent.reduce((sum, ingredient) => sum + ingredient.qty, 0);
-      if(ingredienteContentSum == this.bottle.amount && this.liquidContent.length == 1){
+      const ingredienteContentSum = this.ingredienteContent.reduce(
+        (sum, ingredient) => sum + ingredient.qty,
+        0
+      );
+      if (
+        ingredienteContentSum == this.bottle.amount &&
+        this.liquidContent.length == 1
+      ) {
         this.$refs.mixerComponent.mixAnimation(this.bottle.amount);
       } else {
         var errorMessage = "";
-        if(ingredienteContentSum !== this.bottle.amount) {
+        if (ingredienteContentSum !== this.bottle.amount) {
           const missingIngredients = this.bottle.amount - ingredienteContentSum;
           errorMessage = `Füge noch ${missingIngredients} Zutaten hinzu, um deine Zusammenstellung abzuschließen. `;
         }
-        if(this.liquidContent.length == 0) {
-          errorMessage =  errorMessage + "Beachte, dass eine Flüssigkeit ausgewühlt sein muss!"
+        if (this.liquidContent.length == 0) {
+          errorMessage =
+            errorMessage +
+            "Beachte, dass eine Flüssigkeit ausgewühlt sein muss!";
         }
         this.showAlertError("Nicht genug Zutaten ausgewählt!", errorMessage);
       }
@@ -214,12 +262,19 @@ export default {
     getCartContent() {
       axios.get("/cartContent").then((response) => {
         this.cartContent = Object.values(response.data.cart);
-        this.liquidContent = this.cartContent.filter((cartItem) => cartItem.options.type === "liquid");
-        this.ingredienteContent = this.cartContent.filter((cartItem) => cartItem.options.type !== "liquid");
+        this.liquidContent = this.cartContent.filter(
+          (cartItem) => cartItem.options.type === "liquid"
+        );
+        this.ingredienteContent = this.cartContent.filter(
+          (cartItem) => cartItem.options.type !== "liquid"
+        );
         this.$refs.mixerComponent.removeBall();
-        this.ingredienteContent.forEach((ingrediente) => { 
+        this.ingredienteContent.forEach((ingrediente) => {
           console.log(ingrediente);
-          this.$refs.mixerComponent.setImg(ingrediente.options.image, ingrediente.qty);
+          this.$refs.mixerComponent.setImg(
+            ingrediente.options.image,
+            ingrediente.qty
+          );
         });
         this.getCartTotal();
       });
@@ -248,7 +303,7 @@ export default {
       sessionStorage.clear();
     },
     async removeSpecificCart(cart) {
-      const response  = await axios.post("/deleteCart/" + cart.rowId, {});
+      const response = await axios.post("/deleteCart/" + cart.rowId, {});
       const { wasLiquid, image } = response.data;
       if (wasLiquid) {
         this.$refs.mixerComponent.clearLiquid();
@@ -265,7 +320,7 @@ export default {
       if (stored) {
         this.$refs.mixerComponent.setImg(image, 1);
         this.resetComponents();
-        this.setnewAmount(cart.rowId, 1)
+        this.setnewAmount(cart.rowId, 1);
         this.getCartTotal();
       } else {
         this.showAlertError("Du hast zu viele Zutaten ausgewählt!", "");
@@ -275,7 +330,7 @@ export default {
       const response = await axios.post("/decreaseCardQty/" + cart.rowId, {
         amount: 1,
       });
-      const {newqty, image} = response.data;
+      const { newqty, image } = response.data;
       if (newqty > 0) {
         this.setnewAmount(cart.rowId, -1);
         this.getCartTotal();
@@ -286,10 +341,10 @@ export default {
       this.resetComponents();
     },
     setnewAmount(rowId, amount) {
-      this.ingredienteContent.forEach(function(content) {
-        if(content.rowId == rowId) {
+      this.ingredienteContent.forEach(function (content) {
+        if (content.rowId == rowId) {
           content.qty += amount;
-        };
+        }
       });
     },
     showIngrediente() {
@@ -300,6 +355,16 @@ export default {
         title: title,
         text: text,
         icon: "error",
+        showCancelButton: false,
+        confirmButtonColor: "#6D9E1F",
+        confirmButtonText: "Okay!",
+      });
+    },
+    showAlertSuccess(title, text) {
+      Swal.fire({
+        title: title,
+        text: text,
+        icon: "success",
         showCancelButton: false,
         confirmButtonColor: "#6D9E1F",
         confirmButtonText: "Okay!",
@@ -333,6 +398,12 @@ export default {
 
 .w-95 {
   width: 95%;
+}
+.w-70 {
+  width: 60%;
+}
+.w-30 {
+  width: 40%;
 }
 </style>
 

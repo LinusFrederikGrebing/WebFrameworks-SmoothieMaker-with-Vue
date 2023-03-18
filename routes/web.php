@@ -38,6 +38,9 @@ Route::get('/getCurrentBottle', [App\Http\Controllers\ShoppingCartController::cl
 
 
 Route::get('/checkPreset/{presetName}', [App\Http\Controllers\IngredienteController::class, 'checkPreset'])->name('checkPreset');
+Route::post('/storeAsPreset', [App\Http\Controllers\IngredienteController::class, 'storeAsPreset'])->name('storeAsPreset');
+Route::get('/user-presets', [App\Http\Controllers\IngredienteController::class, 'getUserPresets']);
+Route::get('/deletePreset/{ingrediente}', [App\Http\Controllers\IngredienteController::class, 'deleteUserPreset'])->name('deletePreset');
 
 // needed to refer to the vue router
 Route::get('{any}', function () {

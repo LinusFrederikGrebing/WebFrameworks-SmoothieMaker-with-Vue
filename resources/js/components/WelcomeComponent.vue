@@ -1,5 +1,4 @@
 <template>
-  <v-parallax height="3000" width="100%" src="/images/background/bg3.svg">
     <v-container class="container">
       <v-row class="seperate">
         <v-col cols="6" md="10" xl="6" sm="10">
@@ -34,6 +33,28 @@
           </v-card>
         </v-col>
       </v-row>
+      <v-row id="" class="my-6 mx-6">
+          <div class="ml-auto mr-auto mt-4">
+            <h2 class="text-center font-weight-bold">
+              Hier kannst du deine abgespeicherten Zusammenstellungen aufrufen!
+            </h2>
+          </div>
+      </v-row>
+      <div>
+        <v-row class="mx-auto ml-16 mb-8" no-gutters>
+          <v-col
+            sm="12"
+            md="6"
+            xl="4"
+            lg="4"
+            v-for="(preset, index) in presetNames" :key="index"
+          ><div class="mx-8 mb-4 d-flex">
+            <v-btn class="w-75 py-4" @click="choosePreset(preset)">{{ preset }}</v-btn>
+            <v-btn class="w-25 py-4" @click="deletePreset(preset)"> <v-icon color="red">mdi-delete</v-icon></v-btn>
+          </div>
+          </v-col>
+        </v-row>
+      </div>
       <div elevation="10" class="seperate my-8 mx-8">
         <v-row id="stepsheader" class="my-6 mx-6">
           <div class="ml-auto mr-auto mt-4">
@@ -145,7 +166,6 @@
         </v-row>
       </div>
     </v-container>
-  </v-parallax>
 </template>
 
 <script>
@@ -157,6 +177,7 @@ export default {
   name: "example-component",
   data() {
     return {
+      presetNames: [],
       items: [
         {
           icon: "aspect_ratio",
@@ -194,6 +215,20 @@ export default {
     };
   },
   methods: {
+    deletePreset(presetName){
+      axios.get(`/deletePreset/${presetName}`).then((response) => {
+       this.getPresets();
+      });
+    },
+    getPresets(){
+      axios.get('/user-presets')
+      .then(response => {
+        this.presetNames = response.data.userPresets;
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    },
     choosePreset(presetName){
       axios.get(`/checkPreset/${presetName}`).then((response) => {
         this.$router.push({ path: "/shop" });
@@ -238,6 +273,7 @@ export default {
     },
   },
   mounted() {
+    this.getPresets();
     this.fadeInAnimation();
     const tips = document.querySelectorAll(".tip");
     tips.forEach((tip, index) => {

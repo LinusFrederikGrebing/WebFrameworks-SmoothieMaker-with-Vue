@@ -5,51 +5,52 @@
         Wähle jetzt abschließend deine Flüssigkeit!
       </h2>
     </div>
+    <div class="d-flex mb-4">
+        <SizeComponent ref="sizeComponent" />
+    </div>
     <v-row no-gutters>
       <v-col cols="12" md="8" class="mb-1 mt-1">
         <v-row class="item-list">
           <v-col
-        sm="12"
-        md="12"
-        xl="6"
-        lg="12"
-        xs="12"
-        v-for="liquid in liquids"
-        :key="liquid.id"
-      >
-        <v-card
-          @mouseenter="hoverEnter($event)"
-          @mouseleave="hoverLeave($event)" 
-          :class="{ 'selected-card': liquid.id === selectedCard }"
-          class="my-2 mx-2 card-color"
-          elevation="10"
-        >
-          <div>
-            <v-img
-              class="white--text align-end ml-auto mr-auto mt-1 mb-1"
-              height="60px"
-              width="60px"
-              :src="'/images/piece/' + liquid.image"
+            v-for="liquid in liquids"
+            :key="liquid.id"
+            cols="12"
+            sm="6"
+            md="4"
+            lg="4"
+          >
+          <v-card
+              @mouseenter="hoverEnter($event)"
+              @mouseleave="hoverLeave($event)"
+              :class="{ 'selected-card': liquid.id === selectedCard }"
+              elevation="5"
+              class="mx-auto ingrediente-item"
+              max-width="600"
             >
-            </v-img>
-            <div class="d-flex justify-center">
-              <hr />
-              <p class="font-weight-bold ml-1 mr-1">{{ liquid.name }}:</p>
-              <hr />
-              <p>{{ liquid.price }}€ / 50g</p>
-            </div>
-            <div class="d-flex align-items-center mb-2">
-              <button
-                color="success"
-                class="ml-4 mr-4 flex-grow-1 green-bg custom-btn"
-                @click="selectCard(liquid)"
-              >
-                Wählen!
-              </button>
-            </div>
-          </div>
-        </v-card>
-      </v-col>
+              <div>
+                <v-img
+                  class="white--text align-end ml-auto mr-auto mt-1 mb-1"
+                  height="60px"
+                  width="60px"
+                  :src="'/images/piece/' + liquid.image"
+                >
+                </v-img>
+                <div class="d-flex justify-center align-center flex-column">
+                  <p class="font-weight-bold ml-1 mr-1">{{ liquid.name }}:</p>
+                  <p>{{ liquid.price }}€ / 50g</p>
+                </div>
+                <div class="d-flex align-items-center mb-2">
+                  <button
+                    color="success"
+                    class="ml-4 mr-4 flex-grow-1 green-bg custom-btn"
+                    @click="selectCard(liquid)"
+                  >
+                    Wählen!
+                  </button>
+                </div>
+              </div>
+            </v-card>
+          </v-col>
         </v-row>
         <v-row>
           <v-col class="mb-5" cols="12">
@@ -74,7 +75,7 @@
       </v-col>
       <v-col cols="12" md="4">
         <div max-width="400">
-          <MixerComponent ref="mixerComponent" />  
+          <MixerComponent ref="mixerComponent" />
           <ProgressbarComponent ref="progressComponent" />
         </div>
       </v-col>
@@ -129,20 +130,22 @@ export default {
     hoverLeave(obj) {
       gsap.to(obj.target, { duration: 0.2, scale: 1, y: 0, x: 0, opacity: 1 });
     },
-    getLiquidList(){
-      axios.get("/api/liquid").then((response) => { this.liquids = response.data.ingredientsList; })
-    },
-    getActLiquid(){
-      axios.get("/getCurrentLiquid").then((response) => {
-      if (Object.keys(response.data).length === 0) {
-        return;
-      }
-      var response = response.data.liquidItems;  
-      Object.keys(response).forEach((key) => {
-        this.liquid = response[key];
-        this.$refs.mixerComponent.liquidAnimation(this.liquid.options.image);
+    getLiquidList() {
+      axios.get("/api/liquid").then((response) => {
+        this.liquids = response.data.ingredientsList;
       });
-    });
+    },
+    getActLiquid() {
+      axios.get("/getCurrentLiquid").then((response) => {
+        if (Object.keys(response.data).length === 0) {
+          return;
+        }
+        var response = response.data.liquidItems;
+        Object.keys(response).forEach((key) => {
+          this.liquid = response[key];
+          this.$refs.mixerComponent.liquidAnimation(this.liquid.options.image);
+        });
+      });
     },
     liquidAnimation(liquid) {
       this.$refs.mixerComponent.liquidAnimation(liquid.image);

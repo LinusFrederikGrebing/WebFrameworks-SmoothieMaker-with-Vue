@@ -19,5 +19,6 @@ class presetIngredients extends Pivot
     {
         return $this->belongsTo(Preset::class);
     }
+
     
 }
