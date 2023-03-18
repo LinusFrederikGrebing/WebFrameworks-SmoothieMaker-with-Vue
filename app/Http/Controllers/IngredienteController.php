@@ -6,6 +6,9 @@ use App\Models\IngredienteType;
 
 use Illuminate\Http\Request;
 use App\Models\Ingrediente;
+use App\Models\Preset;
+use App\Models\BottleSize;
+use Cart;
 
 class IngredienteController extends Controller
 {
@@ -70,6 +73,32 @@ class IngredienteController extends Controller
     {
         $ingrediente = Ingrediente::find($ingredienteID);
         $ingrediente->delete($ingrediente->id);
+    }
+
+    public function checkPreset(Request $request, $name)
+    {
+        Cart::destroy();
+        $preset = Preset::where('name', $name)->first();
+        $bottle = BottleSize::findOrFail($preset->bottle_id);
+        $request->session()->put('bottle', $bottle);
+        $ingredients = $preset->ingredients;
+        foreach ($ingredients as $ingredient) {
+            $this->addToCart($ingredient, $ingredient->pivot->quantity);
+        }
+        return response()->json(['ingrediente' => $preset]);
+    }
+
+    private function addToCart($ingrediente, $amount){
+        Cart::add([
+            'id' => $ingrediente->id,
+            'name' => $ingrediente->name,
+            'qty' => $amount,
+            'price' => $ingrediente->price,
+            'options' => [
+                'image' => $ingrediente->image,
+                'type' =>  $ingrediente->type,
+            ],
+        ]);
     }
 
 }

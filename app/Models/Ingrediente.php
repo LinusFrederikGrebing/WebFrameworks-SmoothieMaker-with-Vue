@@ -17,4 +17,10 @@ class Ingrediente extends Model
         'type',
     ];
     public $timestamps = false;
+
+    public function presets()
+    {
+        return $this->belongsToMany(Preset::class, 'preset_ingredients')
+                    ->withPivot('amount');
+    }
 }

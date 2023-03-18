@@ -16,4 +16,9 @@ class BottleSize extends Model
         'price',
     ];
     public $timestamps = false;
+
+    public function presets()
+    {
+        return $this->belongsToMany(Preset::class, 'preset_ingredients');
+    }
 }

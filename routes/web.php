@@ -36,6 +36,9 @@ Route::get('/removeAll', [App\Http\Controllers\ShoppingCartController::class, 'r
 Route::get('/getCurrentLiquid', [App\Http\Controllers\ShoppingCartController::class, 'getCurrentLiquid']);
 Route::get('/getCurrentBottle', [App\Http\Controllers\ShoppingCartController::class, 'getCurrentBottle']);
 
+
+Route::get('/checkPreset/{presetName}', [App\Http\Controllers\IngredienteController::class, 'checkPreset'])->name('checkPreset');
+
 // needed to refer to the vue router
 Route::get('{any}', function () {
     return view('welcome');

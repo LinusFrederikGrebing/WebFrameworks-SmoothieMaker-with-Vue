@@ -14,7 +14,9 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call(IngredienteSeed::class);    
-        $this->call(BottleSizeSeed::class);    
+        $this->call(BottleSizeSeed::class);   
+        $this->call(UserSeed::class);    
+        $this->call(PresetSeed::class);    
         // \App\Models\User::factory(10)->create();
     }
 }

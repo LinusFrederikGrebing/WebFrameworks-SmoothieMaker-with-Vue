@@ -130,6 +130,9 @@
                     v-text="item.title"
                   ></h4>
                   <p class="my-6 mx-6" v-text="item.text"></p>
+                  <button class="mx-5 mb-5 green-bg custom-btn" @click="choosePreset(item.title)">
+                   Wählen
+                  </button>
                 </div>
               </v-card-text>
             </v-card>
@@ -191,6 +194,11 @@ export default {
     };
   },
   methods: {
+    choosePreset(presetName){
+      axios.get(`/checkPreset/${presetName}`).then((response) => {
+        this.$router.push({ path: "/shop" });
+      });
+    },
     showStep1() {
       this.$router.push({ path: "/chooseBottleSize" });
     },

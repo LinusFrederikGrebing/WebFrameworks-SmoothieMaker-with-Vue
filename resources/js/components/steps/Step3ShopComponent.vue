@@ -216,6 +216,11 @@ export default {
         this.cartContent = Object.values(response.data.cart);
         this.liquidContent = this.cartContent.filter((cartItem) => cartItem.options.type === "liquid");
         this.ingredienteContent = this.cartContent.filter((cartItem) => cartItem.options.type !== "liquid");
+        this.$refs.mixerComponent.removeBall();
+        this.ingredienteContent.forEach((ingrediente) => { 
+          console.log(ingrediente);
+          this.$refs.mixerComponent.setImg(ingrediente.options.image, ingrediente.qty);
+        });
         this.getCartTotal();
       });
     },

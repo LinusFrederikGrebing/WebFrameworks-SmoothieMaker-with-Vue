@@ -23,6 +23,7 @@ Route::post('/updated/ingrediente/{ingrediente}', [App\Http\Controllers\Ingredie
 Route::post('/update/ingrediente/{ingrediente}', [App\Http\Controllers\IngredienteController::class, 'showUpdateField'])->name('update');
 Route::post('/create/ingrediente', [App\Http\Controllers\IngredienteController::class, 'store']);
 
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

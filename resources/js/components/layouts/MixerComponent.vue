@@ -241,6 +241,10 @@ export default {
       });
       sessionStorage.setItem("ingredientsArray", JSON.stringify(this.balls));
     },
+    removeBall(){
+      this.balls = [];
+      sessionStorage.setItem("ingredientsArray", JSON.stringify(this.balls));
+    },
     removeAll() {
       this.clearLiquid();
       this.balls = [];
