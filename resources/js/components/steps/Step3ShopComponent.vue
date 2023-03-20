@@ -4,7 +4,7 @@
       <div class="w-70">
         <SizeComponent ref="sizeComponent" />
       </div>
-      <div class="d-flex w-30">
+      <div v-if="isUserLoggedIn" class="d-flex w-30">
         <v-text-field
           class="mt-3 shrink"
           v-model="presetName"
@@ -38,15 +38,15 @@
       <v-col cols="12" md="8" class="mb-5">
         <div class="item-list">
           <v-row>
-            <v-card elevation="5" class="w-95 ml-5 mt-3">
+            <v-card elevation="5" class="w-95 ml-5 mt-3 mb-3">
               <v-table density="compact">
                 <thead>
                   <tr>
-                    <th class="text-left">Image</th>
-                    <th class="text-left">Name</th>
-                    <th class="text-left">Preis</th>
-                    <th class="text-left">Menge</th>
-                    <th class="text-left">Remove</th>
+                    <th class="text-left text-black">Image</th>
+                    <th class="text-left text-black">Name</th>
+                    <th class="text-left text-black">Preis</th>
+                    <th class="text-left text-black">Menge</th>
+                    <th class="text-left text-black">Entfernen</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -79,36 +79,10 @@
                     </td>
                     <td>
                       <v-btn @click="removeSpecificCart(cart)">
-                        <v-icon color="red">mdi-delete</v-icon>
+                        <v-icon color="black">mdi-delete</v-icon>
                       </v-btn>
                     </td>
                   </tr>
-                </tbody>
-              </v-table>
-            </v-card>
-          </v-row>
-          <v-row>
-            <button
-              color="success"
-              class="ml-3 mr-8 mb-3 mt-5 w-95 flex-grow-1 green-bg custom-btn"
-              @click="showStep3()"
-            >
-              Flüssigkeit ändern
-            </button>
-          </v-row>
-          <v-row>
-            <v-card elevation="5" class="w-95 ml-5 mt-3 mb-3">
-              <v-table density="compact">
-                <thead>
-                  <tr>
-                    <th class="text-left">Image</th>
-                    <th class="text-left">Name</th>
-                    <th class="text-left">Preis</th>
-                    <th class="text-left">Menge</th>
-                    <th class="text-left">Remove</th>
-                  </tr>
-                </thead>
-                <tbody>
                   <tr
                     v-for="(cart, cartIndex) in liquidContent"
                     :key="cartIndex"
@@ -122,16 +96,20 @@
                       />
                     </td>
                     <td>{{ cart.name }}</td>
-                    <td>{{ cart.price }}€ / 50g</td>
+                    <td>{{ cart.price }}€ / 50ml</td>
                     <td>
-                      {{ cart.qty }}
+                      {{ cart.qty }}  
+                        <button @click="showStep3">
+                            <v-icon small class="ml-3 mb-1">mdi-pencil</v-icon>
+                        </button>
                     </td>
                     <td>
                       <v-btn @click="removeSpecificCart(cart)">
-                        <v-icon color="red">mdi-delete</v-icon>
+                        <v-icon color="black">mdi-delete</v-icon>
                       </v-btn>
                     </td>
                   </tr>
+
                 </tbody>
               </v-table>
             </v-card>
@@ -172,6 +150,7 @@ export default {
   },
   data() {
     return {
+      isUserLoggedIn: "",
       presetName: "",
       cartContent: [],
       cartTotal: null,
@@ -183,6 +162,7 @@ export default {
     };
   },
   mounted() {
+    this.checkLoggedInUser();
     this.getCartContent();
     this.getAktLiquid();
     this.getBottleContent();
@@ -191,6 +171,12 @@ export default {
     this.$refs.mixerComponent.clearInterval();
   },
   methods: {
+    checkLoggedInUser() {
+      axios.get(`/checkLoggedInUser`).then((response) => {
+        this.isUserLoggedIn = response.data.loggedIn;
+        console.log(this.isUserLoggedIn);
+      });
+    },
     storeAsPreset() {
       if (this.presetName == "") {
         this.showAlertError("Du hast kein Presetnamen gewählt!", "");

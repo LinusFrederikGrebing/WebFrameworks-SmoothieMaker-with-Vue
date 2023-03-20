@@ -42,6 +42,8 @@ Route::post('/storeAsPreset', [App\Http\Controllers\PresetController::class, 'st
 Route::get('/user-presets', [App\Http\Controllers\PresetController::class, 'getUserPresets']);
 Route::get('/deletePreset/{ingrediente}', [App\Http\Controllers\PresetController::class, 'deleteUserPreset'])->name('deletePreset');
 
+Route::get('/checkLoggedInUser', [App\Http\Controllers\GateController::class, 'checkLoggedInUser'])->name('checkLoggedInUser');
+
 // needed to refer to the vue router
 Route::get('{any}', function () {
     return view('welcome');

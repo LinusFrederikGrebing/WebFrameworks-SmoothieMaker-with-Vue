@@ -1,44 +1,42 @@
 <template>
-    <v-container class="container">
-      <v-row class="seperate">
-        <v-col cols="6" md="10" xl="6" sm="10">
-          <div elevation="10" id="left-text">
-            <h1 class="mx-5 mt-5 font-weight-bold">Smoothiemaker</h1>
-            <h5 class="mx-5 my-5">
-              Stelle Dir jetzt deinen perfekten Smoothie zusammen! Deine Auswahl
-              erstreckt sich aus einer Vielzahl verschiedener Zutaten. Es gibt
-              vier veschiedene Smoothie-Größen. Du kannst entscheiden, ob dein
-              Smoothie aus 250ml, 500ml, 750ml oder sogar 1l leckeren Zutaten
-              bestehen soll. Den Smoothie kannst du kostenlos und ohne Anmeldung
-              zusammenstellen. Bei Kauf errechnet sich der Preis deines Getränks
-              aus den Einzelpreisen der Zutaten.
-            </h5>
-            <button class="mx-5 mb-5 green-bg custom-btn" @click="showStep1()">
-              Beginne mit der Zusammenstellung
-            </button>
-          </div>
-        </v-col>
-        <v-col
-          cols="6"
-          xl="6"
-          md="10"
-          sm="10"
-          style="
-            transform: scale(1) perspective(1040px) rotateY(-11deg)
-              rotateX(2deg) rotate(2deg);
-          "
-        >
-          <v-card elevation="10 mt-8" id="right-img">
-            <v-img src="/images/smoothie.jpg"></v-img>
-          </v-card>
-        </v-col>
-      </v-row>
+  <v-container class="container">
+    <v-row class="seperate">
+      <v-col cols="6" md="10" xl="6" sm="10">
+        <div elevation="10" id="left-text">
+          <h1 class="mx-5 mt-5 font-weight-bold">Smoothiemaker</h1>
+          <h5 class="mx-5 my-5">
+            Stelle Dir jetzt deinen perfekten Smoothie zusammen! Deine Auswahl
+            erstreckt sich aus einer Vielzahl verschiedener Zutaten. Es gibt
+            vier veschiedene Smoothie-Größen. Du kannst entscheiden, ob dein
+            Smoothie aus 500ml, 750ml, 1000ml oder sogar 1250ml leckeren Zutaten
+            bestehen soll. Den Smoothie kannst du kostenlos und ohne Anmeldung
+            zusammenstellen. Registriert kannst du deine eigenen Smoothie-Zusammenstellungen erstellen und zwischenspeichern. Bei Kauf errechnet sich der Preis Deines Getränks
+            aus den Einzelpreisen der Zutaten.
+          </h5>
+          <button class="mx-5 mb-5 green-bg custom-btn" @click="showStep1()">
+            Beginne mit der Zusammenstellung
+          </button>
+        </div>
+      </v-col>
+      <v-col
+        cols="6"
+        xl="6"
+        md="10"
+        sm="10"
+        class="perspective-image"
+      >
+        <v-card elevation="10 mt-8" id="right-img">
+          <v-img src="/images/smoothie.jpg"></v-img>
+        </v-card>
+      </v-col>
+    </v-row>
+    <div v-if="isUserLoggedIn">
       <v-row id="" class="my-6 mx-6">
-          <div class="ml-auto mr-auto mt-4">
-            <h2 class="text-center font-weight-bold">
-              Hier kannst du deine abgespeicherten Zusammenstellungen aufrufen!
-            </h2>
-          </div>
+        <div class="ml-auto mr-auto mt-4">
+          <h2 class="text-center font-weight-bold">
+            Hier kannst du deine abgespeicherten Zusammenstellungen aufrufen!
+          </h2>
+        </div>
       </v-row>
       <div>
         <v-row class="mx-auto ml-16 mb-8" no-gutters>
@@ -47,125 +45,134 @@
             md="6"
             xl="4"
             lg="4"
-            v-for="(preset, index) in presetNames" :key="index"
-          ><div class="mx-8 mb-4 d-flex">
-            <v-btn class="w-75 py-4" @click="choosePreset(preset)">{{ preset }}</v-btn>
-            <v-btn class="w-25 py-4" @click="deletePreset(preset)"> <v-icon color="red">mdi-delete</v-icon></v-btn>
-          </div>
-          </v-col>
-        </v-row>
-      </div>
-      <div elevation="10" class="seperate my-8 mx-8">
-        <v-row id="stepsheader" class="my-6 mx-6">
-          <div class="ml-auto mr-auto mt-4">
-            <h2 class="text-center font-weight-bold">
-              Nur drei Schritte bis zu deinem Smoothie!
-            </h2>
-          </div>
-        </v-row>
-        <v-divider width="80%" class="ml-auto mr-auto"></v-divider>
-        <v-row id="steps" class="grid gap-8 row-gap-0 lg:grid-cols-3 my-6 mx-6">
-          <v-col
-            class="relative text-center"
-            cols="12"
-            md="4"
-            v-for="(item, index) in items"
+            v-for="(preset, index) in presetNames"
             :key="index"
-            :id="'step' + (index + 1)"
-          >
-            <div
-              class="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-indigo-50 sm:w-20 sm:h-20"
-            >
-              <span class="material-symbols-outlined item-icon">
-                {{ item.icon }}
-              </span>
-            </div>
-            <div class="d-flex">
-              <div>
-                <h4 class="mb-2" v-text="item.title"></h4>
-                <p
-                  class="max-w-md mb-3 text-sm text-gray-900 sm:mx-auto"
-                  v-text="item.text"
-                ></p>
-              </div>
-              <div
-                class="top-0 right-0 flex items-center justify-center h-24 lg:-mr-8 lg:absolute"
+            ><div class="mx-8 mb-4 d-flex">
+              <v-btn class="w-75 py-4" @click="choosePreset(preset)">{{
+                preset
+              }}</v-btn>
+              <v-btn class="w-25 py-4" @click="deletePreset(preset)">
+                <v-icon color="red">mdi-delete</v-icon></v-btn
               >
-                <v-icon
-                  class="w-8 text-gray-700 transform rotate-90 lg:rotate-0"
-                  stroke-width="2"
-                  v-if="index != items.length - 1"
-                >
-                  mdi-arrow-right
-                </v-icon>
-              </div>
             </div>
           </v-col>
         </v-row>
       </div>
-      <div id="tipsheader" class="seperate">
-        <div
-          elevation="10"
-          class="d-flex flex-column justify-center text-center my-6 mx-6"
-        >
-          <div class="my-6 mx-6">
-            <h2 class="font-weight-bold">Unsere Smoothie-Tipps der Woche</h2>
-            <p>
-              Hier findest du unsere Smoothie-Geheimtipps. Lasse dich gerne von
-              unseren Top-Vorschlägen inspirieren!
-            </p>
-          </div>
+    </div>
+    <div elevation="10" class="seperate my-8 mx-8">
+      <v-row id="stepsheader" class="my-6 mx-6">
+        <div class="ml-auto mr-auto mt-4">
+          <h2 class="text-center font-weight-bold">
+            Nur drei Schritte bis zu deinem Smoothie!
+          </h2>
         </div>
-        <v-row>
-          <v-col cols="12">
-            <v-divider></v-divider>
-          </v-col>
-        </v-row>
-        <v-row
-          v-for="(item, index) in smoothieItems"
+      </v-row>
+      <v-divider width="80%" class="ml-auto mr-auto"></v-divider>
+      <v-row id="steps" class="grid gap-8 row-gap-0 lg:grid-cols-3 my-6 mx-6">
+        <v-col
+          class="relative text-center"
+          cols="12"
+          md="4"
+          v-for="(item, index) in items"
           :key="index"
-          class="tip mx-16"
+          :id="'step' + (index + 1)"
         >
-          <v-col cols="12" md="6" :order="index % 2 === 0 ? 1 : 2">
-            <div class="rounded-lg">
-              <v-img
-                :src="item.src"
-                alt=""
-                height="400"
-                contain
-                class="rotate-x-2 rotate-y-11 rotate--2"
-              ></v-img>
-            </div>
-          </v-col>
-          <v-col
-            cols="12"
-            md="6"
-            :order="index % 2 === 0 ? 2 : 1"
-            class="d-flex flex-column align-center justify-center"
+          <div
+            class="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-indigo-50 sm:w-20 sm:h-20"
           >
-            <v-card class="rounded-lg">
-              <v-card-text>
-                <div>
-                  <h4
-                    class="my-6 mx-6 text-h4 font-weight-bold"
-                    v-text="item.title"
-                  ></h4>
-                  <p class="my-6 mx-6" v-text="item.text"></p>
-                  <button class="mx-5 mb-5 green-bg custom-btn" @click="choosePreset(item.title)">
-                   Wählen
-                  </button>
-                </div>
-              </v-card-text>
-            </v-card>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="12">
-            <v-divider></v-divider>
-          </v-col>
-        </v-row>
+            <span class="material-symbols-outlined item-icon">
+              {{ item.icon }}
+            </span>
+          </div>
+          <div class="d-flex">
+            <div>
+              <h4 class="mb-2" v-text="item.title"></h4>
+              <p
+                class="max-w-md mb-3 text-sm text-gray-900 sm:mx-auto"
+                v-text="item.text"
+              ></p>
+            </div>
+            <div
+              class="top-0 right-0 flex items-center justify-center h-24 lg:-mr-8 lg:absolute"
+            >
+              <v-icon
+                class="w-8 text-gray-700 transform rotate-90 lg:rotate-0"
+                stroke-width="2"
+                v-if="index != items.length - 1"
+              >
+                mdi-arrow-right
+              </v-icon>
+            </div>
+          </div>
+        </v-col>
+      </v-row>
+    </div>
+    <div id="tipsheader" class="seperate">
+      <div
+        elevation="10"
+        class="d-flex flex-column justify-center text-center my-6 mx-6"
+      >
+        <div class="my-6 mx-6">
+          <h2 class="font-weight-bold">Unsere Smoothie-Tipps der Woche</h2>
+          <p>
+            Hier findest du unsere Smoothie-Geheimtipps. Lasse dich gerne von
+            unseren Top-Vorschlägen inspirieren!
+          </p>
+        </div>
       </div>
-    </v-container>
+      <v-row>
+        <v-col cols="12">
+          <v-divider></v-divider>
+        </v-col>
+      </v-row>
+      <v-row
+        v-for="(item, index) in smoothieItems"
+        :key="index"
+        class="tip mx-16"
+      >
+        <v-col cols="12" md="6" :order="index % 2 === 0 ? 1 : 2">
+          <div class="rounded-lg">
+            <v-img
+              :src="item.src"
+              alt=""
+              height="400"
+              contain
+              class="rotate-x-2 rotate-y-11 rotate--2"
+            ></v-img>
+          </div>
+        </v-col>
+        <v-col
+          cols="12"
+          md="6"
+          :order="index % 2 === 0 ? 2 : 1"
+          class="d-flex flex-column align-center justify-center"
+        >
+          <v-card elevation="5" class="rounded-lg">
+            <v-card-text>
+              <div>
+                <h4
+                  class="my-6 mx-6 text-h4 font-weight-bold"
+                  v-text="item.title"
+                ></h4>
+                <p class="my-6 mx-6" v-text="item.text"></p>
+                <button
+                  class="mx-6 mb-2 green-bg custom-btn"
+                  @click="choosePreset(item.title)"
+                >
+                  Zusammenstellung wählen!
+                </button>
+              </div>
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="12">
+          <v-divider></v-divider>
+        </v-col>
+      </v-row>
+    </div>
+  </v-container>
 </template>
 
 <script>
@@ -177,12 +184,13 @@ export default {
   name: "example-component",
   data() {
     return {
+      isUserLoggedIn: false,
       presetNames: [],
       items: [
         {
           icon: "aspect_ratio",
           title: "Schritt 1",
-          text: "Wähle deine Smoothiegröße aus! Du hast die Wahl zwischen 250ml, 500ml, 750ml und 1000ml",
+          text: "Wähle deine Smoothiegröße aus! Du hast die Wahl zwischen 500ml, 750ml, 1000ml oder sogar 1250ml",
         },
         {
           icon: "manage_search",
@@ -192,7 +200,7 @@ export default {
         {
           icon: "check",
           title: "Schritt 3",
-          text: "Überprüfe deine Bestellung! Nach deiner Bestellung liefern wir Dir deine Smoothie-Zusammenstellung innerhalb von einer Stunde!",
+          text: "Wähle abschließend Deine Flüssigkeit. Danach kannst du dein Zusammenstellung noch einmal überprüfen und deinen Kauf abschließen!",
         },
       ],
       smoothieItems: [
@@ -215,21 +223,28 @@ export default {
     };
   },
   methods: {
-    deletePreset(presetName){
+    checkLoggedInUser() {
+      axios.get(`/checkLoggedInUser`).then((response) => {
+        this.isUserLoggedIn = response.data.loggedIn;
+        console.log(this.isUserLoggedIn);
+      });
+    },
+    deletePreset(presetName) {
       axios.get(`/deletePreset/${presetName}`).then((response) => {
-       this.getPresets();
+        this.getPresets();
       });
     },
-    getPresets(){
-      axios.get('/user-presets')
-      .then(response => {
-        this.presetNames = response.data.userPresets;
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    getPresets() {
+      axios
+        .get("/user-presets")
+        .then((response) => {
+          this.presetNames = response.data.userPresets;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
-    choosePreset(presetName){
+    choosePreset(presetName) {
       axios.get(`/checkPreset/${presetName}`).then((response) => {
         this.$router.push({ path: "/shop" });
       });
@@ -273,6 +288,7 @@ export default {
     },
   },
   mounted() {
+    this.checkLoggedInUser();
     this.getPresets();
     this.fadeInAnimation();
     const tips = document.querySelectorAll(".tip");
@@ -376,5 +392,9 @@ export default {
 
 .item-icon {
   scale: 2.5;
+}
+
+.perspective-image {
+  transform: scale(1) perspective(1040px) rotateY(-11deg) rotateX(2deg) rotate(2deg);
 }
 </style>

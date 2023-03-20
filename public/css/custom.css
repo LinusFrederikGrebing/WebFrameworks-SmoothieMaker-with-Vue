@@ -15,7 +15,7 @@
     background-color: rgb(229 231 235);
 }
 .green-bg {
-    background-image: linear-gradient(45deg, #6D9E1F 0%, #80ba24 51%, #96D82B 100%);
+    background-image: linear-gradient(45deg, #517517 0%, #71a223 51%, #8ecd2a 100%);
 }
 .red-bg {
     background-image: linear-gradient(45deg, #BC0000 0%, #FF0000 51%, #E26363 100%);
@@ -28,6 +28,31 @@
 }
 .bg-white {
     background-color: #ffffff;
+}
+
+.auth-background {
+    position: relative;
+    z-index: 1;
+}
+
+/* Auth-CSS */
+.auth-green-background {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 800px;
+    height: 600px;
+    background-color: #84CC16;
+    background-image: linear-gradient(315deg, #2f480a 0%, #84CC16 74%);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+    transform: rotate(-6deg);
+    z-index: 0;
+}
+.rounded-box {
+   border-radius: 30px !important;
+   padding: 30px;
 }
 
 /* Progressbar */

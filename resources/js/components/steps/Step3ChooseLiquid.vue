@@ -1,19 +1,34 @@
 <template>
   <div class="container">
-    <div class="text-center my-4 mx-4">
-      <h2 class="font-weight-bold mt-8">
-        Wähle jetzt abschließend deine Flüssigkeit!
-      </h2>
-    </div>
-    <div class="d-flex mb-4">
-        <SizeComponent ref="sizeComponent" />
-    </div>
-    <v-row no-gutters>
+    <SizeComponent ref="sizeComponent" />
+    <v-row class="mt-1">
+      <v-col class="mb-1" cols="12">
+        <div class="mx-auto d-flex flex-wrap">
+          <button
+            v-for="(category, index) in categories"
+            :key="index"
+            v-on:click="handleCategoryClick(category)"
+            :class="[
+              'mx-2 flex-grow-1 custom-btn',
+              { 'grey-bg': category.active === false },
+              { 'grey-active-bg': category.active === true },
+            ]"
+          >
+            <img
+              width="25"
+              height="25"
+              :src="category.icon"
+              :alt="category.title"
+            />
+            {{ category.title }}
+          </button>
+        </div>
+      </v-col>
       <v-col cols="12" md="8" class="mb-1 mt-1">
         <v-row class="item-list">
           <v-col
-            v-for="liquid in liquids"
-            :key="liquid.id"
+            v-for="(liquid, index) in liquids"
+            :key="index"
             cols="12"
             sm="6"
             md="4"
@@ -26,6 +41,7 @@
               elevation="5"
               class="mx-auto ingrediente-item"
               max-width="600"
+              :id="'liquid-card'+index"
             >
               <div>
                 <v-img
@@ -37,7 +53,7 @@
                 </v-img>
                 <div class="d-flex justify-center align-center flex-column">
                   <p class="font-weight-bold ml-1 mr-1">{{ liquid.name }}:</p>
-                  <p>{{ liquid.price }}€ / 50g</p>
+                  <p>{{ liquid.price }}€ / 50ml</p>
                 </div>
                 <div class="d-flex align-items-center mb-2">
                   <button
@@ -98,10 +114,31 @@ export default {
   },
   data() {
     return {
+      categories: [
+        {
+          icon: "/images/fruitsicon.png",
+          title: "Milch",
+          list: "fruitsList",
+          active: true,
+        },
+        {
+          icon: "/images/vegetablesicon.png",
+          title: "Saft",
+          list: "vegetablesList",
+          active: false,
+        },
+      ],
       liquids: [],
       selectedCard: null,
       liquid: {},
     };
+  },
+  watch: {
+    liquids() {
+      setTimeout(() => {
+        this.enterGrid();
+      }, 0);
+    },
   },
   computed: {
     selectedCardClass() {
@@ -169,6 +206,24 @@ export default {
     },
     addToCart(ingredient, amount) {
       axios.post(`/addCart/${ingredient.id}`, { amount });
+    },
+    enterGrid() {
+      for (let i = 0; i < this.liquids.length; i++) {
+        let element = document.getElementById("liquid-card" + i);
+        gsap.fromTo(
+          element,
+          {
+            y: -1000,
+            x: -1000,
+          },
+          {
+            delay: Math.random() / 2,
+            duration: 2,
+            y: 0,
+            x: 0,
+          }
+        );
+      }
     },
   },
 };
