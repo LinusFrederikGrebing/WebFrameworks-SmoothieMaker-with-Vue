@@ -33,7 +33,7 @@
                   ></v-text-field>
                   <v-row class="d-flex justify-end">
                     <v-col cols="auto">
-                      <a class="mr-4 text-black">Bereits registriert?</a>
+                      <a @click="showLogin" class="mr-4 text-black">Bereits registriert?</a>
                       <v-btn type="submit" color="black">
                         Registrieren
                       </v-btn>
@@ -61,6 +61,9 @@
       }
     },
     methods: {
+      showLogin(){
+        this.$router.push('/login');
+      },
       submitForm() {
         axios.post('/register', this.form)
           .then(() => {

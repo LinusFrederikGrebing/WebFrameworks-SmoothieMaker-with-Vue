@@ -116,16 +116,10 @@ export default {
     return {
       categories: [
         {
-          icon: "/images/fruitsicon.png",
-          title: "Milch",
-          list: "fruitsList",
+          icon: "/images/liquidicon.png",
+          title: "Flüssigkeit",
+          list: "liquids",
           active: true,
-        },
-        {
-          icon: "/images/vegetablesicon.png",
-          title: "Saft",
-          list: "vegetablesList",
-          active: false,
         },
       ],
       liquids: [],
@@ -159,13 +153,11 @@ export default {
       gsap.to(obj.target, {
         duration: 0.2,
         scale: 1.05,
-        y: 0,
-        x: 0,
         opacity: 1,
       });
     },
     hoverLeave(obj) {
-      gsap.to(obj.target, { duration: 0.2, scale: 1, y: 0, x: 0, opacity: 1 });
+      gsap.to(obj.target, { duration: 0.2, scale: 1, opacity: 1 });
     },
     getLiquidList() {
       axios.get("/api/liquid").then((response) => {

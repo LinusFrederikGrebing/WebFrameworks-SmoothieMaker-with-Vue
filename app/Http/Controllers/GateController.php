@@ -6,7 +6,8 @@ class GateController extends Controller
 {
  function checkLoggedInUser(){
     if (auth()->check()) {
-        return response()->json(['loggedIn' => true]);
+        $user = auth()->user();
+        return response()->json(['loggedIn' => true, 'username' => $user->name ]);
     } else {
         return response()->json(['loggedIn' => false]);
     }

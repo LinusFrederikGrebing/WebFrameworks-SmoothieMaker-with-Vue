@@ -12,13 +12,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 //Bottle-Size-Routes
 Route::get('/schritt1/{bottle}', [App\Http\Controllers\BottleSizeController::class, 'storeBottleSize'])->name('storeBottleSize');
@@ -46,5 +40,5 @@ Route::get('/checkLoggedInUser', [App\Http\Controllers\GateController::class, 'c
 
 // needed to refer to the vue router
 Route::get('{any}', function () {
-    return view('welcome');
+    return view('index');
 })->where('any','.*');

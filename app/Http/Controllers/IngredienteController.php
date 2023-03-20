@@ -26,7 +26,7 @@ class IngredienteController extends Controller
     }
 
     public function create(){
-        return view('welcome');
+        return view('index');
     }
 
     public function store(Request $request)

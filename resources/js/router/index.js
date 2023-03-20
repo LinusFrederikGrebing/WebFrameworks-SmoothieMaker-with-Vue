@@ -1,12 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-import WelcomeComponent from '../components/WelcomeComponent'
+import LandingPageTemplate from '../components/LandingPageTemplate'
 import HomeComponent from '../components/HomeComponent'
 import CreateIngrediente from '../components/ingrediente/createIngrediente'
 import UpdateIngrediente from '../components/ingrediente/updateIngrediente'
 import ChooseBottleSize from '../components/steps/Step1ChooseBottleSize'
 import step2Component  from '../components/steps/Step2ChooseIngediente'
-import step3Component  from '../components/steps/Step3ShopComponent'
+import ShopComponent  from '../components/steps/ShopComponent'
 import Step3ChooseLiquid  from '../components/steps/Step3ChooseLiquid'
 import LoginComponent  from '../components/auth/LoginComponent'
 import RegisterComponent  from '../components/auth/RegisterComponent'
@@ -14,8 +14,8 @@ import RegisterComponent  from '../components/auth/RegisterComponent'
 const routes = [
     {
         path: '/',
-        name: 'welcome',
-        component: WelcomeComponent
+        name: 'LandingPageTemplate',
+        component: LandingPageTemplate
     },
     {
         path: '/chooseBottleSize',
@@ -35,7 +35,7 @@ const routes = [
     {
         path: '/shop',
         name: 'shop',
-        component: step3Component
+        component: ShopComponent
     },
     {
         path: '/home',

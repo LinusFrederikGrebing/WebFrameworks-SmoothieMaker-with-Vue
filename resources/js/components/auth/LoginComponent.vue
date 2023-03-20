@@ -26,7 +26,7 @@
                   </v-row>
                   <v-row class="d-flex justify-end">
                     <v-col cols="auto">
-                      <a class="mr-4 text-black">Passwort vergessen?</a>
+                      <a @click="showRegister" class="mr-4 text-black">Noch nicht registriert?</a>
                       <v-btn type="submit" color="black">
                         Log In
                       </v-btn>
@@ -55,6 +55,9 @@
       };
     },
     methods: {
+      showRegister(){
+        this.$router.push('/register');
+      },
       submitForm() {
         axios.post('/login', this.form)
           .then(() => {
