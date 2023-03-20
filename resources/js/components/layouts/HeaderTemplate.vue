@@ -34,7 +34,13 @@
               class="text-white"
               @click="isDropdownOpen = !isDropdownOpen"
             >
-              <span class="mr-1">{{ username }}</span>
+            <div class="d-flex">
+               <h5 class="mr-1">{{ username }}</h5>
+              <span class="material-symbols-outlined mb-1">
+                 expand_more
+              </span>
+            </div>
+             
             </button>
 
             <!-- Dropdown items -->

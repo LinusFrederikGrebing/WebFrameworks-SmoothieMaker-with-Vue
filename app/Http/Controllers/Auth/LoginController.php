@@ -42,5 +42,9 @@ class LoginController extends Controller
     {
         return view('index');
     }
+    public function username()
+    {
+        return 'name';
+    }
 
 }

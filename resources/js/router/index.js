@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 import LandingPageTemplate from '../components/LandingPageTemplate'
-import HomeComponent from '../components/HomeComponent'
+import HomeTemplate from '../components/HomeTemplate'
 import CreateIngrediente from '../components/ingrediente/createIngrediente'
 import UpdateIngrediente from '../components/ingrediente/updateIngrediente'
 import ChooseBottleSize from '../components/steps/Step1ChooseBottleSize'
@@ -40,7 +40,7 @@ const routes = [
     {
         path: '/home',
         name: 'home',
-        component: HomeComponent
+        component: HomeTemplate
     },
     {
         path: '/create',

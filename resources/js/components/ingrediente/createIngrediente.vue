@@ -1,44 +1,59 @@
 <template>
-  <v-app>
-    <v-container class="py-6">
-      <v-card class="py-3">
-        <div class="px-4 py-10">
-          <h1>Zutat hinzufügen:</h1>
-          <v-divider></v-divider>
-          <v-form @submit.prevent="storeIngrediente">
-            <v-text-field
-              v-model="form.name"
-              label="Name:"
-              required
-              :rules="nameRules"
-            ></v-text-field>
-            <v-text-field
-              v-model="form.price"
-              label="Einzelpreis:"
-              type="number"
-              step="0.01"
-              required
-              :rules="priceRules"
-            ></v-text-field>
-            <v-select
-              v-model="form.type"
-              label="Typ:"
-              :items="typeOptions"
-              required
-              :rules="typeRules"
-            ></v-select>
-            <v-file-input
-              label="Datei auswählen"
-              :rules="fileRules"
-              v-on:change="onChange"
-            ></v-file-input>
-            <v-btn color="primary" type="submit">Zutat hinzufügen</v-btn>
-          </v-form>
-        </div>
-      </v-card>
+  <div class="auth-background mt-16">
+    <div class="auth-green-background mx-auto rounded-box"></div>
+    <v-container class="py-6 d-flex flex-column justify-center">
+      <v-row class="justify-center">
+        <v-col cols="12" class="mx-auto">
+          <v-card
+            elevation="10"
+            width="800"
+            height="550"
+            class="mx-auto rounded-box"
+          >
+            <v-card-text class="w-75 mx-auto">
+              <h2 class="font-weight-bold mb-12 mt-16">Zutat hinzufügen:</h2>
+              <v-form @submit.prevent="storeIngrediente">
+                <v-text-field
+                  v-model="form.name"
+                  label="Name:"
+                  required
+                  :rules="nameRules"
+                ></v-text-field>
+                <v-text-field
+                  v-model="form.price"
+                  label="Einzelpreis:"
+                  type="number"
+                  step="0.01"
+                  required
+                  :rules="priceRules"
+                ></v-text-field>
+                <v-select
+                  v-model="form.type"
+                  label="Typ:"
+                  :items="typeOptions"
+                  required
+                  :rules="typeRules"
+                ></v-select>
+                <v-file-input
+                  label="Datei auswählen"
+                  :rules="fileRules"
+                  v-on:change="onChange"
+                ></v-file-input>
+                <v-row class="d-flex justify-end">
+                  <v-col cols="auto">
+                    <a @click="showHome" class="mr-4 text-black">Zurück</a>
+                    <v-btn color="black" type="submit">Zutat hinzufügen</v-btn>
+                  </v-col>
+                </v-row>
+              </v-form>
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
     </v-container>
-  </v-app>
+  </div>
 </template>
+
 <script>
 import axios from "axios";
 
@@ -69,6 +84,9 @@ export default {
     },
   },
   methods: {
+    showHome() {
+      this.$router.push('/home');
+    },
     onChange(e) {
       this.file = e.target.files[0];
     },

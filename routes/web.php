@@ -37,6 +37,7 @@ Route::get('/user-presets', [App\Http\Controllers\PresetController::class, 'getU
 Route::get('/deletePreset/{ingrediente}', [App\Http\Controllers\PresetController::class, 'deleteUserPreset'])->name('deletePreset');
 
 Route::get('/checkLoggedInUser', [App\Http\Controllers\GateController::class, 'checkLoggedInUser'])->name('checkLoggedInUser');
+Route::get('/getUserRole', [App\Http\Controllers\GateController::class, 'getUserRole'])->name('getUserRole');
 
 // needed to refer to the vue router
 Route::get('{any}', function () {

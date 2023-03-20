@@ -137,5 +137,10 @@ export default {
   },
 };
 </script>
+<style scoped>
+.item-icon {
+  scale: 2.5;
+}
+</style>
 
   

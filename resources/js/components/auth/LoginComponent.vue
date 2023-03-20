@@ -8,10 +8,10 @@
               <v-card-text class="w-75 mx-auto">
                 <h2 class="font-weight-bold mb-12 mt-16">Login</h2>
                 <v-form @submit.prevent="submitForm">
-                  <label>E-Mail:</label>
+                  <label>Name:</label>
                   <v-text-field
-                    v-model="form.email"
-                    type="email"
+                    v-model="form.name"
+                    type="name"
                     required
                   ></v-text-field>
                   <label>Passwort:</label>
@@ -48,7 +48,7 @@
     data() {
       return {
         form: {
-          email: '',
+          name: '',
           password: '',
           remember_me: false,
         },
