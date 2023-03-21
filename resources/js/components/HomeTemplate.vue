@@ -1,7 +1,7 @@
 <template>
   <div class="container">
-    <div v-if="isAdmin"><EmployeeTemplate/></div>
-    <div v-if="isCustomer"><CustomerTemplate/></div>
+    <div v-if="isAdmin"><EmployeeTemplate /></div>
+    <div v-if="isCustomer"><CustomerTemplate /></div>
   </div>
 </template>
 
@@ -13,7 +13,7 @@ export default {
   name: "HomeTemplate",
   components: {
     CustomerTemplate,
-    EmployeeTemplate
+    EmployeeTemplate,
   },
   data() {
     return {
@@ -27,9 +27,9 @@ export default {
   methods: {
     getUserRole() {
       axios.get(`/getUserRole`).then((response) => {
-        if(response.data.type == "kunde") {
+        if (response.data.type == "kunde") {
           this.isCustomer = true;
-        } else if(response.data.type == "mitarbeiter") {
+        } else if (response.data.type == "mitarbeiter") {
           this.isAdmin = true;
         } else {
           this.$router.push({ path: "/login" });

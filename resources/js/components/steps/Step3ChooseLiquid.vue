@@ -34,14 +34,14 @@
             md="4"
             lg="4"
           >
-          <v-card
+            <v-card
               @mouseenter="hoverEnter($event)"
               @mouseleave="hoverLeave($event)"
               :class="{ 'selected-card': liquid.id === selectedCard }"
               elevation="5"
               class="mx-auto ingrediente-item"
               max-width="600"
-              :id="'liquid-card'+index"
+              :id="'liquid-card' + index"
             >
               <div>
                 <v-img
@@ -55,15 +55,13 @@
                   <p class="font-weight-bold ml-1 mr-1">{{ liquid.name }}:</p>
                   <p>{{ liquid.price }}€ / 50ml</p>
                 </div>
-                <div class="d-flex align-items-center mb-2">
-                  <button
-                    color="success"
-                    class="ml-4 mr-4 flex-grow-1 green-bg custom-btn"
-                    @click="selectCard(liquid)"
-                  >
-                    Wählen!
-                  </button>
-                </div>
+                <v-row class="d-flex justify-center mx-6 my-2">
+                  <v-col cols="auto">
+                    <v-btn @click="selectCard(liquid)" color="black">
+                      Wählen!
+                    </v-btn>
+                  </v-col>
+                </v-row>
               </div>
             </v-card>
           </v-col>
@@ -134,13 +132,6 @@ export default {
       }, 0);
     },
   },
-  computed: {
-    selectedCardClass() {
-      return {
-        "selected-card": this.selectedCard !== null,
-      };
-    },
-  },
   beforeUnmount() {
     this.$refs.mixerComponent.clearInterval();
   },
@@ -166,6 +157,7 @@ export default {
     },
     getActLiquid() {
       axios.get("/getCurrentLiquid").then((response) => {
+        console.log(response);
         if (Object.keys(response.data).length === 0) {
           return;
         }
@@ -173,6 +165,7 @@ export default {
         Object.keys(response).forEach((key) => {
           this.liquid = response[key];
           this.$refs.mixerComponent.liquidAnimation(this.liquid.options.image);
+          this.selectCard(this.liquid);
         });
       });
     },
@@ -180,6 +173,7 @@ export default {
       this.$refs.mixerComponent.liquidAnimation(liquid.image);
     },
     selectCard(liquid) {
+      console.log(liquid);
       this.liquidAnimation(liquid);
       this.liquid = liquid;
       this.selectedCard = liquid.id;
@@ -236,5 +230,8 @@ export default {
 }
 .selected-card {
   border: 4px solid #80ba24;
+}
+p {
+  margin-bottom: 0;
 }
 </style>

@@ -178,3 +178,21 @@
     margin-bottom: 15em !important;
     margin-top: 10em !important;
 }
+
+.bg-container {
+    position: relative;
+}
+.green-background-rotate {
+    position: absolute;
+    top: 1em;
+    left: 1em;
+    width: 90%;
+    height: 90%;
+    bottom: 0;
+    right: 0;
+    background-color: #84CC16;
+    background-image: linear-gradient(315deg, #2f480a 0%, #84CC16 74%);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+    transform: rotate(-3deg);
+    z-index: 0;
+}

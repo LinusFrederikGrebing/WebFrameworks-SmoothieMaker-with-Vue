@@ -30,6 +30,12 @@ class PresetController extends Controller
     }
     public function storeAsPreset(Request $request)
     {
+        $request->validate([
+            'name' => 'required|unique:presets,name',
+        ], [
+            'name.unique' => 'Dieser Name existiert bereits.'
+        ]);
+
         $name = $request->input('name');
         if (!Auth::check()) { 
             return response()->json(['auth' => false]);
@@ -45,7 +51,6 @@ class PresetController extends Controller
 
         $preset->ingredients()->attach($ingredients);
       
-       
         return response()->json(['ingrediente' => $preset]);
     }
     private function addToCart($ingrediente, $amount){

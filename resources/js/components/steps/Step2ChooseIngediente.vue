@@ -214,15 +214,19 @@ export default {
       }
     },
     getIngredientsList() {
-      axios.get('/api/getIngredientsList').then((response) => {
-        this.fruitsList = response.data.ingredientsList.filter((cartItem) => cartItem.type === "fruits");
-        this.vegetablesList =response.data.ingredientsList.filter((cartItem) => cartItem.type === "vegetables");
+      axios.get("/api/getIngredientsList").then((response) => {
+        this.fruitsList = response.data.ingredientsList.filter(
+          (cartItem) => cartItem.type === "fruits"
+        );
+        this.vegetablesList = response.data.ingredientsList.filter(
+          (cartItem) => cartItem.type === "vegetables"
+        );
         this.ingredients = this.fruitsList;
         this.selectedAmounts = Array(this.ingredients.length).fill(1);
       });
     },
-    changeIngredientsList(list){
-        this.ingredients = this[list];
+    changeIngredientsList(list) {
+      this.ingredients = this[list];
     },
     increaseSelectedAmount(index) {
       if (this.selectedAmounts[index] < 20) {
@@ -289,7 +293,7 @@ export default {
         confirmButtonText: "Okay!",
       });
     },
-  }
+  },
 };
 </script>
 <style scoped>

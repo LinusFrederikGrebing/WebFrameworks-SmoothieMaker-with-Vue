@@ -1,31 +1,43 @@
 <template>
-    <div v-if="isUserLoggedIn">
-      <div class="text-center mx-4 mt-8">
-        <h3 class="font-weight-bold">Kunden-Ansicht</h3>
-        <p>Hier kannst du deine abgespeicherten Zusammenstellungen aufrufen!</p>
-      </div>
-      <div>
-        <v-row class="mx-auto ml-16 mb-8" no-gutters>
-          <v-col
-            sm="12"
-            md="6"
-            xl="4"
-            lg="4"
-            v-for="(preset, index) in presetNames"
-            :key="index"
-            ><div class="mx-8 mb-4 d-flex">
-              <v-btn class="w-75 py-4" @click="choosePreset(preset)">{{
-                preset
-              }}</v-btn>
-              <v-btn class="w-25 py-4" @click="deletePreset(preset)">
-                <v-icon color="red">mdi-delete</v-icon></v-btn
-              >
-            </div>
-          </v-col>
-          <p v-if="presetNames.length < 1">Du hast aktuell noch keine Zusammenstellungen gespeichert. Wenn du zukünftig welche als Preset abspeicherst, kannst du sie hier einsehen und abrufen und Dir so bei deiner nächsten Bestellung Zeit sparen!</p>
-        </v-row>
-      </div>
+  <div v-if="isUserLoggedIn">
+    <div class="text-center mx-4 mt-8">
+      <h3 class="font-weight-bold">Kunden-Ansicht</h3>
+      <p>Hier kannst du deine abgespeicherten Zusammenstellungen aufrufen!</p>
     </div>
+    <div elevation="5" class="w-95 ml-5 mt-3 mb-3">
+      <v-table v-if="presetNames.length > 0" density="compact">
+        <thead>
+          <tr>
+            <th class="text-left text-black w-75">Name</th>
+            <th class="text-left text-black">Entfernen</th>
+            <th class="text-left text-black">Wählen!</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(preset, index) in presetNames" :key="index">
+            <td>
+              <p class="w-75 py-4">{{ preset }}</p>
+            </td>
+            <td>
+              <a @click="deletePreset(preset)" class="mr-4 text-black"
+                >löschen</a
+              >
+            </td>
+            <td>
+              <v-btn @click="choosePreset(preset)" color="black">
+                Wählen!
+              </v-btn>
+            </td>
+          </tr>
+        </tbody>
+      </v-table>
+      <p v-if="presetNames.length < 1">
+        Du hast aktuell noch keine Zusammenstellungen gespeichert. Wenn du
+        zukünftig welche als Preset abspeicherst, kannst du sie hier einsehen
+        und abrufen und Dir so bei deiner nächsten Bestellung Zeit sparen!
+      </p>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -34,7 +46,7 @@ import ScrollTrigger from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 export default {
-  name: "SmoothieTipsComponent",
+  name: "CustomerTemplate",
   data() {
     return {
       isUserLoggedIn: false,
@@ -73,6 +85,6 @@ export default {
         this.$router.push({ path: "/shop" });
       });
     },
-  }
-}
+  },
+};
 </script>

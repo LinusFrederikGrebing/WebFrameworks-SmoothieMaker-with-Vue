@@ -80,6 +80,7 @@
   
 <script>
 export default {
+  name: "HeaderTemplate",
   data() {
     return {
       username: null,
@@ -111,6 +112,7 @@ export default {
 <style scoped>
 .dropdown {
   position: absolute;
+  margin-left: 10em;
   z-index: 2;
   color: black;
   text-decoration: none;

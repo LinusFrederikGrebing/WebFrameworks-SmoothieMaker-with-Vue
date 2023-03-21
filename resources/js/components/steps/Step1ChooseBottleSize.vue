@@ -12,10 +12,12 @@
         xs="12"
         v-for="bottle in bottles"
         :key="bottle.id"
+        class="bg-container"
+        :id="'bottle-card' + bottle.id"
       >
+        <div class="green-background-rotate mx-auto rounded-box"></div>
         <v-card
-          :id="'bottle-card' + bottle.id"
-          class="my-4 mx-4 card-color"
+          class="my-4 mx-4 card-color rounded-box"
           elevation="10"
           min-height="300"
           @mouseenter="hoverEnter($event)"
@@ -62,7 +64,7 @@ export default {
       this.bottles = response.data.bottles;
       this.clearMixer();
       setTimeout(() => {
-        this.enterGrid()
+        this.enterGrid();
       }, 0);
     } catch (error) {
       console.log(error);
@@ -82,15 +84,17 @@ export default {
       for (let i = 1; i <= this.bottles.length; i++) {
         let element = document.getElementById("bottle-card" + i);
         let start = 1400;
-        if(i % 2 == 0) { start = -1400 } 
+        if (i % 2 == 0) {
+          start = -1400;
+        }
         gsap.fromTo(
           element,
           {
-            x: start
+            x: start,
           },
           {
             duration: 1,
-            x: 0
+            x: 0,
           }
         );
       }
@@ -117,6 +121,6 @@ export default {
   margin-left: -1em;
 }
 .card-color {
-  background-color: rgb(229 231 235);
+  z-index: 2;
 }
 </style>

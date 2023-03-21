@@ -48,12 +48,18 @@
                   v-text="item.title"
                 ></h4>
                 <p class="my-6 mx-6" v-text="item.text"></p>
-                <button
-                  class="mx-6 mb-2 green-bg custom-btn"
-                  @click="choosePreset(item.title)"
-                >
-                  Zusammenstellung wählen!
-                </button>
+                <v-row class="d-flex justify-end mx-6">
+                  <v-col cols="auto">
+                    <a
+                      @click="storeAsPreset(item.title)"
+                      class="mr-4 text-black"
+                      >Speichern?</a
+                    >
+                    <v-btn @click="choosePreset(item.title)" color="black">
+                      Wählen!
+                    </v-btn>
+                  </v-col>
+                </v-row>
               </div>
             </v-card-text>
           </v-card>
@@ -68,7 +74,7 @@
   </div>
 </template>
   
-  <script>
+<script>
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
@@ -102,6 +108,52 @@ export default {
         this.$router.push({ path: "/shop" });
       });
     },
+    storeAsPreset(presetName) {
+      axios
+        .post(`/storeAsPreset`, {
+          name: presetName,
+        })
+        .then((response) => {
+          console.log(response);
+          if (response.data.auth == false) {
+            this.showAlertError(
+              "Du must angemeldet sein, um dir das Preset abspeichern zu können!",
+              ""
+            );
+          } else {
+            this.showAlertSuccess(
+              "Das Preset wurde erfolgreich gespeichert!",
+              "Wenn du auf dein Profilnamen klickst und zur Homepage gehst, kannst du das Preset auswählen und deine Zusammenstellung abfrufen!"
+            );
+          }
+        })
+        .catch((error) => {
+          this.showAlertError(
+            "Den Namen für das Preset gibt es bereits!",
+            "Wähle einen anderen Namen, oder lösche das bestehende Preset!"
+          );
+        });
+    },
+    showAlertError(title, text) {
+      Swal.fire({
+        title: title,
+        text: text,
+        icon: "error",
+        showCancelButton: false,
+        confirmButtonColor: "#6D9E1F",
+        confirmButtonText: "Okay!",
+      });
+    },
+    showAlertSuccess(title, text) {
+      Swal.fire({
+        title: title,
+        text: text,
+        icon: "success",
+        showCancelButton: false,
+        confirmButtonColor: "#6D9E1F",
+        confirmButtonText: "Okay!",
+      });
+    },
   },
   mounted() {
     const tips = document.querySelectorAll(".tip");
@@ -126,7 +178,7 @@ export default {
         }
       );
     });
-  }
+  },
 };
 </script>
 

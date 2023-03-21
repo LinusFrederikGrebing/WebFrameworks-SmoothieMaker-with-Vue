@@ -10,21 +10,17 @@
             vier veschiedene Smoothie-Größen. Du kannst entscheiden, ob dein
             Smoothie aus 500ml, 750ml, 1000ml oder sogar 1250ml leckeren Zutaten
             bestehen soll. Den Smoothie kannst du kostenlos und ohne Anmeldung
-            zusammenstellen. Registriert kannst du deine eigenen Smoothie-Zusammenstellungen erstellen und zwischenspeichern. Bei Kauf errechnet sich der Preis Deines Getränks
-            aus den Einzelpreisen der Zutaten.
+            zusammenstellen. Registriert kannst du deine eigenen
+            Smoothie-Zusammenstellungen erstellen und zwischenspeichern. Bei
+            Kauf errechnet sich der Preis Deines Getränks aus den Einzelpreisen
+            der Zutaten.
           </h5>
           <button class="mx-5 mb-5 green-bg custom-btn" @click="showStep1()">
             Beginne mit der Zusammenstellung
           </button>
         </div>
       </v-col>
-      <v-col
-        cols="6"
-        xl="6"
-        md="10"
-        sm="10"
-        class="perspective-image"
-      >
+      <v-col cols="6" xl="6" md="10" sm="10" class="perspective-image">
         <v-card elevation="10 mt-8" id="right-img">
           <v-img src="/images/smoothie.jpg"></v-img>
         </v-card>
@@ -46,7 +42,10 @@ export default {
   name: "LandingPageTemplate",
   components: {
     SmoothieTips,
-    StepsComponent
+    StepsComponent,
+  },
+  mounted() {
+    this.fadeInAnimation();
   },
   methods: {
     choosePreset(presetName) {
@@ -91,9 +90,6 @@ export default {
         }
       );
     },
-  },
-  mounted() {
-    this.fadeInAnimation();
   }
 };
 </script>
@@ -109,6 +105,7 @@ export default {
   }
 }
 .perspective-image {
-  transform: scale(1) perspective(1040px) rotateY(-11deg) rotateX(2deg) rotate(2deg);
+  transform: scale(1) perspective(1040px) rotateY(-11deg) rotateX(2deg)
+    rotate(2deg);
 }
 </style>

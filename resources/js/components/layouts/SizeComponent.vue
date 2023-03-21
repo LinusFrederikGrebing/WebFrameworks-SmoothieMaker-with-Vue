@@ -6,11 +6,11 @@
         <v-icon small class="ml-3 mb-1">mdi-pencil</v-icon>
       </button>
     </div>
-
     <p>
       Aktuell hast du <b class="cart-count"> {{ cartCount }} </b> von
-      <b>{{ bottle.amount }}</b> benötigte Zutaten
-      und <b>{{ liquidCount }}</b> von <b>1</b> benötigte Flüssigkeit für Größe <b>{{ bottle.name }}</b> ausgewählt.
+      <b>{{ bottle.amount }}</b> benötigte Zutaten und
+      <b>{{ liquidCount }}</b> von <b>1</b> benötigte Flüssigkeit für Größe
+      <b>{{ bottle.name }}</b> ausgewählt.
     </p>
   </div>
 </template>
@@ -19,6 +19,7 @@
 import axios from "axios";
 
 export default {
+  name: "SizeComponent",
   data() {
     return {
       cartCount: null,
@@ -31,13 +32,11 @@ export default {
   },
   methods: {
     getCartCount() {
-      axios
-        .get("/cart/count")
-        .then((response) => {
-          this.cartCount = response.data.cartCount;
-          this.bottle = response.data.bottle;
-          this.liquidCount = response.data.liquidCount;
-        })
+      axios.get("/cart/count").then((response) => {
+        this.cartCount = response.data.cartCount;
+        this.bottle = response.data.bottle;
+        this.liquidCount = response.data.liquidCount;
+      });
     },
     showBottleSizes() {
       Swal.fire({

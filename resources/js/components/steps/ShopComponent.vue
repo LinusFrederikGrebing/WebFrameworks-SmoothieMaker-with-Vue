@@ -6,14 +6,16 @@
       </div>
       <div v-if="isUserLoggedIn" class="d-flex w-30">
         <v-text-field
-          class="mt-3 shrink"
+          class="mt-3 shrink enrollField"
           v-model="presetName"
           type="text"
           placeholder="Preset-Name"
           required
         >
         </v-text-field>
-        <v-btn class="mt-4" @click="storeAsPreset()">Preset erstellen!</v-btn>
+        <v-btn class="mt-4" @click="storeAsPreset()" color="black">
+          Preset erstellen!
+        </v-btn>
       </div>
     </div>
     <v-row class="mt-2">
@@ -38,7 +40,7 @@
       <v-col cols="12" md="8" class="mb-5">
         <div class="item-list">
           <v-row>
-            <v-card elevation="5" class="w-95 ml-5 mt-3 mb-3">
+            <div elevation="5" class="w-95 ml-5 mt-3 mb-3">
               <v-table density="compact">
                 <thead>
                   <tr>
@@ -98,10 +100,10 @@
                     <td>{{ cart.name }}</td>
                     <td>{{ cart.price }}€ / 50ml</td>
                     <td>
-                      {{ cart.qty }}  
-                        <button @click="showStep3">
-                            <v-icon small class="ml-3 mb-1">mdi-pencil</v-icon>
-                        </button>
+                      {{ cart.qty }}
+                      <button @click="showStep3">
+                        <v-icon small class="ml-3 mb-1">mdi-pencil</v-icon>
+                      </button>
                     </td>
                     <td>
                       <v-btn @click="removeSpecificCart(cart)">
@@ -109,10 +111,9 @@
                       </v-btn>
                     </td>
                   </tr>
-
                 </tbody>
               </v-table>
-            </v-card>
+            </div>
           </v-row>
         </div>
         <v-row>
@@ -142,7 +143,7 @@ import MixerComponent from "../layouts/MixerComponent.vue";
 import ProgressbarComponent from "../layouts/ProgressbarComponent.vue";
 import SizeComponent from "../layouts/SizeComponent.vue";
 export default {
-  name: "Step3Shop",
+  name: "ShopComponent",
   components: {
     MixerComponent,
     ProgressbarComponent,
@@ -390,6 +391,10 @@ export default {
 }
 .w-30 {
   width: 40%;
+}
+.enrollField {
+  margin-bottom: -2em;
+  margin-right: 1em;
 }
 </style>
 

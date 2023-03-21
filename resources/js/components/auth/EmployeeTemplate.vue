@@ -74,18 +74,20 @@
                 <p>{{ ingrediente.price }}€ / 50g</p>
               </div>
               <div class="mx-auto d-flex flex-wrap">
-              <v-btn class="flex-grow-1"
-                @click="changeRouteUpdate(ingrediente)">
+                <v-btn
+                  class="flex-grow-1"
+                  @click="changeRouteUpdate(ingrediente)"
+                >
                   <span class="material-symbols-outlined">edit</span>
-              </v-btn>
-              <v-btn
+                </v-btn>
+                <v-btn
                   width="45"
                   class="flex-grow-1"
                   @click="deleteIngrediente(ingrediente.id)"
                 >
                   <span class="material-symbols-outlined">delete</span>
                 </v-btn>
-            </div>
+              </div>
             </div>
           </v-card>
         </v-col>
@@ -94,7 +96,7 @@
   </div>
 </template>
   
-  <script>
+<script>
 import axios from "axios";
 import gsap from "gsap";
 const categories = [
@@ -119,7 +121,7 @@ const categories = [
 ];
 
 export default {
-  name: "Dashboard",
+  name: "EmployeeTemplate",
   data() {
     return {
       ingredients: [],
@@ -192,7 +194,7 @@ export default {
   },
 };
 </script>
-  <style scoped>
+<style scoped>
 .v-card__title {
   justify-content: center;
 }

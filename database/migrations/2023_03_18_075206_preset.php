@@ -15,7 +15,7 @@ class Preset extends Migration
     {
         Schema::create('presets', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->unique();
             $table->unsignedBigInteger('bottle_id');
             
             $table->unsignedBigInteger('user_id')->nullable();

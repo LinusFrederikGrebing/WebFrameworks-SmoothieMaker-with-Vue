@@ -11,7 +11,9 @@
             class="mx-auto rounded-box"
           >
             <v-card-text class="w-75 mx-auto">
-              <h2 class="font-weight-bold mb-12 mt-16">Zutat {{ ingrediente.name }} aktualisieren:</h2>
+              <h2 class="font-weight-bold mb-12 mt-16">
+                Zutat {{ ingrediente.name }} aktualisieren:
+              </h2>
               <v-form
                 @submit.prevent="updateIngrediente"
                 enctype="multipart/form-data"
@@ -44,7 +46,9 @@
                 <v-row class="d-flex justify-end">
                   <v-col cols="auto">
                     <a @click="showHome" class="mr-4 text-black">Zurück</a>
-                    <v-btn color="black" type="submit">Zutat aktualisieren</v-btn>
+                    <v-btn color="black" type="submit"
+                      >Zutat aktualisieren</v-btn
+                    >
                   </v-col>
                 </v-row>
               </v-form>
@@ -73,7 +77,7 @@ export default {
   },
   methods: {
     showHome() {
-      this.$router.push('/home');
+      this.$router.push("/home");
     },
     onChange(e) {
       this.file = e.target.files[0];

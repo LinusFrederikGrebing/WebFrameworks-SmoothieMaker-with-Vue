@@ -53,11 +53,11 @@
     </v-container>
   </div>
 </template>
-
 <script>
 import axios from "axios";
 
 export default {
+  name: "CreateIngrediente",
   data() {
     return {
       typeOptions: ["fruits", "vegetables", "liquid"],
@@ -85,7 +85,7 @@ export default {
   },
   methods: {
     showHome() {
-      this.$router.push('/home');
+      this.$router.push("/home");
     },
     onChange(e) {
       this.file = e.target.files[0];

@@ -26,6 +26,7 @@
 <script>
 import gsap from "gsap";
 export default {
+  name: "MixerComponent",
   data() {
     return {
       canvas: null,
@@ -56,7 +57,6 @@ export default {
     }
     this.clearLiquid();
   },
-
   methods: {
     showAlertSuccess(title, text) {
       Swal.fire({
@@ -152,10 +152,13 @@ export default {
         .to(".containerMixer", { duration: 0.1, rotate: 1 })
         .repeat(30)
         .eventCallback("onComplete", () => {
-          gsap.to(".containerMixer", { duration: 0, rotate: 0 })
+          gsap.to(".containerMixer", { duration: 0, rotate: 0 });
           this.clearInterval();
           this.juice();
-         this.showAlertSuccess("Vielen Dank für deine Zusammenstellung!", "Klicke auf weiter um wieder zur Startseite zu gelangen!")
+          this.showAlertSuccess(
+            "Vielen Dank für deine Zusammenstellung!",
+            "Klicke auf weiter um wieder zur Startseite zu gelangen!"
+          );
         });
     },
     liquidAnimation(image) {
@@ -177,7 +180,7 @@ export default {
       };
     },
     juiceAnimation(amount) {
-      const amountInPercent = 87. - 2.6 * amount;
+      const amountInPercent = 87 - 2.6 * amount;
       this.getRGBList();
       const svg = document.getElementById("innerImage");
       const svgDoc = svg.contentDocument;
@@ -189,11 +192,16 @@ export default {
         this.darkerRgbColor = `rgb(${darkerRgbArray.join(",")})`;
         for (let i = 0; i < paths.length; i++) {
           paths[i].style.fill = this.darkerRgbColor;
-        }  
+        }
         gsap.fromTo(
           "#innerImage",
           { opacity: 1, y: "100%", transformOrigin: "bottom center" },
-          { duration: 10, opacity: 1, y: amountInPercent+"%", ease: "power3.out" }
+          {
+            duration: 10,
+            opacity: 1,
+            y: amountInPercent + "%",
+            ease: "power3.out",
+          }
         );
       }, 300);
     },
@@ -241,7 +249,7 @@ export default {
       });
       sessionStorage.setItem("ingredientsArray", JSON.stringify(this.balls));
     },
-    removeBall(){
+    removeBall() {
       this.balls = [];
       sessionStorage.setItem("ingredientsArray", JSON.stringify(this.balls));
     },
