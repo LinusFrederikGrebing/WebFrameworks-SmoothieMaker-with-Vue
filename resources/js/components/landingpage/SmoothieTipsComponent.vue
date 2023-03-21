@@ -51,7 +51,7 @@
                 <v-row class="d-flex justify-end mx-6">
                   <v-col cols="auto">
                     <a
-                      @click="storeAsPreset(item.title)"
+                      @click="storeExistingPreset(item.title)"
                       class="mr-4 text-black"
                       >Speichern?</a
                     >
@@ -108,32 +108,30 @@ export default {
         this.$router.push({ path: "/shop" });
       });
     },
-    storeAsPreset(presetName) {
-      axios
-        .post(`/storeAsPreset`, {
-          name: presetName,
-        })
-        .then((response) => {
-          console.log(response);
-          if (response.data.auth == false) {
-            this.showAlertError(
-              "Du must angemeldet sein, um dir das Preset abspeichern zu können!",
-              ""
-            );
-          } else {
-            this.showAlertSuccess(
-              "Das Preset wurde erfolgreich gespeichert!",
-              "Wenn du auf dein Profilnamen klickst und zur Homepage gehst, kannst du das Preset auswählen und deine Zusammenstellung abfrufen!"
-            );
-          }
-        })
-        .catch((error) => {
+    storeExistingPreset(presetName) {
+    axios
+      .get(`/storeExistingPreset/${presetName}`)
+      .then((response) => {
+        if (response.data.auth == false) {
           this.showAlertError(
-            "Den Namen für das Preset gibt es bereits!",
-            "Wähle einen anderen Namen, oder lösche das bestehende Preset!"
+            "Du must angemeldet sein, um dir das Preset abspeichern zu können!",
+            ""
           );
-        });
-    },
+        } else {
+          this.showAlertSuccess(
+            "Das Preset wurde erfolgreich gespeichert!",
+            "Wenn du auf dein Profilnamen klickst und zur Homepage gehst, kannst du das Preset auswählen und deine Zusammenstellung abfrufen!"
+          );
+        }
+      })
+      .catch((error) => {
+        this.showAlertError(
+          "Den Namen für das Preset gibt es bereits!",
+          "Wähle einen anderen Namen, oder lösche das bestehende Preset!"
+        );
+      });
+  },
+
     showAlertError(title, text) {
       Swal.fire({
         title: title,

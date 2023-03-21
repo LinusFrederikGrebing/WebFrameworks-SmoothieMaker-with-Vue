@@ -175,7 +175,6 @@ export default {
     checkLoggedInUser() {
       axios.get(`/checkLoggedInUser`).then((response) => {
         this.isUserLoggedIn = response.data.loggedIn;
-        console.log(this.isUserLoggedIn);
       });
     },
     storeAsPreset() {
@@ -199,7 +198,12 @@ export default {
                 "Auf der Startseite kannst du das Preset auswählen und deine Zusammenstellung aufrufen!"
               );
             }
-          });
+          }).catch((error) => {
+          this.showAlertError(
+            "Den Namen für das Preset gibt es bereits!",
+            "Wähle einen anderen Namen, oder lösche das bestehende Preset!"
+          );
+        });;
       }
     },
     getAktLiquid() {

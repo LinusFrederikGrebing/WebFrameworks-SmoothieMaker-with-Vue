@@ -442,6 +442,6 @@ class Ball {
       ((Math.floor(Math.random() * 11) - 5) * Math.PI) / 270;
   }
 }
-</script>
+</script> 
 
 
