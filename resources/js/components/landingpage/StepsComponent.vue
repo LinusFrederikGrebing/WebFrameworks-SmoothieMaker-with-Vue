@@ -8,7 +8,7 @@
       </div>
     </v-row>
     <v-divider width="80%" class="ml-auto mr-auto"></v-divider>
-    <v-row id="steps" class="grid gap-8 row-gap-0 lg:grid-cols-3 my-6 mx-6">
+    <v-row id="steps" class="my-6 mx-6">
       <v-col
         class="relative text-center"
         cols="12"
@@ -18,7 +18,7 @@
         :id="'step' + (index + 1)"
       >
         <div
-          class="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-indigo-50 sm:w-20 sm:h-20"
+          class="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full"
         >
           <span class="material-symbols-outlined item-icon">
             {{ item.icon }}
@@ -27,22 +27,8 @@
         <div class="d-flex">
           <div>
             <h4 class="mb-2" v-text="item.title"></h4>
-            <p
-              class="max-w-md mb-3 text-sm text-gray-900 sm:mx-auto"
-              v-text="item.text"
-            ></p>
-          </div>
-          <div
-            class="top-0 right-0 flex items-center justify-center h-24 lg:-mr-8 lg:absolute"
-          >
-            <v-icon
-              class="w-8 text-gray-700 transform rotate-90 lg:rotate-0"
-              stroke-width="2"
-              v-if="index != items.length - 1"
-            >
-              mdi-arrow-right
-            </v-icon>
-          </div>
+            <p class="mb-3" v-text="item.text"></p>
+          </div> 
         </div>
       </v-col>
     </v-row>

@@ -1,10 +1,10 @@
 <template>
   <v-container class="container">
     <v-row class="seperate">
-      <v-col cols="6" md="10" xl="6" sm="10">
+      <v-col cols="12" md="12" xl="6" sm="12" xs="12">
         <div elevation="10" id="left-text">
           <h1 class="mx-5 mt-5 font-weight-bold">Smoothiemaker</h1>
-          <h5 class="mx-5 my-5">
+          <h5 class="mx-5 mb-5 mt-5">
             Stelle Dir jetzt deinen perfekten Smoothie zusammen! Deine Auswahl
             erstreckt sich aus einer Vielzahl verschiedener Zutaten. Es gibt
             vier veschiedene Smoothie-Größen. Du kannst entscheiden, ob dein
@@ -20,8 +20,8 @@
           </button>
         </div>
       </v-col>
-      <v-col cols="6" xl="6" md="10" sm="10" class="perspective-image">
-        <v-card elevation="10 mt-8" id="right-img">
+      <v-col cols="12" xl="6" md="12" sm="12" xs="12" class="perspective-image">
+        <v-card elevation="10 mt-12" id="right-img">
           <v-img src="/images/smoothie.jpg"></v-img>
         </v-card>
       </v-col>
@@ -78,14 +78,12 @@ export default {
         {
           x: 500,
           scale: 0,
-          opacity: 0,
         },
         {
           x: 0,
           delay: 0.2,
           duration: 2,
           scale: 1,
-          opacity: 1,
           ease: "power3.out",
         }
       );

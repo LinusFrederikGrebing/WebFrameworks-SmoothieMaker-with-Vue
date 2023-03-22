@@ -24,24 +24,34 @@
           @mouseleave="hoverLeave($event)"
         >
           <v-row>
-            <div class="d-flex">
+            <v-col  sm="12"
+              md="4"
+              xl="4"
+              lg="12"
+              xs="12">
               <img
                 class="size-image mt-4"
                 :src="'/images/' + bottle.image"
                 :alt="bottle.name"
                 style="width: 17em; height: 100%; object-fit: contain"
               />
+            </v-col>
+            <v-col  sm="12"
+              md="8"
+              xl="8"
+              lg="12"
+              xs="12">
               <div class="mt-8">
-                <h4 class="mr-8 font-weight-bold">Größe: {{ bottle.name }}</h4>
-                <p class="mr-8 mb-4">{{ bottle.description }}</p>
+                <h4 class="mx-4 font-weight-bold">Größe: {{ bottle.name }}</h4>
+                <p class="mx-4 mb-4">{{ bottle.description }}</p>
                 <button
-                  class="mr-4 my-4 green-bg custom-btn"
+                  class="mx-4 my-4 green-bg custom-btn"
                   @click="storeBottle(bottle)"
                 >
                   Weiter
                 </button>
               </div>
-            </div>
+            </v-col>
           </v-row>
         </v-card>
       </v-col>

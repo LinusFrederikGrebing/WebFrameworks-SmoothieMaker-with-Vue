@@ -1,6 +1,6 @@
 <template>
-  <nav class="bg-thm-grey h-12">
-    <div class="container mx-auto d-flex justify-space-between py-3">
+  <nav class="bg-thm-grey h-10">
+    <div class="container mx-auto d-flex justify-space-between py-2">
       <!-- SmoothieMaker logo -->
       <router-link class="text-white mt-2" style="text-decoration: none" to="/">
         <h5>SmoothieMaker</h5>
@@ -10,33 +10,33 @@
       <div class="d-flex justify-end">
         <!-- Authentication Links -->
         <div class="d-flex mt-2">
-          <div v-if="!isUserLoggedIn" class="ml-4">
+          <div v-if="!isUserLoggedIn" class="ml-4 mt-1">
             <router-link
               class="text-white"
               to="/login"
               style="text-decoration: none"
             >
-              <h5>Login</h5>
+              <h6>Login</h6>
             </router-link>
           </div>
-          <div v-if="!isUserLoggedIn" class="ml-4">
+          <div v-if="!isUserLoggedIn" class="ml-4 mt-1">
             <router-link
               class="text-white"
               to="/register"
               style="text-decoration: none"
             >
-              <h5>Register</h5>
+              <h6>Register</h6>
             </router-link>
           </div>
-          <div v-if="isUserLoggedIn" class="ml-4 relative">
+          <div v-if="isUserLoggedIn" class="ml-4 ">
             <button
               id="dropdown-btn"
               class="text-white"
               @click="isDropdownOpen = !isDropdownOpen"
             >
             <div class="d-flex">
-               <h5 class="mr-1">{{ username }}</h5>
-              <span class="material-symbols-outlined mb-1">
+              <h6>{{username }}</h6>
+              <span class="material-symbols-outlined ml-3">
                  expand_more
               </span>
             </div>
@@ -112,7 +112,7 @@ export default {
 <style scoped>
 .dropdown {
   position: absolute;
-  margin-left: 10em;
+  margin-left: 0em;
   z-index: 2;
   color: black;
   text-decoration: none;

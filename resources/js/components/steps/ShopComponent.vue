@@ -1,23 +1,37 @@
 <template>
   <div class="container">
-    <div class="d-flex">
-      <div class="w-70">
+    <v-row>
+      <v-col cols="12" sm="12" md="12" xl="7" lg="7" xs="12">
         <SizeComponent ref="sizeComponent" />
-      </div>
-      <div v-if="isUserLoggedIn" class="d-flex w-30">
-        <v-text-field
-          class="mt-3 shrink enrollField"
-          v-model="presetName"
-          type="text"
-          placeholder="Preset-Name"
-          required
-        >
-        </v-text-field>
-        <v-btn class="mt-4" @click="storeAsPreset()" color="black">
-          Preset erstellen!
-        </v-btn>
-      </div>
-    </div>
+      </v-col>
+      <v-col
+        cols="12"
+        sm="12"
+        md="12"
+        xl="5"
+        lg="5"
+        xs="12"
+        v-if="isUserLoggedIn"
+      >
+      <v-row>
+        <v-col cols="12" sm="12" md="12" xl="7" lg="7" xs="12">
+          <v-text-field
+            class="mt-3 shrink enrollField"
+            v-model="presetName"
+            type="text"
+            placeholder="Preset-Name"
+            required
+          >
+          </v-text-field>
+        </v-col>
+        <v-col cols="12" sm="12" md="12" xl="5" lg="5" xs="12">
+          <v-btn class="mt-4" @click="storeAsPreset()" color="black">
+            Preset erstellen!
+          </v-btn>
+        </v-col>
+      </v-row>
+      </v-col>
+      </v-row>
     <v-row class="mt-2">
       <v-col class="mb-2" cols="12">
         <div class="mx-auto d-flex flex-wrap">
@@ -48,7 +62,7 @@
                     <th class="text-left text-black">Name</th>
                     <th class="text-left text-black">Preis</th>
                     <th class="text-left text-black">Menge</th>
-                    <th class="text-left text-black">Entfernen</th>
+                    <th class="text-left text-black"></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -80,8 +94,12 @@
                       </div>
                     </td>
                     <td>
-                      <v-btn @click="removeSpecificCart(cart)">
-                        <v-icon color="black">mdi-delete</v-icon>
+                      <v-btn
+                        class="mt-4"
+                        @click="removeSpecificCart(cart)"
+                        color="black"
+                      >
+                        Löschen!
                       </v-btn>
                     </td>
                   </tr>
@@ -106,8 +124,12 @@
                       </button>
                     </td>
                     <td>
-                      <v-btn @click="removeSpecificCart(cart)">
-                        <v-icon color="black">mdi-delete</v-icon>
+                      <v-btn
+                        class="mt-4"
+                        @click="removeSpecificCart(cart)"
+                        color="black"
+                      >
+                        Löschen!
                       </v-btn>
                     </td>
                   </tr>
@@ -198,12 +220,13 @@ export default {
                 "Auf der Startseite kannst du das Preset auswählen und deine Zusammenstellung aufrufen!"
               );
             }
-          }).catch((error) => {
-          this.showAlertError(
-            "Den Namen für das Preset gibt es bereits!",
-            "Wähle einen anderen Namen, oder lösche das bestehende Preset!"
-          );
-        });;
+          })
+          .catch((error) => {
+            this.showAlertError(
+              "Den Namen für das Preset gibt es bereits!",
+              "Wähle einen anderen Namen, oder lösche das bestehende Preset!"
+            );
+          });
       }
     },
     getAktLiquid() {
@@ -397,8 +420,8 @@ export default {
   width: 40%;
 }
 .enrollField {
-  margin-bottom: -2em;
-  margin-right: 1em;
+  margin-bottom: -3em;
+  margin-right: 0em;
 }
 </style>
 

@@ -63,9 +63,7 @@
 }
 .progress-div {
     padding: 1px;
-    background: rgba(0, 0, 0, 0.1);
     border-radius: 6px;
-   
 }
 .progress-bar {
     height: 1em;
