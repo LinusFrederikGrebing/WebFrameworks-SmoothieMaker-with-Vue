@@ -67,6 +67,12 @@
                 :src="'/images/piece/' + ingrediente.image"
               >
               </v-img>
+              <button
+                style="position: absolute; top: 0; right: 0; opacity: 0.4"
+                @click="showAlertInfo(ingrediente.id, ingrediente.name)"
+              >
+                <span class="material-symbols-outlined"> info </span>
+              </button>
               <div class="text-center mb-3">
                 <p class="font-weight-bold ml-1 mr-1">
                   {{ ingrediente.name }}:
@@ -97,6 +103,7 @@
 </template>
   
 <script>
+import { showInfo } from '../steps/alerts'
 import axios from "axios";
 import gsap from "gsap";
 const categories = [
@@ -137,6 +144,87 @@ export default {
     });
   },
   methods: {
+    showAlertInfo(ingredientId, ingredintName) {
+    // Implementierung der showInfo-Methode
+    axios.get(`/getIngredientInfo/${ingredientId}`, {}).then((response) => {
+        console.log(response);
+        var ingredientInfo = response.data.ingredientInfo;
+        // Build the table HTML
+        if (ingredientInfo == null) {
+            var tableHTML =
+                "<p>Zu dieser Zutat gibt es keine Inhaltstoff-Informationen</p>";
+        } else {
+            var tableHTML =
+                `
+          <table class="alert-table">
+          <tbody>
+              <tr>
+                  <th class="test"><p>Info</p></th>
+                  <td>` +
+                ingredientInfo.info +
+                `</td>
+              </tr>
+              <tr>
+                  <th  class="test"><p>Energie</p></th>
+                  <td>` +
+                ingredientInfo.energie +
+                `</td>
+              </tr>
+              <tr>
+                  <th  class="test">Fett</th>
+                  <td>` +
+                ingredientInfo.fett +
+                `</td>
+              </tr>
+              <tr>
+                  <td  class="test">davon Fettsäuren:</td>
+                  <td>` +
+                ingredientInfo.fattyacids +
+                `</td>
+              </tr>
+              <tr>
+                  <th class="test">Kohlenhydrate</th>
+                  <td>` +
+                ingredientInfo.carbohydrates +
+                `</td>
+              </tr>
+              <tr>
+                  <td  class="test">davon Fruchtzucker:</td>
+                  <td>` +
+                ingredientInfo.fruitscarbohydrates +
+                `</td>
+              </tr>
+              <tr>
+                  <th  class="test"><p>Protein</p></th>
+                  <td>` +
+                ingredientInfo.protein +
+                `</td>
+              </tr>
+              <tr>
+                  <th  class="test"><p>Salz</p></th>
+                  <td>` +
+                ingredientInfo.salt +
+                `</td>
+              </tr>
+          </tbody>
+          </table>
+        `;
+        }
+        // Show the SweetAlert with the table
+        Swal.fire({
+            title: "Inhaltsstoffe - " + ingredintName,
+            html: tableHTML,
+            showCloseButton: true,
+            showConfirmButton: true,
+            confirmButtonColor: "#000000",
+            confirmButtonText: "Bearbeiten!",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                this.$router.push({ path: `/update/IngredientList/${ingredientId}` });
+            }
+        });
+    });
+    },
     hoverEnter(obj) {
       gsap.to(obj.target, {
         duration: 0.2,

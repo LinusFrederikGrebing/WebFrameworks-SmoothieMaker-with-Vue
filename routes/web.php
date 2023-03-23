@@ -43,6 +43,10 @@ Route::get('/getUserRole', [App\Http\Controllers\GateController::class, 'getUser
 
 Route::get('/getIngredientInfo/{ingredientId}', [App\Http\Controllers\IngredientInfoController::class, 'getIngredientInfo'])->name('getIngredientInfo');
 
+Route::post('/updated/ingredienteInfo/{ingrediente}', [App\Http\Controllers\IngredientInfoController::class, 'updateIngrediente']);
+Route::post('/update/ingredienteInfo/{ingrediente}', [App\Http\Controllers\IngredientInfoController::class, 'showUpdateField'])->name('update');
+Route::post('/create/ingredienteInfo', [App\Http\Controllers\IngredientInfoController::class, 'store']);
+
 // needed to refer to the vue router
 Route::get('{any}', function () {
     return view('index');

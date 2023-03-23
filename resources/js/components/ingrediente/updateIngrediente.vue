@@ -87,6 +87,16 @@ export default {
         this.ingrediente = response.data.ingrediente;
       });
     },
+    showAlertSuccess(title, text) {
+      Swal.fire({
+        title: title,
+        text: text,
+        icon: "success",
+        showCancelButton: false,
+        confirmButtonColor: "#6D9E1F",
+        confirmButtonText: "Okay!",
+      });
+    },
     updateIngrediente() {
       const config = {
         headers: {
@@ -101,6 +111,7 @@ export default {
       axios
         .post(`/api/updated/ingrediente/${this.id}`, data, config)
         .then(() => {
+          this.showAlertSuccess("Die Zutat wurde erfolgreich aktualisiert!","");
           this.$router.push({ path: "/home" });
         })
         .catch((error) => {

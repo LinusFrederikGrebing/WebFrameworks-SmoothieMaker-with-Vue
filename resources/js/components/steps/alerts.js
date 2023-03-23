@@ -1,4 +1,4 @@
-export function showInfo(ingredientId, ingredintName) {
+export  function showInfo(ingredientId, ingredintName, isAdmin = false) {
     // Implementierung der showInfo-Methode
     axios.get(`/getIngredientInfo/${ingredientId}`, {}).then((response) => {
         console.log(response);
@@ -10,52 +10,52 @@ export function showInfo(ingredientId, ingredintName) {
         } else {
             var tableHTML =
                 `
-          <table>
+          <table class="alert-table">
           <tbody>
               <tr>
-                  <th><p>Info</p></th>
+                  <th class="test"><p>Info</p></th>
                   <td>` +
                 ingredientInfo.info +
                 `</td>
               </tr>
               <tr>
-                  <th><p>Energie</p></th>
+                  <th  class="test"><p>Energie</p></th>
                   <td>` +
                 ingredientInfo.energie +
                 `</td>
               </tr>
               <tr>
-                  <th>Fett</th>
+                  <th  class="test">Fett</th>
                   <td>` +
                 ingredientInfo.fett +
                 `</td>
               </tr>
               <tr>
-                  <td>davon Fettsäuren:</th>
+                  <td  class="test">davon Fettsäuren:</td>
                   <td>` +
                 ingredientInfo.fattyacids +
                 `</td>
               </tr>
               <tr>
-                  <th>Kohlenhydrate</th>
+                  <th class="test">Kohlenhydrate</th>
                   <td>` +
                 ingredientInfo.carbohydrates +
                 `</td>
               </tr>
               <tr>
-                  <td>davon Fruchtzucker:</td>
+                  <td  class="test">davon Fruchtzucker:</td>
                   <td>` +
                 ingredientInfo.fruitscarbohydrates +
                 `</td>
               </tr>
               <tr>
-                  <th><p>Protein</p></th>
+                  <th  class="test"><p>Protein</p></th>
                   <td>` +
                 ingredientInfo.protein +
                 `</td>
               </tr>
               <tr>
-                  <th><p>Salz</p></th>
+                  <th  class="test"><p>Salz</p></th>
                   <td>` +
                 ingredientInfo.salt +
                 `</td>
@@ -64,12 +64,19 @@ export function showInfo(ingredientId, ingredintName) {
           </table>
         `;
         }
+        console.log(isAdmin);
         // Show the SweetAlert with the table
         Swal.fire({
             title: "Inhaltsstoffe - " + ingredintName,
             html: tableHTML,
             showCloseButton: true,
-            showConfirmButton: false,
+            showConfirmButton: isAdmin,
+            confirmButtonColor: "#000000",
+            confirmButtonText: "Bearbeiten!",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                this.$router.push({ path: `/update/IngredientList/${ingredientId}` });
+            }
         });
     });
 }

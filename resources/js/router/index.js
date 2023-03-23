@@ -4,6 +4,7 @@ import LandingPageTemplate from '../components/LandingPageTemplate'
 import HomeTemplate from '../components/HomeTemplate'
 import CreateIngrediente from '../components/ingrediente/CreateIngrediente'
 import UpdateIngrediente from '../components/ingrediente/UpdateIngrediente'
+import ChangeIngredientInfo from '../components/ingrediente/ChangeIngredientInfo'
 import ChooseBottleSize from '../components/steps/Step1ChooseBottleSize'
 import step2Component  from '../components/steps/Step2ChooseIngediente'
 import ShopComponent  from '../components/steps/ShopComponent'
@@ -46,6 +47,12 @@ const routes = [
         path: '/create',
         name: 'create',
         component: CreateIngrediente
+    },
+    {
+        path: '/update/IngredientList/:id',
+        name: 'IngredientList',
+        component: ChangeIngredientInfo,
+        props: true
     },
     {
         path: '/login',

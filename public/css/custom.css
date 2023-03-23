@@ -194,3 +194,31 @@
     transform: rotate(-3deg);
     z-index: 0;
 }
+
+table td, table th {
+    padding: 0.5rem;
+  }
+  th {
+    background: #FFF;
+  }
+  tr:nth-child(odd) {background: #fafafa}
+  tr:nth-child(even) {background: #FFF}
+  table th {
+    text-align: left;
+  }
+  table td {
+    text-align: start;
+  }
+  table td:nth-child(2) {
+    width: 30%;
+  }
+  table td:nth-child(3),
+  table td:nth-child(4) {
+    width: 20%;
+  }
+  table td:nth-child(5) {
+    width: 10%;
+  }
+  .alert-table td:nth-child(2) {
+    width: 60%;
+  }
