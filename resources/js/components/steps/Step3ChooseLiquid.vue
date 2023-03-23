@@ -51,6 +51,12 @@
                   :src="'/images/piece/' + liquid.image"
                 >
                 </v-img>
+                <button
+                  style="position: absolute; top: 0; right: 0; opacity: 0.4;"
+                  @click="showAlertInfo(liquid.id, liquid.name)"
+                >
+                  <span class="material-symbols-outlined"> info </span>
+                </button>
                 <div class="d-flex justify-center align-center flex-column">
                   <p class="font-weight-bold ml-1 mr-1">{{ liquid.name }}:</p>
                   <p>{{ liquid.price }}€ / 50ml</p>
@@ -102,6 +108,7 @@ import gsap from "gsap";
 import MixerComponent from "../layouts/MixerComponent.vue";
 import ProgressbarComponent from "../layouts/ProgressbarComponent.vue";
 import SizeComponent from "../layouts/SizeComponent.vue";
+import { showInfo } from '../steps/alerts'
 
 export default {
   name: "Step3ChooseLiquid",
@@ -140,6 +147,9 @@ export default {
     this.getActLiquid();
   },
   methods: {
+    showAlertInfo(ingredientId, ingredintName) {
+      showInfo(ingredientId, ingredintName);
+    },
     hoverEnter(obj) {
       gsap.to(obj.target, {
         duration: 0.2,

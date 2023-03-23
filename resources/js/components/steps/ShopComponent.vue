@@ -63,6 +63,7 @@
                     <th class="text-left text-black">Preis</th>
                     <th class="text-left text-black">Menge</th>
                     <th class="text-left text-black"></th>
+                    <th class="text-left text-black"></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -94,8 +95,12 @@
                       </div>
                     </td>
                     <td>
+                      <a @click="showAlertInfo(cart.id, cart.name)" class="text-black"
+                        >infos</a
+                      >
+                    </td>
+                    <td>
                       <v-btn
-                        class="mt-4"
                         @click="removeSpecificCart(cart)"
                         color="black"
                       >
@@ -124,8 +129,12 @@
                       </button>
                     </td>
                     <td>
+                      <a @click="showAlertInfo(cart.id, cart.name)" class="text-black"
+                        >infos</a
+                      >
+                    </td>
+                    <td>
                       <v-btn
-                        class="mt-4"
                         @click="removeSpecificCart(cart)"
                         color="black"
                       >
@@ -164,6 +173,8 @@
 import MixerComponent from "../layouts/MixerComponent.vue";
 import ProgressbarComponent from "../layouts/ProgressbarComponent.vue";
 import SizeComponent from "../layouts/SizeComponent.vue";
+import { showInfo } from '../steps/alerts'
+
 export default {
   name: "ShopComponent",
   components: {
@@ -194,6 +205,9 @@ export default {
     this.$refs.mixerComponent.clearInterval();
   },
   methods: {
+    showAlertInfo(ingredientId, ingredintName) {
+      showInfo(ingredientId, ingredintName);
+    },
     checkLoggedInUser() {
       axios.get(`/checkLoggedInUser`).then((response) => {
         this.isUserLoggedIn = response.data.loggedIn;

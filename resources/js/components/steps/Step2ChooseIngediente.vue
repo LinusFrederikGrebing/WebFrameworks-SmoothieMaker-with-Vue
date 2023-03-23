@@ -50,6 +50,12 @@
                   :src="'/images/piece/' + ingrediente.image"
                 >
                 </v-img>
+                <button
+                  style="position: absolute; top: 0; right: 0; opacity: 0.4;"
+                  @click="showAlertInfo(ingrediente.id, ingrediente.name)"
+                >
+                  <span class="material-symbols-outlined"> info </span>
+                </button>
                 <div class="text-center">
                   <p class="font-weight-bold ml-1 mr-1">
                     {{ ingrediente.name }}:
@@ -127,6 +133,7 @@ import gsap from "gsap";
 import MixerComponent from "../layouts/MixerComponent.vue";
 import ProgressbarComponent from "../layouts/ProgressbarComponent.vue";
 import SizeComponent from "../layouts/SizeComponent.vue";
+import { showInfo } from '../steps/alerts'
 
 export default {
   name: "Step2ChooseIngrediente",
@@ -173,6 +180,9 @@ export default {
     },
   },
   methods: {
+    showAlertInfo(ingredientId, ingredintName) {
+      showInfo(ingredientId, ingredintName);
+    },
     handleCategoryClick(category) {
       this.changeIngredientsList(category.list);
       this.setCategoriesActive(category);
@@ -310,4 +320,5 @@ p {
   height: 42em;
   overflow-y: scroll;
 }
+
 </style>

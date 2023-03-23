@@ -40,6 +40,9 @@ Route::get('/deletePreset/{ingrediente}', [App\Http\Controllers\PresetController
 Route::get('/checkLoggedInUser', [App\Http\Controllers\GateController::class, 'checkLoggedInUser'])->name('checkLoggedInUser');
 Route::get('/getUserRole', [App\Http\Controllers\GateController::class, 'getUserRole'])->name('getUserRole');
 
+
+Route::get('/getIngredientInfo/{ingredientId}', [App\Http\Controllers\IngredientInfoController::class, 'getIngredientInfo'])->name('getIngredientInfo');
+
 // needed to refer to the vue router
 Route::get('{any}', function () {
     return view('index');
