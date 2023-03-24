@@ -5,12 +5,14 @@ import HomeTemplate from '../components/HomeTemplate'
 import CreateIngrediente from '../components/ingrediente/CreateIngrediente'
 import UpdateIngrediente from '../components/ingrediente/UpdateIngrediente'
 import ChangeIngredientInfo from '../components/ingrediente/ChangeIngredientInfo'
+import CreateIngredientInfo from '../components/ingrediente/CreateIngredientInfo'
 import ChooseBottleSize from '../components/steps/Step1ChooseBottleSize'
 import step2Component  from '../components/steps/Step2ChooseIngediente'
 import ShopComponent  from '../components/steps/ShopComponent'
 import Step3ChooseLiquid  from '../components/steps/Step3ChooseLiquid'
 import LoginComponent  from '../components/auth/LoginComponent'
 import RegisterComponent  from '../components/auth/RegisterComponent'
+
 
 const routes = [
     {
@@ -68,6 +70,12 @@ const routes = [
         path: "/update/ingrediente/:id",
         name: "update-ingrediente",
         component: UpdateIngrediente,
+        props: true // Prop durch Route übergeben
+    },
+    {
+        path: "/create/IngredientInfo/:id",
+        name: "update-ingredientInfo",
+        component: CreateIngredientInfo,
         props: true // Prop durch Route übergeben
     }
 ];

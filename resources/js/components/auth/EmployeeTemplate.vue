@@ -103,7 +103,7 @@
 </template>
   
 <script>
-import { showInfo } from '../steps/alerts'
+import { showInfo } from "../steps/alerts";
 import axios from "axios";
 import gsap from "gsap";
 const categories = [
@@ -145,66 +145,67 @@ export default {
   },
   methods: {
     showAlertInfo(ingredientId, ingredintName) {
-    // Implementierung der showInfo-Methode
-    axios.get(`/getIngredientInfo/${ingredientId}`, {}).then((response) => {
-        console.log(response);
+      // Implementierung der showInfo-Methode
+      axios.get(`/getIngredientInfo/${ingredientId}`, {}).then((response) => {
+        var exists = true;
         var ingredientInfo = response.data.ingredientInfo;
         // Build the table HTML
         if (ingredientInfo == null) {
-            var tableHTML =
-                "<p>Zu dieser Zutat gibt es keine Inhaltstoff-Informationen</p>";
+          exists = false;
+          var tableHTML =
+            "<p>Zu dieser Zutat gibt es keine Inhaltstoff-Informationen</p>";
         } else {
-            var tableHTML =
-                `
+          var tableHTML =
+            `
           <table class="alert-table">
           <tbody>
               <tr>
                   <th class="test"><p>Info</p></th>
                   <td>` +
-                ingredientInfo.info +
-                `</td>
+            ingredientInfo.info +
+            `</td>
               </tr>
               <tr>
                   <th  class="test"><p>Energie</p></th>
                   <td>` +
-                ingredientInfo.energie +
-                `</td>
+            ingredientInfo.energie +
+            `</td>
               </tr>
               <tr>
                   <th  class="test">Fett</th>
                   <td>` +
-                ingredientInfo.fett +
-                `</td>
+            ingredientInfo.fett +
+            `</td>
               </tr>
               <tr>
                   <td  class="test">davon Fettsäuren:</td>
                   <td>` +
-                ingredientInfo.fattyacids +
-                `</td>
+            ingredientInfo.fattyacids +
+            `</td>
               </tr>
               <tr>
                   <th class="test">Kohlenhydrate</th>
                   <td>` +
-                ingredientInfo.carbohydrates +
-                `</td>
+            ingredientInfo.carbohydrates +
+            `</td>
               </tr>
               <tr>
                   <td  class="test">davon Fruchtzucker:</td>
                   <td>` +
-                ingredientInfo.fruitscarbohydrates +
-                `</td>
+            ingredientInfo.fruitscarbohydrates +
+            `</td>
               </tr>
               <tr>
                   <th  class="test"><p>Protein</p></th>
                   <td>` +
-                ingredientInfo.protein +
-                `</td>
+            ingredientInfo.protein +
+            `</td>
               </tr>
               <tr>
                   <th  class="test"><p>Salz</p></th>
                   <td>` +
-                ingredientInfo.salt +
-                `</td>
+            ingredientInfo.salt +
+            `</td>
               </tr>
           </tbody>
           </table>
@@ -212,18 +213,26 @@ export default {
         }
         // Show the SweetAlert with the table
         Swal.fire({
-            title: "Inhaltsstoffe - " + ingredintName,
-            html: tableHTML,
-            showCloseButton: true,
-            showConfirmButton: true,
-            confirmButtonColor: "#000000",
-            confirmButtonText: "Bearbeiten!",
+          title: "Inhaltsstoffe - " + ingredintName,
+          html: tableHTML,
+          showCloseButton: true,
+          showConfirmButton: true,
+          confirmButtonColor: "#000000",
+          confirmButtonText: "Bearbeiten!",
         }).then((result) => {
-            if (result.isConfirmed) {
-                this.$router.push({ path: `/update/IngredientList/${ingredientId}` });
+          if (result.isConfirmed) {
+            if (exists) {
+              this.$router.push({
+                path: `/update/IngredientList/${ingredientId}`,
+              });
+            } else {
+              this.$router.push({
+                path: `/create/IngredientInfo/${ingredientId}`,
+              });
             }
+          }
         });
-    });
+      });
     },
     hoverEnter(obj) {
       gsap.to(obj.target, {

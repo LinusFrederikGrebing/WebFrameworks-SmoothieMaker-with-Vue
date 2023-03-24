@@ -67,6 +67,7 @@ export default {
         type: "",
       },
       file: null,
+      ingredientId: null,
     };
   },
   computed: {
@@ -90,15 +91,48 @@ export default {
     onChange(e) {
       this.file = e.target.files[0];
     },
+    showAlertSuccess(title, text) {
+      Swal.fire({
+        title: title,
+        text: text,
+        icon: "success",
+        showCancelButton: true,
+        cancelButtonText: "Später hinzufügen",
+        confirmButtonColor: "#6D9E1F",
+        confirmButtonText: "Informationen hinzufügen",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.$router.push({ path: `/create/IngredientInfo/${this.ingredientId}` });
+        } else {
+          this.$router.push({ path: "/home" });
+        }
+      });
+    },
+    showAlertError(title, text) {
+      Swal.fire({
+        title: title,
+        text: text,
+        icon: "error",
+        showCancelButton: false,
+        confirmButtonColor: "#6D9E1F",
+        confirmButtonText: "Okay!",
+      });
+    },
     storeIngrediente(e) {
+     if(this.file == null) {
+      this.showAlertError("Du musst eine Bilddatei ausgewählt haben!");
+      return;
+     }
       e.preventDefault();
       let data = new FormData();
       data.append("file", this.file);
       data.append("name", this.form.name);
       data.append("price", this.form.price);
       data.append("type", this.form.type);
-      axios.post("/api/create/ingrediente", data).then(() => {
-        this.$router.push({ path: "/home" });
+      axios.post("/api/create/ingrediente", data).then((response) => {
+        this.ingredientId = response.data.ingrediente;
+        console.log(response);
+        this.showAlertSuccess("Die Zuatat wurde erfolgreich hinzugefügt!", "Klicke auf Informationen hinzufügen, um die Inhaltsstoffe der Zutat einzutragen!");
       });
     },
   },

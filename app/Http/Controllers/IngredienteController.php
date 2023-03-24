@@ -33,6 +33,7 @@ class IngredienteController extends Controller
     {
         $ingrediente = new Ingrediente;
         $this->storeOrUpdateIngrediente($request, $ingrediente);
+        return response()->json(['ingredienteId' => $ingrediente->id]);
     }
     public function updateIngrediente(Request $request, $ingredienteID)
     {

@@ -45,7 +45,8 @@ Route::get('/getIngredientInfo/{ingredientId}', [App\Http\Controllers\Ingredient
 
 Route::post('/updated/ingredienteInfo/{ingrediente}', [App\Http\Controllers\IngredientInfoController::class, 'updateIngrediente']);
 Route::post('/update/ingredienteInfo/{ingrediente}', [App\Http\Controllers\IngredientInfoController::class, 'showUpdateField'])->name('update');
-Route::post('/create/ingredienteInfo', [App\Http\Controllers\IngredientInfoController::class, 'store']);
+Route::post('/ingredienteInfo/create/{ingrediente}', [App\Http\Controllers\IngredientInfoController::class, 'storeIngredientInfo']);
+Route::get('/ingredientinfo/getIngredient/{ingrediente}', [App\Http\Controllers\IngredientInfoController::class, 'getIngredient'])->name('getIngredient');
 
 // needed to refer to the vue router
 Route::get('{any}', function () {

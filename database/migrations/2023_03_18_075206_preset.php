@@ -22,8 +22,8 @@ class Preset extends Migration
             $table->timestamp('updated_at')->nullable();
             $table->timestamp('created_at')->nullable();
 
-            $table->foreign('bottle_id')->references('id')->on('bottle_sizes');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('bottle_id')->references('id')->on('bottle_sizes')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

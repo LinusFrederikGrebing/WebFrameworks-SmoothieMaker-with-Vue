@@ -13,6 +13,11 @@ class IngredientInfoController extends Controller
         $ingredientInfo = IngredientInfo::where('ingrediente_id', $id)->first();
         return response()->json(['ingredientInfo' => $ingredientInfo]);
     }
+    public function getIngredient(Request $request, $id)
+    {
+        $ingrediente = Ingrediente::findOrFail($id);
+        return response()->json(['ingrediente' => $ingrediente]);
+    }
     public function showUpdateField(Request $request, $ingredienteID)
     {
         $ingrediente = Ingrediente::findOrFail($ingredienteID);
@@ -20,10 +25,12 @@ class IngredientInfoController extends Controller
         return response()->json(['ingrediente' => $ingrediente, 'ingredientInfo' => $ingredientInfo]);
     }
 
-    public function store(Request $request)
+    public function storeIngredientInfo(Request $request, $ingredienteID)
     {
-        $ingrediente = new Ingrediente;
-        $this->storeOrUpdateIngrediente($request, $ingrediente);
+        $ingredienteInfo = new IngredientInfo;
+        $ingredienteInfo->ingrediente_id = $ingredienteID;
+        
+        $this->storeOrUpdateIngrediente($request, $ingredienteInfo); 
     }
     public function updateIngrediente(Request $request, $ingredienteID)
     {
@@ -32,30 +39,15 @@ class IngredientInfoController extends Controller
     }
     public function storeOrUpdateIngrediente(Request $request, IngredientInfo $ingrediente)
     { 
-        if ($request->info != null) {
-            $ingrediente->info = $request->info;
-        }
-        if ($request->energie != null) {
-            $ingrediente->energie = $request->energie;
-        }
-        if ($request->fett != null) {
-            $ingrediente->fett = $request->fett;
-        }
-        if ($request->fattyacids != null) {
-            $ingrediente->fattyacids = $request->fattyacids;
-        }
-        if ($request->carbohydrates != null) {
-            $ingrediente->carbohydrates = $request->carbohydrates;
-        }
-        if ($request->fruitscarbohydrates != null) {
-            $ingrediente->fruitscarbohydrates = $request->fruitscarbohydrates;
-        }
-        if ($request->protein != null) {
-            $ingrediente->protein = $request->protein;
-        }
-        if ($request->salt != null) {
-            $ingrediente->salt = $request->salt;
-        }
+            $ingrediente->info = $request->info ? $request->info : '';
+            $ingrediente->energie = $request->energie ? $request->energie : '';
+            $ingrediente->fett = $request->fett ? $request->fett : '';
+            $ingrediente->fattyacids = $request->fattyacids ? $request->fattyacids : '';
+            $ingrediente->carbohydrates = $request->carbohydrates ? $request->carbohydrates : '';
+            $ingrediente->fruitscarbohydrates = $request->fruitscarbohydrates ? $request->fruitscarbohydrates : '';
+            $ingrediente->protein = $request->protein ? $request->protein : '';
+            $ingrediente->salt = $request->salt ? $request->salt : '';
+        
         $ingrediente->save();
     }
 
