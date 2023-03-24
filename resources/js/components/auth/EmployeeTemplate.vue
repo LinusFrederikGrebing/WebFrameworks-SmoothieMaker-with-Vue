@@ -1,6 +1,6 @@
 <template>
-  <div class="container">
-    <div class="text-center mx-4 mt-8">
+  <div class="container pt-1 mt-16">
+    <div class="text-center mx-4 mt-12">
       <h3 class="font-weight-bold">Admin-Ansicht</h3>
       <p>Hier können alle Zutaten eingesehen und verwaltet werden!</p>
     </div>

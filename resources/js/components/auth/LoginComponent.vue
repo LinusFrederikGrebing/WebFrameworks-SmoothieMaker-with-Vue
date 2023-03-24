@@ -1,7 +1,7 @@
 <template>
-  <div class="auth-background mt-16">
+  <div class="auth-background seperate">
     <div class="auth-green-background mx-auto rounded-box"></div>
-    <v-container class="py-6 d-flex flex-column justify-center">
+    <v-container class="py-6 d-flex flex-column justify-center mt-16">
       <v-row class="justify-center">
         <v-col cols="12" class="mx-auto">
           <v-card
@@ -74,7 +74,7 @@ export default {
       axios
         .post("/login", this.form)
         .then(() => {
-          this.$router.push("/home").then(() => {
+          this.$router.push("/").then(() => {
             location.reload();
           });
         })

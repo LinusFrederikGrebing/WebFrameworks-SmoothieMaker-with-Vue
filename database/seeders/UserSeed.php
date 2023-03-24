@@ -21,5 +21,11 @@ class UserSeed extends Seeder
             'password' => bcrypt('password'), // str_random(10)
             'type' =>  UserRole::MITARBEITER,
         ]);
+        User::factory()->create([
+            'name' => 'User',
+            'email' => 'User@user.com',
+            'password' => bcrypt('password'), // str_random(10)
+            'type' =>  UserRole::KUNDE,
+        ]);
     }
 }

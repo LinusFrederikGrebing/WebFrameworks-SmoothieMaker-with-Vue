@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container mt-8">
     <v-row>
       <v-col cols="12" sm="12" md="12" xl="7" lg="7" xs="12">
         <SizeComponent ref="sizeComponent" />
@@ -13,7 +13,7 @@
         xs="12"
         v-if="isUserLoggedIn"
       >
-      <v-row>
+      <v-row class="mt-3">
         <v-col cols="12" sm="12" md="12" xl="7" lg="7" xs="12">
           <v-text-field
             class="mt-3 shrink enrollField"
@@ -184,7 +184,7 @@ export default {
   },
   data() {
     return {
-      isUserLoggedIn: "",
+      isUserLoggedIn: false,
       presetName: "",
       cartContent: [],
       cartTotal: null,

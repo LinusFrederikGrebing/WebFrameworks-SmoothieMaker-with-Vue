@@ -1,5 +1,5 @@
 <template>
-  <div class="auth-background mt-16">
+  <div class="auth-background seperate">
     <div class="auth-green-background mx-auto rounded-box"></div>
     <v-container class="py-6 d-flex flex-column justify-center">
       <v-row class="justify-center">
@@ -132,7 +132,7 @@ export default {
   },
   methods: {
     showHome() {
-      this.$router.push("/home");
+      this.$router.push("/employeeTemplate");
     },
     getIngrediente() {
       axios.post(`/update/ingredienteInfo/${this.id}`, {}).then((response) => {
@@ -170,7 +170,7 @@ export default {
         .post(`/updated/ingredienteInfo/${this.id}`, data, config)
         .then(() => {
           this.showAlertSuccess("Die Zutat-Informationen wurden erfolgreich aktualisiert!","");
-          this.$router.push({ path: "/home" });
+          this.$router.push({ path: "/employeeTemplate" });
         })
         .catch((error) => {
           console.error(error);

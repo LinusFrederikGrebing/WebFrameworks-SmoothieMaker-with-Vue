@@ -1,8 +1,8 @@
 <template>
-  <div v-if="isUserLoggedIn">
-    <div class="text-center mx-4 mt-8">
+  <div v-if="isUserLoggedIn" class="mt-16">
+    <div class="text-center mx-4 pt-16 mt-16">
       <h3 class="font-weight-bold">Kunden-Ansicht</h3>
-      <p>Hier kannst du deine abgespeicherten Zusammenstellungen aufrufen!</p>
+      <p class="">Hier kannst du deine abgespeicherten Zusammenstellungen aufrufen!</p>
     </div>
     <div elevation="5" class="w-95 ml-5 mt-3 mb-3">
       <v-table v-if="presetNames.length > 0" density="compact">
@@ -31,7 +31,7 @@
           </tr>
         </tbody>
       </v-table>
-      <p v-if="presetNames.length < 1">
+      <p v-if="presetNames.length < 1" class="text-center">
         Du hast aktuell noch keine Zusammenstellungen gespeichert. Wenn du
         zukünftig welche als Preset abspeicherst, kannst du sie hier einsehen
         und abrufen und Dir so bei deiner nächsten Bestellung Zeit sparen!

@@ -1,5 +1,5 @@
 <template>
-  <div class="auth-background mt-16">
+  <div class="auth-background seperate">
     <div class="auth-green-background mx-auto rounded-box"></div>
     <v-container class="py-6 d-flex flex-column justify-center">
       <v-row class="justify-center">
@@ -77,7 +77,7 @@ export default {
   },
   methods: {
     showHome() {
-      this.$router.push("/home");
+      this.$router.push("/employeeTemplate");
     },
     onChange(e) {
       this.file = e.target.files[0];
@@ -85,6 +85,16 @@ export default {
     getIngrediente() {
       axios.post(`/api/update/ingrediente/${this.id}`, {}).then((response) => {
         this.ingrediente = response.data.ingrediente;
+      });
+    },
+    showAlertSuccess(title, text) {
+      Swal.fire({
+        title: title,
+        text: text,
+        icon: "success",
+        showCancelButton: false,
+        confirmButtonColor: "#6D9E1F",
+        confirmButtonText: "Okay!",
       });
     },
     showAlertSuccess(title, text) {
@@ -112,7 +122,7 @@ export default {
         .post(`/api/updated/ingrediente/${this.id}`, data, config)
         .then(() => {
           this.showAlertSuccess("Die Zutat wurde erfolgreich aktualisiert!","");
-          this.$router.push({ path: "/home" });
+          this.$router.push({ path: "/employeeTemplate" });
         })
         .catch((error) => {
           console.error(error);

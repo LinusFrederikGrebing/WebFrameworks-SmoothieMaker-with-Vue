@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container mt-16">
     <SizeComponent ref="sizeComponent" />
     <v-row class="mt-1">
       <v-col class="mb-1" cols="12">

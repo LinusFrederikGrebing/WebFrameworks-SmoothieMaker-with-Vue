@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-3">
+  <div class="mt-8 pt-3">
     <div class="d-flex">
       <h5 class="font-weight-bold">Smoothie-Größe: {{ bottle.name }}</h5>
       <button class="showBottleSizes" @click="showBottleSizes">

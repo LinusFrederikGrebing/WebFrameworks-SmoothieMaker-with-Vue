@@ -1,5 +1,5 @@
 <template>
-  <div class="auth-background mt-16">
+  <div class="auth-background seperate">
     <div class="auth-green-background mx-auto rounded-box"></div>
     <v-container class="py-6 d-flex flex-column justify-center">
       <v-row class="justify-center">
@@ -86,7 +86,7 @@ export default {
   },
   methods: {
     showHome() {
-      this.$router.push("/home");
+      this.$router.push("/employeeTemplate");
     },
     onChange(e) {
       this.file = e.target.files[0];
@@ -104,7 +104,7 @@ export default {
         if (result.isConfirmed) {
           this.$router.push({ path: `/create/IngredientInfo/${this.ingredientId}` });
         } else {
-          this.$router.push({ path: "/home" });
+          this.$router.push({ path: "/employeeTemplate" });
         }
       });
     },

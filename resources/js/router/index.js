@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 import LandingPageTemplate from '../components/LandingPageTemplate'
-import HomeTemplate from '../components/HomeTemplate'
 import CreateIngrediente from '../components/ingrediente/CreateIngrediente'
 import UpdateIngrediente from '../components/ingrediente/UpdateIngrediente'
 import ChangeIngredientInfo from '../components/ingrediente/ChangeIngredientInfo'
@@ -11,6 +10,8 @@ import step2Component  from '../components/steps/Step2ChooseIngediente'
 import ShopComponent  from '../components/steps/ShopComponent'
 import Step3ChooseLiquid  from '../components/steps/Step3ChooseLiquid'
 import LoginComponent  from '../components/auth/LoginComponent'
+import CustomerTemplate  from '../components/auth/CustomerTemplate'
+import EmployeeTemplate from '../components/auth/EmployeeTemplate'
 import RegisterComponent  from '../components/auth/RegisterComponent'
 
 
@@ -41,9 +42,14 @@ const routes = [
         component: ShopComponent
     },
     {
-        path: '/home',
-        name: 'home',
-        component: HomeTemplate
+        path: '/employeeTemplate',
+        name: 'employeeTemplate',
+        component: EmployeeTemplate
+    },
+    {
+        path: '/customerTemplate',
+        name: 'customerTemplate',
+        component: CustomerTemplate
     },
     {
         path: '/create',

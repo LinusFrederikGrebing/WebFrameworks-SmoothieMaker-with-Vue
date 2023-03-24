@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="mt-16">
     <div class="text-center mx-4 mt-8">
       <h2 class="font-weight-bold">Wähle jetzt deine Smoothie-Größe!</h2>
     </div>
