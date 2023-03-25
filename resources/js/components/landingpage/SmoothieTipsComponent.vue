@@ -1,10 +1,7 @@
 <template>
   <div>
     <div id="tipsheader" class="seperate">
-      <div
-        elevation="10"
-        class="d-flex flex-column justify-center text-center my-6 mx-6"
-      >
+      <div elevation="10" class="d-flex flex-column justify-center text-center my-6 mx-6">
         <div class="my-6 mx-6">
           <h2 class="font-weight-bold">Unsere Smoothie-Tipps der Woche</h2>
           <p>
@@ -18,43 +15,21 @@
           <v-divider></v-divider>
         </v-col>
       </v-row>
-      <v-row
-        v-for="(item, index) in smoothieItems"
-        :key="index"
-        class="tip mx-16"
-      >
+      <v-row v-for="(item, index) in smoothieItems" :key="index" class="tip mx-16">
         <v-col cols="12" md="6" :order="index % 2 === 0 ? 1 : 2">
           <div class="rounded-lg">
-            <v-img
-              :src="item.src"
-              alt=""
-              height="400"
-              contain
-              class="rotate-x-2 rotate-y-11 rotate--2"
-            ></v-img>
+            <v-img :src="item.src" alt="" height="400" contain class="rotate-x-2 rotate-y-11 rotate--2"></v-img>
           </div>
         </v-col>
-        <v-col
-          cols="12"
-          md="6"
-          :order="index % 2 === 0 ? 2 : 1"
-          class="d-flex flex-column align-center justify-center"
-        >
+        <v-col cols="12" md="6" :order="index % 2 === 0 ? 2 : 1" class="d-flex flex-column align-center justify-center">
           <v-card elevation="5" class="rounded-lg">
             <v-card-text>
               <div>
-                <h4
-                  class="my-6 mx-6 text-h4 font-weight-bold"
-                  v-text="item.title"
-                ></h4>
+                <h4 class="my-6 mx-6 text-h4 font-weight-bold" v-text="item.title"></h4>
                 <p class="my-6 mx-6" v-text="item.text"></p>
                 <v-row class="d-flex justify-end mx-6">
                   <v-col cols="auto">
-                    <a
-                      @click="storeExistingPreset(item.title)"
-                      class="mr-4 text-black"
-                      >Speichern?</a
-                    >
+                    <a @click="storeExistingPreset(item.title)" class="mr-4 text-black">Speichern?</a>
                     <v-btn @click="choosePreset(item.title)" color="black">
                       Wählen!
                     </v-btn>
@@ -78,6 +53,7 @@
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
+import { showAlertSuccess, showAlertError } from '../steps/alerts';
 
 export default {
   name: "SmoothieTipsComponent",
@@ -102,81 +78,43 @@ export default {
       ],
     };
   },
-  methods: {
-    choosePreset(presetName) {
-      axios.get(`/checkPreset/${presetName}`).then((response) => {
-        this.$router.push({ path: "/shop" });
-      });
-    },
-    storeExistingPreset(presetName) {
-    axios
-      .get(`/storeExistingPreset/${presetName}`)
-      .then((response) => {
-        if (response.data.auth == false) {
-          this.showAlertError(
-            "Du must angemeldet sein, um dir das Preset abspeichern zu können!",
-            ""
-          );
-        } else {
-          this.showAlertSuccess(
-            "Das Preset wurde erfolgreich gespeichert!",
-            "Wenn du auf dein Profilnamen klickst und zur Homepage gehst, kannst du das Preset auswählen und deine Zusammenstellung abfrufen!"
-          );
-        }
-      })
-      .catch((error) => {
-        this.showAlertError(
-          "Den Namen für das Preset gibt es bereits!",
-          "Wähle einen anderen Namen, oder lösche das bestehende Preset!"
-        );
-      });
-  },
-
-    showAlertError(title, text) {
-      Swal.fire({
-        title: title,
-        text: text,
-        icon: "error",
-        showCancelButton: false,
-        confirmButtonColor: "#6D9E1F",
-        confirmButtonText: "Okay!",
-      });
-    },
-    showAlertSuccess(title, text) {
-      Swal.fire({
-        title: title,
-        text: text,
-        icon: "success",
-        showCancelButton: false,
-        confirmButtonColor: "#6D9E1F",
-        confirmButtonText: "Okay!",
-      });
-    },
-  },
   mounted() {
+    // gsap scrolltrigger-Animation
     const tips = document.querySelectorAll(".tip");
     tips.forEach((tip, index) => {
-      gsap.fromTo(
-        tip,
-        {
-          y: 0,
-          x: index % 2 === 0 ? 1000 : -1000,
-          opacity: 0,
-        },
-        {
-          opacity: 1,
-          x: 0,
-          scrollTrigger: {
-            trigger: tip,
-            start: "top 90%",
-            end: "bottom 95%",
-            scrub: true,
-            id: "scrub",
+      gsap.fromTo(tip,
+        { y: 0, x: index % 2 === 0 ? 1000 : -1000, opacity: 0 },
+        { opacity: 1, x: 0, scrollTrigger: 
+          {
+            trigger: tip, start: "top 90%", end: "bottom 95%", scrub: true, id: "scrub" 
           },
         }
       );
     });
   },
+  methods: {
+    // sends an axios GET request to check if a preset with the given name exists, then pushes the user to the "/shop" page if it does.
+    choosePreset(presetName) {
+      axios.get(`/checkPreset/${presetName}`).then(() => {
+        this.$router.push({ path: "/shop" });
+      });
+    },
+    // Sends an axios GET request to store a preset with the given name. If the user is not authenticated, it shows an error message, and if successful, it shows a success message. 
+    // If the name already exists, it shows an error message with a suggestion to choose a different name. Names are unique for specific users
+    storeExistingPreset(presetName) {
+      axios.get(`/storeExistingPreset/${presetName}`)
+        .then((response) => {
+          if (response.data.auth == false) {
+            showAlertError("Du must angemeldet sein, um dir das Preset abspeichern zu können!","");
+          } else {
+            showAlertSuccess("Das Preset wurde erfolgreich gespeichert!", "Wenn du auf dein Profilnamen klickst und zur Homepage gehst, kannst du das Preset auswählen und deine Zusammenstellung abfrufen!");
+          }
+        })
+        .catch(() => {
+          showAlertError("Den Namen für das Preset gibt es bereits!", "Wähle einen anderen Namen, oder lösche das bestehende Preset!");
+        });
+    },
+  }
 };
 </script>
 

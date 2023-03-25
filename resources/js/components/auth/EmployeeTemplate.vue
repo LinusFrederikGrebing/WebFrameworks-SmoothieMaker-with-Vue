@@ -8,69 +8,34 @@
       <v-row>
         <v-col class="mb-1" cols="12">
           <div class="mx-auto d-flex flex-wrap">
-            <button
-              v-for="(category, index) in categories"
-              :key="index"
-              v-on:click="handleCategoryClick(category)"
+            <button v-for="(category, index) in categories" :key="index" v-on:click="handleCategoryClick(category)"
               :class="[
                 'mx-2 flex-grow-1 custom-btn',
                 { 'grey-bg': category.active === false },
                 { 'grey-active-bg': category.active === true },
-              ]"
-            >
-              <img
-                width="25"
-                height="25"
-                :src="category.icon"
-                :alt="category.title"
-              />
+              ]">
+              <img width="25" height="25" :src="category.icon" :alt="category.title" />
               {{ category.title }}
             </button>
           </div>
         </v-col>
       </v-row>
-      <v-row
-        ><v-col cols="12" sm="6" md="3" lg="2">
-          <v-card
-            class="mx-auto"
-            max-width="400"
-            height="175"
-            color="success"
-            @click="changeRouteCreate"
-          >
+      <v-row><v-col cols="12" sm="6" md="3" lg="2">
+          <v-card class="mx-auto" max-width="400" height="175" color="success" @click="changeRouteCreate">
             <div class="text-center">
               <v-icon size="172">mdi-plus</v-icon>
             </div>
           </v-card>
         </v-col>
-        <v-col
-          v-for="(ingrediente, index) in ingredients"
-          :key="index"
-          cols="12"
-          sm="6"
-          md="3"
-          lg="2"
-        >
-          <v-card
-            @mouseenter="hoverEnter($event)"
-            @mouseleave="hoverLeave($event)"
-            :id="'ingrediente-card' + index"
-            elevation="5"
-            class="mx-auto ingrediente-item"
-            max-width="400"
-          >
+        <v-col v-for="(ingrediente, index) in ingredients" :key="index" cols="12" sm="6" md="3" lg="2">
+          <v-card @mouseenter="hoverEnter($event)" @mouseleave="hoverLeave($event)" :id="'ingrediente-card' + index"
+            elevation="5" class="mx-auto ingrediente-item" max-width="400">
             <div>
-              <v-img
-                class="white--text align-end ml-auto mr-auto mt-2 mb-1"
-                height="60px"
-                width="60px"
-                :src="'/images/piece/' + ingrediente.image"
-              >
+              <v-img class="white--text align-end ml-auto mr-auto mt-2 mb-1" height="60px" width="60px"
+                :src="'/images/piece/' + ingrediente.image">
               </v-img>
-              <button
-                style="position: absolute; top: 0; right: 0; opacity: 0.4"
-                @click="showAlertInfo(ingrediente.id, ingrediente.name)"
-              >
+              <button style="position: absolute; top: 0; right: 0; opacity: 0.4"
+                @click="showAlertInfo(ingrediente.id, ingrediente.name)">
                 <span class="material-symbols-outlined"> info </span>
               </button>
               <div class="text-center mb-3">
@@ -80,17 +45,10 @@
                 <p>{{ ingrediente.price }}€ / 50g</p>
               </div>
               <div class="mx-auto d-flex flex-wrap">
-                <v-btn
-                  class="flex-grow-1"
-                  @click="changeRouteUpdate(ingrediente)"
-                >
+                <v-btn class="flex-grow-1" @click="changeRouteUpdate(ingrediente)">
                   <span class="material-symbols-outlined">edit</span>
                 </v-btn>
-                <v-btn
-                  width="45"
-                  class="flex-grow-1"
-                  @click="deleteIngrediente(ingrediente.id)"
-                >
+                <v-btn width="45" class="flex-grow-1" @click="deleteIngrediente(ingrediente.id)">
                   <span class="material-symbols-outlined">delete</span>
                 </v-btn>
               </div>
@@ -103,7 +61,6 @@
 </template>
   
 <script>
-import { showInfo } from "../steps/alerts";
 import axios from "axios";
 import gsap from "gsap";
 const categories = [
@@ -144,72 +101,53 @@ export default {
     });
   },
   methods: {
+    // Makes an HTTP request to fetch information about a specific ingredient, builds an HTML table to display that information, and then shows a SweetAlert modal with that table.
     showAlertInfo(ingredientId, ingredintName) {
-      // Implementierung der showInfo-Methode
       axios.get(`/getIngredientInfo/${ingredientId}`, {}).then((response) => {
         var exists = true;
         var ingredientInfo = response.data.ingredientInfo;
         // Build the table HTML
         if (ingredientInfo == null) {
           exists = false;
-          var tableHTML =
-            "<p>Zu dieser Zutat gibt es keine Inhaltstoff-Informationen</p>";
+          var tableHTML ="<p>Zu dieser Zutat gibt es keine Inhaltstoff-Informationen</p>";
         } else {
-          var tableHTML =
-            `
+          var tableHTML =`
           <table class="alert-table">
           <tbody>
               <tr>
                   <th class="test"><p>Info</p></th>
-                  <td>` +
-            ingredientInfo.info +
-            `</td>
+                  <td>`+ ingredientInfo.info + `</td>
               </tr>
               <tr>
                   <th  class="test"><p>Energie</p></th>
-                  <td>` +
-            ingredientInfo.energie +
-            `</td>
+                  <td>`+ ingredientInfo.energie +`</td>
               </tr>
               <tr>
                   <th  class="test">Fett</th>
-                  <td>` +
-            ingredientInfo.fett +
-            `</td>
+                  <td>` + ingredientInfo.fett + `</td>
               </tr>
               <tr>
                   <td  class="test">davon Fettsäuren:</td>
-                  <td>` +
-            ingredientInfo.fattyacids +
-            `</td>
+                  <td>` + ingredientInfo.fattyacids + `</td>
               </tr>
               <tr>
                   <th class="test">Kohlenhydrate</th>
-                  <td>` +
-            ingredientInfo.carbohydrates +
-            `</td>
+                  <td>` + ingredientInfo.carbohydrates + `</td>
               </tr>
               <tr>
                   <td  class="test">davon Fruchtzucker:</td>
-                  <td>` +
-            ingredientInfo.fruitscarbohydrates +
-            `</td>
+                  <td>` + ingredientInfo.fruitscarbohydrates + `</td>
               </tr>
               <tr>
                   <th  class="test"><p>Protein</p></th>
-                  <td>` +
-            ingredientInfo.protein +
-            `</td>
+                  <td>` + ingredientInfo.protein + `</td>
               </tr>
               <tr>
                   <th  class="test"><p>Salz</p></th>
-                  <td>` +
-            ingredientInfo.salt +
-            `</td>
+                  <td>` + ingredientInfo.salt + `</td>
               </tr>
           </tbody>
-          </table>
-        `;
+          </table>`;
         }
         // Show the SweetAlert with the table
         Swal.fire({
@@ -234,12 +172,14 @@ export default {
         });
       });
     },
+    // Animates with gsap the scaling of an ingredient element when the user hovers over it
     hoverEnter(obj) {
       gsap.to(obj.target, {
         duration: 0.2,
         scale: 1.05,
       });
     },
+     // Animates with gsap the scaling of an element back to its original size when the user stops hovering over it.
     hoverLeave(obj) {
       gsap.to(obj.target, { duration: 0.2, scale: 1 });
     },
@@ -249,19 +189,23 @@ export default {
     changeRouteUpdate(ingrediente) {
       this.$router.push({ path: `/update/ingrediente/${ingrediente.id}` });
     },
+    // Changes the active category and updates the ingredients list displayed on the page.
     handleCategoryClick(category) {
       this.changeIngredientsList(category.list);
       this.setCategoriesActive(category);
     },
+    // Updates the active state of the categories based on the currently selected category.
     setCategoriesActive(category) {
       this.categories.forEach((c, i) => (c.active = c === category));
     },
+    // Deletes an ingredient and then updates the ingredient list displayed on the page.
     deleteIngrediente(id) {
       axios.post(`api/delete/ingrediente/${id}`);
       this.getIngredientsList().then(() => {
         this.getActiveIngredienteList();
       });
     },
+    // Retrieves the currently active ingredient list and updates the displayed list accordingly.
     getActiveIngredienteList() {
       for (let i = 0; i < this.categories.length; i++) {
         if (this.categories[i].active) {
@@ -269,6 +213,7 @@ export default {
         }
       }
     },
+    // Retrieves all ingredients from the server and updates the component's local data with the appropriate ingredient lists.
     getIngredientsList() {
       return new Promise((resolve, reject) => {
         axios.get("/api/getIngredientsList").then((response) => {
@@ -291,11 +236,3 @@ export default {
   },
 };
 </script>
-<style scoped>
-.v-card__title {
-  justify-content: center;
-}
-p {
-  margin-bottom: 0;
-}
-</style> 

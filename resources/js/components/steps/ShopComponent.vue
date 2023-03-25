@@ -4,55 +4,34 @@
       <v-col cols="12" sm="12" md="12" xl="7" lg="7" xs="12">
         <SizeComponent ref="sizeComponent" />
       </v-col>
-      <v-col
-        cols="12"
-        sm="12"
-        md="12"
-        xl="5"
-        lg="5"
-        xs="12"
-        v-if="isUserLoggedIn"
-      >
-      <v-row class="mt-3">
-        <v-col cols="12" sm="12" md="12" xl="7" lg="7" xs="12">
-          <v-text-field
-            class="mt-3 shrink enrollField"
-            v-model="presetName"
-            type="text"
-            placeholder="Preset-Name"
-            required
-          >
-          </v-text-field>
-        </v-col>
-        <v-col cols="12" sm="12" md="12" xl="5" lg="5" xs="12">
-          <v-btn class="mt-4" @click="storeAsPreset()" color="black">
-            Preset erstellen!
-          </v-btn>
-        </v-col>
-      </v-row>
+      <v-col cols="12" sm="12" md="12" xl="5" lg="5" xs="12" v-if="isUserLoggedIn">
+        <v-row class="mt-3">
+          <v-col cols="12" sm="12" md="12" xl="7" lg="7" xs="12">
+            <v-text-field class="mt-3 shrink enrollField" v-model="presetName" type="text" placeholder="Preset-Name"
+              required>
+            </v-text-field>
+          </v-col>
+          <v-col cols="12" sm="12" md="12" xl="5" lg="5" xs="12">
+            <v-btn class="mt-4" @click="storeAsPreset()" color="black">
+              Preset erstellen!
+            </v-btn>
+          </v-col>
+        </v-row>
       </v-col>
-      </v-row>
+    </v-row>
     <v-row class="mt-2">
       <v-col class="mb-2" cols="12">
         <div class="mx-auto d-flex flex-wrap">
-          <button
-            color="success"
-            class="mx-auto flex-grow-1 green-bg custom-btn"
-            @click="showIngrediente()"
-          >
+          <button color="success" class="mx-auto flex-grow-1 green-bg custom-btn" @click="showIngrediente()">
             Weitere Zutaten hinzufügen
           </button>
-          <button
-            color="error"
-            class="mx-auto flex-grow-1 red-bg custom-btn"
-            @click="removeAllAlert()"
-          >
+          <button color="error" class="mx-auto flex-grow-1 red-bg custom-btn" @click="removeAllAlert()">
             Alles aus dem Warenkorb entfernen
           </button>
         </div>
       </v-col>
       <v-col cols="12" md="8" class="mb-5">
-        <div class="item-list">
+        <div class="item-shop-list">
           <v-row>
             <div elevation="5" class="w-95 ml-5 mt-3 mb-3">
               <v-table density="compact">
@@ -67,58 +46,33 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr
-                    v-for="(cart, cartIndex) in ingredienteContent"
-                    :key="cartIndex"
-                  >
+                  <tr v-for="(cart, cartIndex) in ingredienteContent" :key="cartIndex">
                     <td>
-                      <img
-                        width="75"
-                        height="75"
-                        :src="'/images/piece/' + cart.options.image"
-                        class="mt-2 mb-2"
-                      />
+                      <img width="75" height="75" :src="'/images/piece/' + cart.options.image" class="mt-2 mb-2" />
                     </td>
                     <td>{{ cart.name }}</td>
                     <td>{{ cart.price }}€ / 50g</td>
                     <td>
                       <div class="d-flex align-center">
-                        <v-icon color="black" @click="addSpecificOne(cart)"
-                          >mdi-plus</v-icon
-                        >
+                        <v-icon color="black" @click="addSpecificOne(cart)">mdi-plus</v-icon>
                         <p class="mt-3 mx-2" :id="'qty' + cart.id">
                           {{ cart.qty }}
                         </p>
-                        <v-icon color="black" @click="removeSpecificOne(cart)"
-                          >mdi-minus</v-icon
-                        >
+                        <v-icon color="black" @click="removeSpecificOne(cart)">mdi-minus</v-icon>
                       </div>
                     </td>
                     <td>
-                      <a @click="showAlertInfo(cart.id, cart.name)" class="text-black"
-                        >infos</a
-                      >
+                      <a @click="showAlertInfo(cart.id, cart.name)" class="text-black">infos</a>
                     </td>
                     <td>
-                      <v-btn
-                        @click="removeSpecificCart(cart)"
-                        color="black"
-                      >
+                      <v-btn @click="removeSpecificCart(cart)" color="black">
                         Löschen!
                       </v-btn>
                     </td>
                   </tr>
-                  <tr
-                    v-for="(cart, cartIndex) in liquidContent"
-                    :key="cartIndex"
-                  >
+                  <tr v-for="(cart, cartIndex) in liquidContent" :key="cartIndex">
                     <td>
-                      <img
-                        width="75"
-                        height="75"
-                        :src="'/images/piece/' + cart.options.image"
-                        class="mt-2 mb-2"
-                      />
+                      <img width="25" height="75" :src="'/images/piece/' + cart.options.image" class="mt-2 mb-2 ml-6" />
                     </td>
                     <td>{{ cart.name }}</td>
                     <td>{{ cart.price }}€ / 50ml</td>
@@ -129,21 +83,22 @@
                       </button>
                     </td>
                     <td>
-                      <a @click="showAlertInfo(cart.id, cart.name)" class="text-black"
-                        >infos</a
-                      >
+                      <a @click="showAlertInfo(cart.id, cart.name)" class="text-black">infos</a>
                     </td>
                     <td>
-                      <v-btn
-                        @click="removeSpecificCart(cart)"
-                        color="black"
-                      >
+                      <v-btn @click="removeSpecificCart(cart)" color="black">
                         Löschen!
                       </v-btn>
                     </td>
                   </tr>
                 </tbody>
               </v-table>
+              <div class="d-flex w-100">
+                <button v-if="liquidContent.length < 1" color="success" class="mt-8 mx-auto flex-grow-1 green-bg custom-btn"
+                  @click="showStep3()">
+                  Flüssigkeit hinzufügen
+                </button>
+              </div>
             </div>
           </v-row>
         </div>
@@ -174,7 +129,8 @@ import MixerComponent from "../layouts/MixerComponent.vue";
 import ProgressbarComponent from "../layouts/ProgressbarComponent.vue";
 import SizeComponent from "../layouts/SizeComponent.vue";
 import { showInfo } from '../steps/alerts'
-
+import { showAlertSuccess } from '../steps/alerts'
+import { showAlertError } from '../steps/alerts'
 export default {
   name: "ShopComponent",
   components: {
@@ -215,7 +171,7 @@ export default {
     },
     storeAsPreset() {
       if (this.presetName == "") {
-        this.showAlertError("Du hast kein Presetnamen gewählt!", "");
+        showAlertError("Du hast kein Presetnamen gewählt!", "");
       } else {
         axios
           .post(`/storeAsPreset`, {
@@ -224,19 +180,19 @@ export default {
           .then((response) => {
             console.log(response);
             if (response.data.auth == false) {
-              this.showAlertError(
+              showAlertError(
                 "Du must angemeldet sein, um dir spezifische Presets erstellen zu können!",
                 ""
               );
             } else {
-              this.showAlertSuccess(
+              showAlertSuccess(
                 "Das Preset wurde erfolgreich erstellt!",
                 "Auf der Startseite kannst du das Preset auswählen und deine Zusammenstellung aufrufen!"
               );
             }
           })
           .catch((error) => {
-            this.showAlertError(
+            showAlertError(
               "Den Namen für das Preset gibt es bereits!",
               "Wähle einen anderen Namen, oder lösche das bestehende Preset!"
             );
@@ -279,7 +235,7 @@ export default {
             errorMessage +
             "Beachte, dass eine Flüssigkeit ausgewühlt sein muss!";
         }
-        this.showAlertError("Nicht genug Zutaten ausgewählt!", errorMessage);
+        showAlertError("Nicht genug Zutaten ausgewählt!", errorMessage);
       }
     },
     async removeAllFromCart() {
@@ -351,7 +307,7 @@ export default {
         this.setnewAmount(cart.rowId, 1);
         this.getCartTotal();
       } else {
-        this.showAlertError("Du hast zu viele Zutaten ausgewählt!", "");
+        showAlertError("Du hast zu viele Zutaten ausgewählt!", "");
       }
     },
     async removeSpecificOne(cart) {
@@ -378,26 +334,6 @@ export default {
     showIngrediente() {
       this.$router.push({ path: "/chooseIngrediente" });
     },
-    showAlertError(title, text) {
-      Swal.fire({
-        title: title,
-        text: text,
-        icon: "error",
-        showCancelButton: false,
-        confirmButtonColor: "#6D9E1F",
-        confirmButtonText: "Okay!",
-      });
-    },
-    showAlertSuccess(title, text) {
-      Swal.fire({
-        title: title,
-        text: text,
-        icon: "success",
-        showCancelButton: false,
-        confirmButtonColor: "#6D9E1F",
-        confirmButtonText: "Okay!",
-      });
-    },
     removeAllAlert() {
       Swal.fire({
         title: "Bist du Dir sicher?",
@@ -417,25 +353,3 @@ export default {
   },
 };
 </script>
-<style>
-.item-list {
-  height: 35em;
-  overflow-y: scroll;
-  overflow-x: hidden;
-}
-
-.w-95 {
-  width: 95%;
-}
-.w-70 {
-  width: 60%;
-}
-.w-30 {
-  width: 40%;
-}
-.enrollField {
-  margin-bottom: -3em;
-  margin-right: 0em;
-}
-</style>
-

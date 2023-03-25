@@ -91,19 +91,3 @@ export default {
   }
 };
 </script>
-<style scoped>
-@media (min-width: 1400px) {
-  .container-xxl,
-  .container-xl,
-  .container-lg,
-  .container-md,
-  .container-sm,
-  .container {
-    max-width: 1320px !important;
-  }
-}
-.perspective-image {
-  transform: scale(1) perspective(1040px) rotateY(-11deg) rotateX(2deg)
-    rotate(2deg);
-}
-</style>

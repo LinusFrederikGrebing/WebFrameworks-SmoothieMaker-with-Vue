@@ -17,6 +17,7 @@
 
 <script>
 import axios from "axios";
+import { showBottleSizes } from '../steps/alerts'
 
 export default {
   name: "SizeComponent",
@@ -31,6 +32,9 @@ export default {
     this.getCartCount();
   },
   methods: {
+    showBottleSizes() {
+      showBottleSizes();
+    },
     getCartCount() {
       axios.get("/cart/count").then((response) => {
         this.cartCount = response.data.cartCount;
@@ -38,31 +42,6 @@ export default {
         this.liquidCount = response.data.liquidCount;
       });
     },
-    showBottleSizes() {
-      Swal.fire({
-        title: "Bist du Dir sicher?",
-        text: "Deine komplette Zusammenstellung wird bei Größenänderung unwiederruflich gelöscht!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#6D9E1F",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Andere Größe wählen!",
-        cancelButtonText: "Abbrechen!",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.$router.push({ path: "/chooseBottleSize" });
-        }
-      });
-    },
   },
 };
 </script>
-  
-<style scoped>
-p {
-  margin-bottom: 0;
-}
-h5 {
-  margin-bottom: 0;
-}
-</style>

@@ -9,17 +9,9 @@
     </v-row>
     <v-divider width="80%" class="ml-auto mr-auto"></v-divider>
     <v-row id="steps" class="my-6 mx-6">
-      <v-col
-        class="relative text-center"
-        cols="12"
-        md="4"
-        v-for="(item, index) in items"
-        :key="index"
-        :id="'step' + (index + 1)"
-      >
-        <div
-          class="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full"
-        >
+      <v-col class="relative text-center" cols="12" md="4" v-for="(item, index) in items" :key="index"
+        :id="'step' + (index + 1)">
+        <div class="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full">
           <span class="material-symbols-outlined item-icon">
             {{ item.icon }}
           </span>
@@ -28,7 +20,7 @@
           <div>
             <h4 class="mb-2" v-text="item.title"></h4>
             <p class="mb-3" v-text="item.text"></p>
-          </div> 
+          </div>
         </div>
       </v-col>
     </v-row>
@@ -63,9 +55,9 @@ export default {
       ],
     };
   },
+  // gsap timpline animation with scrolltrigger
   mounted() {
-    gsap
-      .timeline({
+    gsap.timeline({
         delay: 0,
         scrollTrigger: {
           trigger: "#steps",
@@ -73,60 +65,11 @@ export default {
           end: "bottom 0%",
           toggleActions: "play reset play reset ",
         },
-      })
-      .fromTo(
-        "#stepsheader",
-        {
-          delay: 0,
-          opacity: 0,
-        },
-        {
-          opacity: 1,
-        }
-      )
-      .fromTo(
-        "#step1",
-        {
-          delay: 0.5,
-          y: 300,
-          opacity: 0,
-        },
-        {
-          opacity: 1,
-          y: 0,
-        }
-      )
-      .fromTo(
-        "#step2",
-        {
-          y: 300,
-          delay: 0.5,
-          opacity: 0,
-        },
-        {
-          opacity: 1,
-          y: 0,
-        }
-      )
-      .fromTo(
-        "#step3",
-        {
-          delay: 0.5,
-          y: 300,
-          opacity: 0,
-        },
-        {
-          opacity: 1,
-          y: 0,
-        }
-      );
+    })
+    .fromTo("#stepsheader", { delay: 0, opacity: 0 }, { opacity: 1 })
+    .fromTo("#step1", { delay: 0.5, y: 300, opacity: 0 }, { opacity: 1, y: 0 })
+    .fromTo("#step2", { y: 300, delay: 0.5, opacity: 0 }, { opacity: 1, y: 0 })
+    .fromTo("#step3", { delay: 0.5, y: 300, opacity: 0 }, { opacity: 1, y: 0 });
   },
 };
 </script>
-<style scoped>
-.item-icon {
-  scale: 2.5;
-}
-</style>
-
-  

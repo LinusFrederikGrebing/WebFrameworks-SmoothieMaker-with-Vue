@@ -20,9 +20,3 @@ export default {
   },
 };
 </script>
-<style>
-.content-container {
-  min-height: 840px;
-  width: 90%;
-}
-</style>

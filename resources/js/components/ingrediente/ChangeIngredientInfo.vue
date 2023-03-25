@@ -4,106 +4,53 @@
     <v-container class="py-6 d-flex flex-column justify-center">
       <v-row class="justify-center">
         <v-col cols="12" class="mx-auto">
-          <v-card
-            elevation="10"
-            width="800"
-            height="550"
-            class="mx-auto rounded-box"
-          >
+          <v-card elevation="10" width="800" height="550" class="mx-auto rounded-box">
             <v-card-text class="w-75 mx-auto">
               <h2 class="font-weight-bold mt-8">
                 Informationen zur Zutat {{ ingrediente.name }} aktualisieren:
               </h2>
-              <v-form
-                @submit.prevent="updateIngrediente"
-                enctype="multipart/form-data"
-              >
-              <v-row>
-                <v-col>
-                  <v-text-field
-                    class="enrollField"
-                    id="info"
-                    label="Info"
-                    v-model="ingredientInfo.info"
-                    required
-                  />
-                </v-col>
-                <v-col>
-                  <v-text-field
-                    class="enrollField"
-                    id="energie"
-                    label="Energie"
-                    v-model="ingredientInfo.energie"
-                    required
-                  />
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col>
-                  <v-text-field
-                    class="enrollField"
-                    id="fett"
-                    label="Fett"
-                    v-model="ingredientInfo.fett"
-                    required
-                  />
-                </v-col>
-                <v-col>
-                  <v-text-field
-                    class="enrollField"
-                    id="fett"
-                    label="Fett"
-                    v-model="ingredientInfo.fattyacids"
-                    required
-                  />
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col>
-                  <v-text-field
-                    class="enrollField"
-                    id="fettacid"
-                    label="davon Fettsäuren:"
-                    v-model="ingredientInfo.carbohydrates"
-                    required
-                  />
-                </v-col>
-                <v-col>
-                  <v-text-field
-                    class="enrollField"
-                    id="carbohydrates"
-                    label="Kohlenhydrate"
-                    v-model="ingredientInfo.fruitscarbohydrates"
-                    required
-                  />
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col>
-                  <v-text-field
-                    class="enrollField"
-                    id="protein"
-                    label="Protein"
-                    v-model="ingredientInfo.protein"
-                    required
-                  />
-                </v-col>
-                <v-col>
-                  <v-text-field
-                    class="enrollField"
-                    id="salt"
-                    label="Salz"
-                    v-model="ingredientInfo.salt"
-                    required
-                  />
-                </v-col>
-              </v-row>
+              <v-form @submit.prevent="updateIngrediente" enctype="multipart/form-data">
+                <v-row>
+                  <v-col>
+                    <v-text-field class="enrollField" id="info" label="Info" v-model="ingredientInfo.info" required />
+                  </v-col>
+                  <v-col>
+                    <v-text-field class="enrollField" id="energie" label="Energie" v-model="ingredientInfo.energie"
+                      required />
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col>
+                    <v-text-field class="enrollField" id="fett" label="Fett" v-model="ingredientInfo.fett" required />
+                  </v-col>
+                  <v-col>
+                    <v-text-field class="enrollField" id="fett" label="Fett" v-model="ingredientInfo.fattyacids"
+                      required />
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col>
+                    <v-text-field class="enrollField" id="fettacid" label="davon Fettsäuren:"
+                      v-model="ingredientInfo.carbohydrates" required />
+                  </v-col>
+                  <v-col>
+                    <v-text-field class="enrollField" id="carbohydrates" label="Kohlenhydrate"
+                      v-model="ingredientInfo.fruitscarbohydrates" required />
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col>
+                    <v-text-field class="enrollField" id="protein" label="Protein" v-model="ingredientInfo.protein"
+                      required />
+                  </v-col>
+                  <v-col>
+                    <v-text-field class="enrollField" id="salt" label="Salz" v-model="ingredientInfo.salt" required />
+                  </v-col>
+                </v-row>
                 <v-row class="d-flex justify-end mt-8">
                   <v-col cols="auto">
                     <a @click="showHome" class="mr-4 text-black">Zurück</a>
-                    <v-btn color="black" type="submit"
-                      >Zutat aktualisieren</v-btn
-                    >
+                    <v-btn color="black" type="submit">Zutat aktualisieren</v-btn>
                   </v-col>
                 </v-row>
               </v-form>
@@ -117,7 +64,7 @@
 
 <script>
 import axios from "axios";
-
+import { showAlertSuccess } from '../steps/alerts'
 export default {
   props: ["id"],
   data() {
@@ -131,26 +78,19 @@ export default {
     this.getIngrediente(this.id);
   },
   methods: {
+    // redirect back to the employeeTemplate
     showHome() {
       this.$router.push("/employeeTemplate");
     },
+    // Sends a request and retrieves the ingredient information from the server response, then updates the ingrediente and ingredientInfo data properties with the corresponding values.
     getIngrediente() {
       axios.post(`/update/ingredienteInfo/${this.id}`, {}).then((response) => {
         this.ingrediente = response.data.ingrediente;
         this.ingredientInfo = response.data.ingredientInfo;
-        console.log(this.ingrediente);
       });
     },
-    showAlertSuccess(title, text) {
-      Swal.fire({
-        title: title,
-        text: text,
-        icon: "success",
-        showCancelButton: false,
-        confirmButtonColor: "#6D9E1F",
-        confirmButtonText: "Okay!",
-      });
-    },
+    // Constructs a FormData object with the ingredient information from the ingredientInfo data property, then sends a POST request to "/updated/ingredienteInfo/{id}" endpoint with the FormData object and a header containing the content type. 
+    // If the request is successful, it shows a success alert message using showAlertSuccess(), then redirects to "/employeeTemplate" route. If an error occurs, it logs the error to the console.
     updateIngrediente() {
       const config = {
         headers: {
@@ -169,7 +109,7 @@ export default {
       axios
         .post(`/updated/ingredienteInfo/${this.id}`, data, config)
         .then(() => {
-          this.showAlertSuccess("Die Zutat-Informationen wurden erfolgreich aktualisiert!","");
+          showAlertSuccess("Die Zutat-Informationen wurden erfolgreich aktualisiert!", "");
           this.$router.push({ path: "/employeeTemplate" });
         })
         .catch((error) => {
@@ -179,9 +119,3 @@ export default {
   },
 };
 </script>
-<style>
-.enrollField {
-  margin-top: 2em;
-  margin-right: 0em;
-}
-</style>

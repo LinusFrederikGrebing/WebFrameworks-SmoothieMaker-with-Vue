@@ -1,10 +1,10 @@
 <template>
   <div v-if="isUserLoggedIn" class="mt-16">
-    <div class="text-center mx-4 pt-16 mt-16">
+    <div class="text-center pt-16 mt-16">
       <h3 class="font-weight-bold">Kunden-Ansicht</h3>
       <p class="">Hier kannst du deine abgespeicherten Zusammenstellungen aufrufen!</p>
     </div>
-    <div elevation="5" class="w-95 ml-5 mt-3 mb-3">
+    <div elevation="5" class="ml-8 w-95 mt-3 mb-3">
       <v-table v-if="presetNames.length > 0" density="compact">
         <thead>
           <tr>
@@ -16,12 +16,10 @@
         <tbody>
           <tr v-for="(preset, index) in presetNames" :key="index">
             <td>
-              <p class="w-75 py-4">{{ preset }}</p>
+              <p class="w-75 py-3">{{ preset }}</p>
             </td>
             <td>
-              <a @click="deletePreset(preset)" class="mr-4 text-black"
-                >löschen</a
-              >
+              <a @click="deletePreset(preset)" class="mr-4 text-black">löschen</a>
             </td>
             <td>
               <v-btn @click="choosePreset(preset)" color="black">
@@ -41,48 +39,48 @@
 </template>
 
 <script>
-import gsap from "gsap";
-import ScrollTrigger from "gsap/ScrollTrigger";
-gsap.registerPlugin(ScrollTrigger);
-
 export default {
   name: "CustomerTemplate",
   data() {
     return {
-      isUserLoggedIn: false,
-      presetNames: [],
+      isUserLoggedIn: false, // A boolean variable indicating whether the user is logged in or not
+      presetNames: [], //Array to store preset names
     };
   },
   mounted() {
+    // This method is called when the component is mounted to the DOM
+    // It checks whether the user is logged in and gets all preset-names
     this.checkLoggedInUser();
     this.getPresets();
   },
   methods: {
     checkLoggedInUser() {
+      // Sends an HTTP GET request to check if the user is logged in
       axios.get(`/checkLoggedInUser`).then((response) => {
         this.isUserLoggedIn = response.data.loggedIn;
         console.log(this.isUserLoggedIn);
       });
     },
     deletePreset(presetName) {
-      axios.get(`/deletePreset/${presetName}`).then((response) => {
-        this.getPresets();
+      // Sends an HTTP GET request to delete a preset by preset name -> presetnames are unique for spezific users
+      axios.get(`/deletePreset/${presetName}`).then(() => {
+        this.getPresets(); // Calls getPresets() methods to update the visible preset-list
       });
     },
     getPresets() {
-      axios
-        .get("/user-presets")
+      // Sends an HTTP GET request to get user presets
+      axios.get("/user-presets")
         .then((response) => {
-          this.presetNames = response.data.userPresets;
-          console.log(this.presetNames);
+          this.presetNames = response.data.userPresets; // Stores the preset names in the array
         })
         .catch((error) => {
           console.log(error);
         });
     },
     choosePreset(presetName) {
-      axios.get(`/checkPreset/${presetName}`).then((response) => {
-        this.$router.push({ path: "/shop" });
+      // Sends an HTTP GET request to check if a preset with the given name exists
+      axios.get(`/checkPreset/${presetName}`).then(() => {
+        this.$router.push({ path: "/shop" }); // Navigates to the shop page
       });
     },
   },

@@ -64,7 +64,6 @@ export  function showInfo(ingredientId, ingredintName, isAdmin = false) {
           </table>
         `;
         }
-        console.log(isAdmin);
         // Show the SweetAlert with the table
         Swal.fire({
             title: "Inhaltsstoffe - " + ingredintName,
@@ -79,4 +78,53 @@ export  function showInfo(ingredientId, ingredintName, isAdmin = false) {
             }
         });
     });
+}
+
+export function showAlertSuccess(title, text) {
+  Swal.fire({
+    title: title,
+    text: text,
+    icon: "success",
+    showCancelButton: false,
+    confirmButtonColor: "#6D9E1F",
+    confirmButtonText: "Okay!",
+  });
+}
+
+export function showBottleSizes() {
+  Swal.fire({
+    title: "Bist du Dir sicher?",
+    text: "Deine komplette Zusammenstellung wird bei Größenänderung unwiederruflich gelöscht!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#6D9E1F",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Andere Größe wählen!",
+    cancelButtonText: "Abbrechen!",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      window.location.href = "/chooseBottleSize";
+    }
+  });
+}
+
+export function showAlertError(title, text) {
+  Swal.fire({
+    title: title,
+    text: text,
+    icon: "error",
+    showCancelButton: false,
+    confirmButtonColor: "#6D9E1F",
+    confirmButtonText: "Okay!",
+  });
+}
+
+export function warningAlert() {
+  Swal.fire({
+    title: "",
+    text: "Deine Anmeldung ist fehlgeschlagen. Überprüfe deine Anmeldedaten und probiere es erneut! ",
+    icon: "warning",
+    confirmButtonColor: "#6D9E1F",
+    confirmButtonText: "Wiederholen!",
+  });
 }

@@ -3,7 +3,7 @@
     <div class="text-center mx-4 mt-8">
       <h2 class="font-weight-bold">Wähle jetzt deine Smoothie-Größe!</h2>
     </div>
-    <v-row class="mx-auto ml-16 mb-8 w-70" no-gutters>
+    <v-row class="mx-auto ml-16 mb-8 w-75" no-gutters>
       <v-col
         sm="12"
         md="12"
@@ -123,14 +123,3 @@ export default {
   },
 };
 </script>
-<style scoped>
-.w-70 {
-  width: 75%;
-}
-.size-image {
-  margin-left: -1em;
-}
-.card-color {
-  z-index: 2;
-}
-</style>

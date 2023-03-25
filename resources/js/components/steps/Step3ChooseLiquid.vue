@@ -228,20 +228,4 @@ export default {
 .w-70 {
   width: 65%;
 }
-.size-image {
-  margin-left: -1em;
-}
-.item-list {
-  height: 42em;
-  overflow-y: scroll;
-}
-.card-color {
-  background-color: rgb(229 231 235);
-}
-.selected-card {
-  border: 4px solid #80ba24;
-}
-p {
-  margin-bottom: 0;
-}
 </style>

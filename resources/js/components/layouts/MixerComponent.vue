@@ -58,20 +58,6 @@ export default {
     this.clearLiquid();
   },
   methods: {
-    showAlertSuccess(title, text) {
-      Swal.fire({
-        title: title,
-        text: text,
-        icon: "success",
-        showCancelButton: false,
-        confirmButtonColor: "#6D9E1F",
-        confirmButtonText: "Weiter!",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.$router.push({ path: `/` });
-        }
-      });
-    },
     clearLiquid() {
       gsap.set("#innerImage, #liquidImage", {
         opacity: 0,
@@ -160,6 +146,20 @@ export default {
             "Klicke auf weiter um wieder zur Startseite zu gelangen!"
           );
         });
+    },
+    showAlertSuccess(title, text) {
+      Swal.fire({
+        title: title,
+        text: text,
+        icon: "success",
+        showCancelButton: false,
+        confirmButtonColor: "#6D9E1F",
+        confirmButtonText: "Weiter!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.$router.push({ path: `/` });
+        }
+      });
     },
     liquidAnimation(image) {
       const img = new Image();

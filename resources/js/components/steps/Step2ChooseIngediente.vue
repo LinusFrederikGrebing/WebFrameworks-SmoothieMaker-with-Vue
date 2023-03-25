@@ -307,9 +307,6 @@ export default {
 };
 </script>
 <style scoped>
-p {
-  margin-bottom: 0;
-}
 .w-30px {
   width: 39px;
 }

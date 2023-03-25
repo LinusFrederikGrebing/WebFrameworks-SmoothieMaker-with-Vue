@@ -17,6 +17,7 @@ export default {
     this.getProgress();
   },
   methods: {
+    // fetches the cart count and bottle information from the server and sets the progress bar accordingly.
     getProgress() {
       axios.get("/cart/count").then((response) => {
         this.cartCount = response.data.cartCount;
@@ -24,6 +25,7 @@ export default {
         this.setNewProgress();
       });
     },
+    // calculates the width of the progress bar based on the cart count and the bottle amount.
     setNewProgress() {
       const progressbar = this.$refs.progressbar;
       if (this.bottle.amount > 0) {
