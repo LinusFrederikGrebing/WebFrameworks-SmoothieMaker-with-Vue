@@ -341,7 +341,7 @@ h5 {
     justify-content: center;
 }
 .enrollField {
-    margin-top: 2em;
+    margin-bottom: -1em;
     margin-right: 0em;
 }
 .item-icon {

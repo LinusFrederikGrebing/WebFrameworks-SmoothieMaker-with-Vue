@@ -24,6 +24,7 @@
     </head>
     <body>
         <main id="app">
+            <!-- At this point the root file of vue is included. Which other vue-fells should be loaded is decided by the router view, which is located in the app view -->
             <app-view />
         </main>
         <script src="{{ mix('js/app.js') }}"></script>

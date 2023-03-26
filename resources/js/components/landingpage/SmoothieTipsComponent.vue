@@ -15,13 +15,13 @@
           <v-divider></v-divider>
         </v-col>
       </v-row>
-      <v-row v-for="(item, index) in smoothieItems" :key="index" class="tip mx-16">
-        <v-col cols="12" md="6" :order="index % 2 === 0 ? 1 : 2">
+      <v-row v-for="(item, index) in smoothieItems" :key="index" class="tip">
+        <v-col cols="12" md="6" xs="12" :order="index % 2 === 0 ? 1 : 2">
           <div class="rounded-lg">
-            <v-img :src="item.src" alt="" height="400" contain class="rotate-x-2 rotate-y-11 rotate--2"></v-img>
+            <v-img :src="item.src" alt="" height="400" contain ></v-img>
           </div>
         </v-col>
-        <v-col cols="12" md="6" :order="index % 2 === 0 ? 2 : 1" class="d-flex flex-column align-center justify-center">
+        <v-col cols="12" md="6" xs="12" :order="index % 2 === 0 ? 2 : 1" class="d-flex flex-column align-center justify-center">
           <v-card elevation="5" class="rounded-lg">
             <v-card-text>
               <div>

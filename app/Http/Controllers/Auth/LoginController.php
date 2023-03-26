@@ -38,10 +38,12 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
+    // we are overriding the default behavior of the login controller to allow login by username and point to our vue router
     public function showLoginForm()
     {
         return view('index');
     }
+
     public function username()
     {
         return 'name';

@@ -3,12 +3,12 @@
     <div class="text-center mx-4 mt-8">
       <h2 class="font-weight-bold">Wähle jetzt deine Smoothie-Größe!</h2>
     </div>
-    <v-row class="mx-auto ml-16 mb-8 w-75" no-gutters>
+    <v-row class="mx-auto ml-16 mb-8" :class="$vuetify.display.mobile ? 'w-100' : 'w-75'" no-gutters>
       <v-col
         sm="12"
         md="12"
         xl="6"
-        lg="12"
+        lg="6"
         xs="12"
         v-for="bottle in bottles"
         :key="bottle.id"
@@ -27,8 +27,8 @@
             <v-col  sm="12"
               md="4"
               xl="4"
-              lg="12"
-              xs="12">
+              lg="5"
+              xs="6">
               <img
                 class="size-image mt-4"
                 :src="'/images/' + bottle.image"
@@ -39,7 +39,7 @@
             <v-col  sm="12"
               md="8"
               xl="8"
-              lg="12"
+              lg="7"
               xs="12">
               <div class="mt-8">
                 <h4 class="mx-4 font-weight-bold">Größe: {{ bottle.name }}</h4>
@@ -70,7 +70,9 @@ export default {
   },
   mounted() {
     this.getBottles();
+    console.log(this.$vuetify.display.mobile)
   },
+
   methods: {
     // This method uses Axios to fetch bottle data from a server endpoint ("/bottleSize"). Upon a successful response, it sets the fetched bottle data to the "bottles" data property of the component, 
     // clears a session storage variable using the "clearMixer" method, and calls the "enterGrid" method to animate the display of the bottle cards on the page.

@@ -1,7 +1,7 @@
 <template>
   <v-container class="container">
     <v-row class="seperate">
-      <v-col cols="12" md="12" xl="6" sm="12" xs="12">
+      <v-col cols="12" md="6" xl="6" sm="12" xs="12">
         <div elevation="10" id="left-text">
           <h1 class="mx-5 mt-5 font-weight-bold">Smoothiemaker</h1>
           <h5 class="mx-5 mb-5 mt-5">
@@ -20,7 +20,7 @@
           </button>
         </div>
       </v-col>
-      <v-col cols="12" xl="6" md="12" sm="12" xs="12" class="perspective-image">
+      <v-col cols="12" xl="6" md="6" sm="12" xs="12" class="perspective-image">
         <v-card elevation="10 mt-12" id="right-img">
           <v-img src="/images/smoothie.jpg"></v-img>
         </v-card>

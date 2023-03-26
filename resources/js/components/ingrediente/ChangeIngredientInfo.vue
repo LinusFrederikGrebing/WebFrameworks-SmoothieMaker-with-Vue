@@ -4,46 +4,46 @@
     <v-container class="py-6 d-flex flex-column justify-center">
       <v-row class="justify-center">
         <v-col cols="12" class="mx-auto">
-          <v-card elevation="10" width="800" height="550" class="mx-auto rounded-box">
+          <v-card elevation="10" max-width="800" min-height="550" class="mx-auto rounded-box">
             <v-card-text class="w-75 mx-auto">
               <h2 class="font-weight-bold mt-8">
                 Informationen zur Zutat {{ ingrediente.name }} aktualisieren:
               </h2>
               <v-form @submit.prevent="updateIngrediente" enctype="multipart/form-data">
                 <v-row>
-                  <v-col>
+                  <v-col cols="12" lg="6" sm="12">
                     <v-text-field class="enrollField" id="info" label="Info" v-model="ingredientInfo.info" required />
                   </v-col>
-                  <v-col>
+                  <v-col cols="12" lg="6" sm="12">
                     <v-text-field class="enrollField" id="energie" label="Energie" v-model="ingredientInfo.energie"
                       required />
                   </v-col>
                 </v-row>
                 <v-row>
-                  <v-col>
+                  <v-col cols="12" lg="6" sm="12">
                     <v-text-field class="enrollField" id="fett" label="Fett" v-model="ingredientInfo.fett" required />
                   </v-col>
-                  <v-col>
+                  <v-col cols="12" lg="6" sm="12">
                     <v-text-field class="enrollField" id="fett" label="Fett" v-model="ingredientInfo.fattyacids"
                       required />
                   </v-col>
                 </v-row>
                 <v-row>
-                  <v-col>
+                  <v-col cols="12" lg="6" sm="12">
                     <v-text-field class="enrollField" id="fettacid" label="davon Fettsäuren:"
                       v-model="ingredientInfo.carbohydrates" required />
                   </v-col>
-                  <v-col>
+                  <v-col cols="12" lg="6" sm="12">
                     <v-text-field class="enrollField" id="carbohydrates" label="Kohlenhydrate"
                       v-model="ingredientInfo.fruitscarbohydrates" required />
                   </v-col>
                 </v-row>
                 <v-row>
-                  <v-col>
+                  <v-col cols="12" lg="6" sm="12">
                     <v-text-field class="enrollField" id="protein" label="Protein" v-model="ingredientInfo.protein"
                       required />
                   </v-col>
-                  <v-col>
+                  <v-col cols="12" lg="6" sm="12">
                     <v-text-field class="enrollField" id="salt" label="Salz" v-model="ingredientInfo.salt" required />
                   </v-col>
                 </v-row>

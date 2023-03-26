@@ -55,7 +55,7 @@
                     <td>
                       <div class="d-flex align-center">
                         <v-icon color="black" @click="addSpecificOne(cart)">mdi-plus</v-icon>
-                        <p class="mt-3 mx-2" :id="'qty' + cart.id">
+                        <p class="mt-1 mx-2" :id="'qty' + cart.id">
                           {{ cart.qty }}
                         </p>
                         <v-icon color="black" @click="removeSpecificOne(cart)">mdi-minus</v-icon>

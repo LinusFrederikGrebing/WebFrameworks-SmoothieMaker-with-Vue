@@ -70,7 +70,7 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
     }
-
+    // we are overriding the default behavior of the login controller to point to our vue router
     public function showRegistrationForm()
     {
         return view('index');

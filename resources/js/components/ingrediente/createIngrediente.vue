@@ -4,7 +4,7 @@
     <v-container class="py-6 d-flex flex-column justify-center">
       <v-row class="justify-center">
         <v-col cols="12" class="mx-auto">
-          <v-card elevation="10" width="800" height="550" class="mx-auto rounded-box">
+          <v-card elevation="10" max-width="800" min-height="550" class="mx-auto rounded-box">
             <v-card-text class="w-75 mx-auto">
               <h2 class="font-weight-bold mb-12 mt-16">Zutat hinzufügen:</h2>
               <v-form @submit.prevent="storeIngrediente">
