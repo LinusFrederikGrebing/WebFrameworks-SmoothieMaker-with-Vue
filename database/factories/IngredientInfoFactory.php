@@ -10,6 +10,7 @@ class IngredientInfoFactory extends Factory
 
     public function definition()
     {
+         // "faker" creates test data. This template can be used to create instances of the type IngredientInfo
         $info = [
             'Mangan', 
             'Kalium', 

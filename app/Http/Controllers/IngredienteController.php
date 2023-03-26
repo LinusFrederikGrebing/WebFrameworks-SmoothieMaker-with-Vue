@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\IngredienteType;
-
 use Illuminate\Http\Request;
 use App\Models\Ingrediente;
 

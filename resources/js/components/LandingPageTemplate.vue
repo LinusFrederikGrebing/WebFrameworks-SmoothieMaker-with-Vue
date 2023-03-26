@@ -48,45 +48,17 @@ export default {
     this.fadeInAnimation();
   },
   methods: {
-    choosePreset(presetName) {
-      axios.get(`/checkPreset/${presetName}`).then((response) => {
-        this.$router.push({ path: "/shop" });
-      });
-    },
+    // redirect to the bottle size
     showStep1() {
       this.$router.push({ path: "/chooseBottleSize" });
     },
+    // gsap fade Aniamation
     fadeInAnimation() {
       gsap.fromTo(
         "#left-text",
-        {
-          scale: 0,
-          opacity: 0,
-          y: 200,
-        },
-        {
-          y: 0,
-          delay: 0.2,
-          duration: 2,
-          scale: 1,
-          opacity: 1,
-          ease: "power3.out",
-        }
-      );
+        { scale: 0, opacity: 0, y: 200 }, { y: 0, delay: 0.2, duration: 2, scale: 1, opacity: 1, ease: "power3.out" });
       gsap.fromTo(
-        "#right-img",
-        {
-          x: 500,
-          scale: 0,
-        },
-        {
-          x: 0,
-          delay: 0.2,
-          duration: 2,
-          scale: 1,
-          ease: "power3.out",
-        }
-      );
+        "#right-img", { x: 500, scale: 0 }, { x: 0, delay: 0.2, duration: 2, scale: 1, ease: "power3.out" });
     },
   }
 };

@@ -44,12 +44,13 @@
 .bg-white {
     background-color: #ffffff;
 }
-
 .auth-background {
     position: relative;
     z-index: 1;
 }
-
+.thmcolorgreen {
+    color: rgba(128, 186, 36, 1);
+}
 /* Auth-CSS */
 .auth-green-background {
     position: absolute;
@@ -98,7 +99,6 @@
     top: -30px;
     left: 30px;
 }
-
 #mixerLogo {
     position: absolute;
     top: 1em;
@@ -107,7 +107,6 @@
     width: 380px;
     height: 630px;
 }
-
 #becherLogo {
     position: absolute;
     top: 5em;
@@ -117,7 +116,6 @@
     height: 300px;
     opacity: 0.3;
 }
-
 #mlZahlLogo {
     position: absolute;
     top: 5em;
@@ -126,7 +124,6 @@
     width: 380px;
     height: 300px;
 }
-
 #myCanvas {
     position: absolute;
     top: 3.6em;
@@ -142,7 +139,6 @@
     );
     clip-path: polygon(100% 0, 97% 79%, 91% 100%, 9% 100%, 4% 79%, 0% 0);
 }
-
 .becherWrapper {
     position: absolute;
     z-index: 0;
@@ -164,7 +160,6 @@
     clip-path: polygon(100% 0, 97% 79%, 91% 100%, 9% 100%, 4% 79%, 0% 0);
     overflow: hidden;
 }
-
 .inner-image {
     opacity: 0;
     object-fit: contain;
@@ -189,40 +184,16 @@
     -webkit-user-select: none;
     touch-action: manipulation;
 }
-
 .custom-btn:hover {
     background-position: right center;
     color: #fff;
     text-decoration: none;
 }
-
 .custom-btn:active {
     transform: scale(1.5);
 }
 
-.seperate {
-    margin-bottom: 15em !important;
-    margin-top: 10em !important;
-}
-
-.bg-container {
-    position: relative;
-}
-.green-background-rotate {
-    position: absolute;
-    top: 1em;
-    left: 1em;
-    width: 90%;
-    height: 90%;
-    bottom: 0;
-    right: 0;
-    background-color: #84cc16;
-    background-image: linear-gradient(315deg, #2f480a 0%, #84cc16 74%);
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
-    transform: rotate(-3deg);
-    z-index: 0;
-}
-
+/* table styling */
 table td,
 table th {
     padding: 0.5rem;
@@ -254,10 +225,6 @@ table td:nth-child(5) {
 }
 .alert-table td:nth-child(2) {
     width: 60%;
-}
-
-.thmcolorgreen {
-    color: rgba(128, 186, 36, 1);
 }
 
 /* sidebar */
@@ -445,6 +412,28 @@ h5 {
         rotate(2deg);
 }
 .content-container {
-  min-height: 840px;
-  width: 90%;
+    min-height: 840px;
+    width: 90%;
+}
+.seperate {
+    margin-bottom: 15em !important;
+    margin-top: 10em !important;
+}
+
+.bg-container {
+    position: relative;
+}
+.green-background-rotate {
+    position: absolute;
+    top: 1em;
+    left: 1em;
+    width: 90%;
+    height: 90%;
+    bottom: 0;
+    right: 0;
+    background-color: #84cc16;
+    background-image: linear-gradient(315deg, #2f480a 0%, #84cc16 74%);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+    transform: rotate(-3deg);
+    z-index: 0;
 }

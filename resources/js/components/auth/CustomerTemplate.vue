@@ -58,7 +58,6 @@ export default {
       // Sends an HTTP GET request to check if the user is logged in
       axios.get(`/checkLoggedInUser`).then((response) => {
         this.isUserLoggedIn = response.data.loggedIn;
-        console.log(this.isUserLoggedIn);
       });
     },
     deletePreset(presetName) {

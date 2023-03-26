@@ -2,6 +2,7 @@
    <v-app>
     <HeaderTemplate />
     <v-card elevation="24" class="content-container ml-auto mr-auto">
+      <!-- The router view integrates the appropriate templates based on the current router route. The routes are defined under router in the index.js -->
       <router-view />
     </v-card>
     <FooterTemplate />

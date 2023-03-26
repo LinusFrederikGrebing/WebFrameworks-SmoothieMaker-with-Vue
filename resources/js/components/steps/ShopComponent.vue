@@ -157,48 +157,36 @@ export default {
     this.getAktLiquid();
     this.getBottleContent();
   },
+  // when navigating from the page, stop the loop animation for the current mixer instance
   beforeUnmount() {
     this.$refs.mixerComponent.clearInterval();
   },
   methods: {
+    // This method calls the showInfo function with the provided ingredientId and ingredintName parameters.
     showAlertInfo(ingredientId, ingredintName) {
       showInfo(ingredientId, ingredintName);
     },
+    // checks if a user is logged in
     checkLoggedInUser() {
       axios.get(`/checkLoggedInUser`).then((response) => {
         this.isUserLoggedIn = response.data.loggedIn;
       });
     },
+    // saves a preset as long as the user is logged in and no preset with the assigned name exists for the specific user
     storeAsPreset() {
       if (this.presetName == "") {
         showAlertError("Du hast kein Presetnamen gewählt!", "");
       } else {
-        axios
-          .post(`/storeAsPreset`, {
-            name: this.presetName,
-          })
-          .then((response) => {
-            console.log(response);
-            if (response.data.auth == false) {
-              showAlertError(
-                "Du must angemeldet sein, um dir spezifische Presets erstellen zu können!",
-                ""
-              );
-            } else {
-              showAlertSuccess(
-                "Das Preset wurde erfolgreich erstellt!",
-                "Auf der Startseite kannst du das Preset auswählen und deine Zusammenstellung aufrufen!"
-              );
-            }
-          })
-          .catch((error) => {
-            showAlertError(
-              "Den Namen für das Preset gibt es bereits!",
-              "Wähle einen anderen Namen, oder lösche das bestehende Preset!"
-            );
-          });
+        axios.post(`/storeAsPreset`, { name: this.presetName })
+        .then((response) => {
+          if (response.data.auth == false) { showAlertError("Du must angemeldet sein, um dir spezifische Presets erstellen zu können!", "") } 
+          else { showAlertSuccess("Das Preset wurde erfolgreich erstellt!", "Auf der Startseite kannst du das Preset auswählen und deine Zusammenstellung aufrufen!") }
+        }).catch(() => {
+            showAlertError("Den Namen für das Preset gibt es bereits!", "Wähle einen anderen Namen, oder lösche das bestehende Preset!");
+        });
       }
     },
+    // retrieves the current selected liquid. It then calls the "liquidAnimation" method and "selectCard" method with the retrieved liquid as the argument.
     getAktLiquid() {
       axios.get("/getCurrentLiquid").then((response) => {
         if (Object.keys(response.data).length === 0) {
@@ -211,18 +199,14 @@ export default {
         });
       });
     },
+    // Redirects the user back to the "choose liquid" page.
     showStep3() {
       this.$router.push({ path: "/chooseLiquid" });
     },
+    // Triggers an animation on the mixer component if there are enough ingredients and liquid selected.
     mixAnimation() {
-      const ingredienteContentSum = this.ingredienteContent.reduce(
-        (sum, ingredient) => sum + ingredient.qty,
-        0
-      );
-      if (
-        ingredienteContentSum == this.bottle.amount &&
-        this.liquidContent.length == 1
-      ) {
+      const ingredienteContentSum = this.ingredienteContent.reduce((sum, ingredient) => sum + ingredient.qty, 0);
+      if ((ingredienteContentSum == this.bottle.amount) && this.liquidContent.length == 1) {
         this.$refs.mixerComponent.mixAnimation(this.bottle.amount);
       } else {
         var errorMessage = "";
@@ -231,61 +215,59 @@ export default {
           errorMessage = `Füge noch ${missingIngredients} Zutaten hinzu, um deine Zusammenstellung abzuschließen. `;
         }
         if (this.liquidContent.length == 0) {
-          errorMessage =
-            errorMessage +
-            "Beachte, dass eine Flüssigkeit ausgewühlt sein muss!";
+          errorMessage = errorMessage + "Beachte, dass eine Flüssigkeit ausgewühlt sein muss!";
         }
         showAlertError("Nicht genug Zutaten ausgewählt!", errorMessage);
       }
     },
+    // sends a delete request to the server to remove all items from the cart, resets the components and clears the session storage for the mixer animtion.
     async removeAllFromCart() {
       await this.removeCartItems();
       this.resetComponents();
       this.clearSessionStorage();
     },
+    // get the content of the cart, sets the response to the cartContent variable and updates the mixer component accordingly.
     getCartContent() {
       axios.get("/cartContent").then((response) => {
         this.cartContent = Object.values(response.data.cart);
-        this.liquidContent = this.cartContent.filter(
-          (cartItem) => cartItem.options.type === "liquid"
-        );
-        this.ingredienteContent = this.cartContent.filter(
-          (cartItem) => cartItem.options.type !== "liquid"
-        );
+        this.liquidContent = this.cartContent.filter((cartItem) => cartItem.options.type === "liquid");
+        this.ingredienteContent = this.cartContent.filter((cartItem) => cartItem.options.type !== "liquid");
         this.$refs.mixerComponent.removeBall();
         this.ingredienteContent.forEach((ingrediente) => {
-          console.log(ingrediente);
-          this.$refs.mixerComponent.setImg(
-            ingrediente.options.image,
-            ingrediente.qty
-          );
+          this.$refs.mixerComponent.setImg(ingrediente.options.image, ingrediente.qty);
         });
         this.getCartTotal();
       });
     },
+    // get the selected bottle
     getBottleContent() {
       axios.get("/getCurrentBottle").then((response) => {
         this.bottle = response.data.bottle;
       });
     },
+    // get the total cost of the cart
     getCartTotal() {
       axios.get("/cartTotal").then((response) => {
         this.cartTotal = response.data.cartTotal;
         this.cartSubTotal = response.data.cartSubTotal;
       });
     },
+     // sends a delete request to the server to remove all items from the cart. After that, the displayed CartContent must be updated and it must be ensured that the mixer in the canvas animation is also emptied.
     async removeCartItems() {
       await axios.get("/removeAll");
       await this.getCartContent();
       this.$refs.mixerComponent.removeAll();
     },
+    // resets the cart count and progress bar components.
     resetComponents() {
       this.$refs.sizeComponent.getCartCount();
       this.$refs.progressComponent.getProgress();
     },
+    // clears the session storage.
     clearSessionStorage() {
       sessionStorage.clear();
     },
+    // remove a specific item from the cart, updates the mixer component and cart content.
     async removeSpecificCart(cart) {
       const response = await axios.post("/deleteCart/" + cart.rowId, {});
       const { wasLiquid, image } = response.data;
@@ -296,6 +278,7 @@ export default {
       await this.getCartContent();
       this.resetComponents();
     },
+    // increase the quantity of a specific cart item by 1, updates the mixer component and cart content.
     async addSpecificOne(cart) {
       const response = await axios.post("/increaseCardQty/" + cart.rowId, {
         amount: 1,
@@ -310,10 +293,9 @@ export default {
         showAlertError("Du hast zu viele Zutaten ausgewählt!", "");
       }
     },
+    // decrease the quantity of a specific cart item by 1. The new cart content only needs to be updated if the qty has dropped below 1, as the cart should then no longer be displayed
     async removeSpecificOne(cart) {
-      const response = await axios.post("/decreaseCardQty/" + cart.rowId, {
-        amount: 1,
-      });
+      const response = await axios.post("/decreaseCardQty/" + cart.rowId, { amount: 1 });
       const { newqty, image } = response.data;
       if (newqty > 0) {
         this.setnewAmount(cart.rowId, -1);
@@ -324,16 +306,17 @@ export default {
       this.$refs.mixerComponent.removeSpecificOne(image);
       this.resetComponents();
     },
+    // the amount displayed is changed in the Dom if the amount is changed asynchronously.
     setnewAmount(rowId, amount) {
       this.ingredienteContent.forEach(function (content) {
-        if (content.rowId == rowId) {
-          content.qty += amount;
-        }
+        if (content.rowId == rowId) { content.qty += amount };
       });
     },
+    // Redirects the user back to the "choose ingredient" page.
     showIngrediente() {
       this.$router.push({ path: "/chooseIngrediente" });
     },
+     // displays a confirmation dialog using the SweetAlert library, and if the user confirms, the whole composition is discarded.
     removeAllAlert() {
       Swal.fire({
         title: "Bist du Dir sicher?",

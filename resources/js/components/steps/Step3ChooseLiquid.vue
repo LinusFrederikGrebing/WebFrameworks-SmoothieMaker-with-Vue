@@ -133,12 +133,14 @@ export default {
     };
   },
   watch: {
+    // as soon as the current liquid list changes, the entergrid function runs again
     liquids() {
       setTimeout(() => {
         this.enterGrid();
-      }, 0);
+      }, 1);
     },
   },
+   // when navigating from the page, stop the loop animation for the current mixer instance
   beforeUnmount() {
     this.$refs.mixerComponent.clearInterval();
   },
@@ -147,27 +149,26 @@ export default {
     this.getActLiquid();
   },
   methods: {
+    // This method calls the showInfo function with the provided ingredientId and ingredintName parameters.
     showAlertInfo(ingredientId, ingredintName) {
       showInfo(ingredientId, ingredintName);
     },
+    // gsap hover-Animations
     hoverEnter(obj) {
-      gsap.to(obj.target, {
-        duration: 0.2,
-        scale: 1.05,
-        opacity: 1,
-      });
+      gsap.to(obj.target, { duration: 0.2, scale: 1.05, opacity: 1 });
     },
     hoverLeave(obj) {
       gsap.to(obj.target, { duration: 0.2, scale: 1, opacity: 1 });
     },
+    // sets the returned list of the liquids to the "liquids" variable.
     getLiquidList() {
       axios.get("/api/liquid").then((response) => {
         this.liquids = response.data.ingredientsList;
       });
     },
+    // retrieves the current selected liquid. It then calls the "liquidAnimation" method and "selectCard" method with the retrieved liquid as the argument.
     getActLiquid() {
       axios.get("/getCurrentLiquid").then((response) => {
-        console.log(response);
         if (Object.keys(response.data).length === 0) {
           return;
         }
@@ -179,45 +180,38 @@ export default {
         });
       });
     },
+    // animates the liquid image by calling the "liquidAnimation" method on the "mixerComponent" component with the "liquid" object's image property as the argument.
     liquidAnimation(liquid) {
       this.$refs.mixerComponent.liquidAnimation(liquid.image);
     },
+    // sets the selected "liquid" object to the "liquid" variable and sets the "selectedCard" variable to the "liquid" object's id property
+    // this will add the css classe selected-card
     selectCard(liquid) {
-      console.log(liquid);
       this.liquidAnimation(liquid);
       this.liquid = liquid;
       this.selectedCard = liquid.id;
     },
+    // navigates to the "/shop" path using the Vue router and adds the current "liquid" object to the cart by calling the "addToCart" method with the "liquid" object and a quantity of 1 as arguments if the "liquid" object is not empty.
     showStep3() {
       this.$router.push({ path: "/shop" });
       if (Object.keys(this.liquid).length !== 0) {
         this.addToCart(this.liquid, 1);
       }
     },
+    // navigates back to the "/chooseIngrediente" path using the Vue router.
     showStep2() {
       this.$router.push({ path: "/chooseIngrediente" });
     },
-    clearMixer() {
-      sessionStorage.setItem("ingredientsArray", JSON.stringify([]));
-    },
+    // adds the liquid to the cart if one was previously selected
     addToCart(ingredient, amount) {
       axios.post(`/addCart/${ingredient.id}`, { amount });
     },
+    // random fade-in Aniamtion
     enterGrid() {
       for (let i = 0; i < this.liquids.length; i++) {
         let element = document.getElementById("liquid-card" + i);
         gsap.fromTo(
-          element,
-          {
-            y: -1000,
-            x: -1000,
-          },
-          {
-            delay: Math.random() / 2,
-            duration: 2,
-            y: 0,
-            x: 0,
-          }
+          element, { y: -1000, x: -1000 }, { delay: Math.random() / 2, duration: 2, y: 0, x: 0 }
         );
       }
     },

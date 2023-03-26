@@ -1,7 +1,5 @@
-export  function showInfo(ingredientId, ingredintName, isAdmin = false) {
-    // Implementierung der showInfo-Methode
+export  function showInfo(ingredientId, ingredintName) {
     axios.get(`/getIngredientInfo/${ingredientId}`, {}).then((response) => {
-        console.log(response);
         var ingredientInfo = response.data.ingredientInfo;
         // Build the table HTML
         if (ingredientInfo == null) {
@@ -9,74 +7,49 @@ export  function showInfo(ingredientId, ingredintName, isAdmin = false) {
                 "<p>Zu dieser Zutat gibt es keine Inhaltstoff-Informationen</p>";
         } else {
             var tableHTML =
-                `
-          <table class="alert-table">
-          <tbody>
-              <tr>
-                  <th class="test"><p>Info</p></th>
-                  <td>` +
-                ingredientInfo.info +
-                `</td>
-              </tr>
-              <tr>
-                  <th  class="test"><p>Energie</p></th>
-                  <td>` +
-                ingredientInfo.energie +
-                `</td>
-              </tr>
-              <tr>
-                  <th  class="test">Fett</th>
-                  <td>` +
-                ingredientInfo.fett +
-                `</td>
-              </tr>
-              <tr>
-                  <td  class="test">davon Fettsäuren:</td>
-                  <td>` +
-                ingredientInfo.fattyacids +
-                `</td>
-              </tr>
-              <tr>
-                  <th class="test">Kohlenhydrate</th>
-                  <td>` +
-                ingredientInfo.carbohydrates +
-                `</td>
-              </tr>
-              <tr>
-                  <td  class="test">davon Fruchtzucker:</td>
-                  <td>` +
-                ingredientInfo.fruitscarbohydrates +
-                `</td>
-              </tr>
-              <tr>
-                  <th  class="test"><p>Protein</p></th>
-                  <td>` +
-                ingredientInfo.protein +
-                `</td>
-              </tr>
-              <tr>
-                  <th  class="test"><p>Salz</p></th>
-                  <td>` +
-                ingredientInfo.salt +
-                `</td>
-              </tr>
-          </tbody>
-          </table>
-        `;
+              `<table class="alert-table">
+                 <tbody>
+                  <tr>
+                    <th class="test"><p>Info</p></th>
+                      <td>` + ingredientInfo.info + `</td>
+                    </tr>
+                    <tr>
+                      <th  class="test"><p>Energie</p></th>
+                      <td>` + ingredientInfo.energie + `</td>
+                    </tr>
+                    <tr>
+                      <th  class="test">Fett</th>
+                      <td>` + ingredientInfo.fett + `</td>
+                    </tr>
+                    <tr>
+                      <td  class="test">davon Fettsäuren:</td>
+                      <td>` + ingredientInfo.fattyacids + `</td>
+                    </tr>
+                    <tr>
+                      <th class="test">Kohlenhydrate</th>
+                      <td>` + ingredientInfo.carbohydrates + `</td>
+                    </tr>
+                    <tr>
+                      <td  class="test">davon Fruchtzucker:</td>
+                      <td>` + ingredientInfo.fruitscarbohydrates + `</td>
+                    </tr>
+                    <tr>
+                      <th  class="test"><p>Protein</p></th>
+                      <td>` + ingredientInfo.protein + `</td>
+                    </tr>
+                    <tr>
+                      <th  class="test"><p>Salz</p></th>
+                      <td>` + ingredientInfo.salt + `</td>
+                    </tr>
+                  </tbody>
+                </table>`;
         }
         // Show the SweetAlert with the table
         Swal.fire({
             title: "Inhaltsstoffe - " + ingredintName,
             html: tableHTML,
             showCloseButton: true,
-            showConfirmButton: isAdmin,
-            confirmButtonColor: "#000000",
-            confirmButtonText: "Bearbeiten!",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                this.$router.push({ path: `/update/IngredientList/${ingredientId}` });
-            }
-        });
+        })
     });
 }
 
@@ -88,23 +61,6 @@ export function showAlertSuccess(title, text) {
     showCancelButton: false,
     confirmButtonColor: "#6D9E1F",
     confirmButtonText: "Okay!",
-  });
-}
-
-export function showBottleSizes() {
-  Swal.fire({
-    title: "Bist du Dir sicher?",
-    text: "Deine komplette Zusammenstellung wird bei Größenänderung unwiederruflich gelöscht!",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#6D9E1F",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Andere Größe wählen!",
-    cancelButtonText: "Abbrechen!",
-  }).then((result) => {
-    if (result.isConfirmed) {
-      window.location.href = "/chooseBottleSize";
-    }
   });
 }
 

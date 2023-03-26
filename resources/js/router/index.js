@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
+/* Component import area */
 import LandingPageTemplate from '../components/LandingPageTemplate'
 import CreateIngrediente from '../components/ingrediente/CreateIngrediente'
 import UpdateIngrediente from '../components/ingrediente/UpdateIngrediente'
@@ -14,7 +15,7 @@ import CustomerTemplate  from '../components/auth/CustomerTemplate'
 import EmployeeTemplate from '../components/auth/EmployeeTemplate'
 import RegisterComponent  from '../components/auth/RegisterComponent'
 
-
+// All Vue routes
 const routes = [
     {
         path: '/',
@@ -28,12 +29,12 @@ const routes = [
     },
     {
         path: '/chooseIngrediente',
-        name: 'step2',
+        name: 'chooseIngrediente',
         component: step2Component
     },
     {
         path: '/chooseLiquid',
-        name: 'step3',
+        name: 'chooseLiquid',
         component: Step3ChooseLiquid
     },
     {
@@ -76,13 +77,13 @@ const routes = [
         path: "/update/ingrediente/:id",
         name: "update-ingrediente",
         component: UpdateIngrediente,
-        props: true // Prop durch Route übergeben
+        props: true 
     },
     {
         path: "/create/IngredientInfo/:id",
         name: "update-ingredientInfo",
         component: CreateIngredientInfo,
-        props: true // Prop durch Route übergeben
+        props: true 
     }
 ];
 

@@ -46,6 +46,7 @@ export default {
       darkerRgbColor: null,
     };
   },
+  // gives a reference to the canvas and starts the canvas animation. If Ingredients exists in the sessionStorage load it
   mounted() {
     this.canvas = document.getElementById("myCanvas");
     this.ctx = this.canvas.getContext("2d");
@@ -58,18 +59,201 @@ export default {
     this.clearLiquid();
   },
   methods: {
-    clearLiquid() {
-      gsap.set("#innerImage, #liquidImage", {
-        opacity: 0,
-        y: "100%",
-        transformOrigin: "bottom center",
-      });
-    },
-    clearInterval() {
-      this.ctx.clearRect(0, 0, this.width, this.height);
+    // for each ingredient added, 3 "balls" are created on whose position the ingredient images are drawn. If an ingredient is removed, the associated 3 balls must also be removed
+    removeSpecificOne(image) {
+      var count = 0;
+      for (var i = 0; i < this.balls.length; i++) {
+        if (this.balls[i].img === "/images/piece/" + image) {
+          this.balls.splice(i, 1);
+          count++;
+          i--;
+          if (count === 3) {
+            break;
+          }
+        }
+      }
       sessionStorage.setItem("ingredientsArray", JSON.stringify(this.balls));
-      clearInterval(this.timer);
     },
+    // if an entire ingredient type is removed, all balls of that ingredient must be removed
+    removeSpecificAll(img) {
+      this.balls = this.balls.filter(function (ball) {
+        return ball.img !== "/images/piece/" + img;
+      });
+      sessionStorage.setItem("ingredientsArray", JSON.stringify(this.balls));
+    },
+     // when all ingredients are removed, all balls must also be removed from the mixer
+    removeBall() {
+      this.balls = [];
+      sessionStorage.setItem("ingredientsArray", JSON.stringify(this.balls));
+    },
+    // when all apreset choosen remove all balls and remove the liquid, all balls must also be removed from the mixer
+    removeAll() {
+      this.clearLiquid();
+      removeBall();
+    },
+    // creates an instance of an ingredient
+    setImg(image, count) {
+      for (let i = 0; i < count * 3; i++) {
+        this.balls.push(
+          new Ball(Math.random() * (265 - 0) + 0, 50, 14, 0.7, 10, image)
+        );
+      }
+      sessionStorage.setItem("ingredientsArray", JSON.stringify(this.balls));
+      this.ingredientsArray = JSON.parse(
+        sessionStorage.getItem("ingredientsArray")
+      );
+    },
+    // draws the list of ingredients in the canvas, calculates its position and checks for collision
+    loop() {
+      //create constants
+      const gravity = 0.7;
+      const density = 1;
+      const drag = 1;
+      //Clear window at the beginning of every frame
+      this.ctx.clearRect(0, 0, this.width, this.height);
+      for (let i = 0; i < this.balls.length; i++) {
+        //physics - calculating the aerodynamic forces to drag
+        let fx =
+          -0.5 *
+            drag *
+            density *
+            this.balls[i].area *
+            this.balls[i].velocity.x *
+            this.balls[i].velocity.x *
+            (this.balls[i].velocity.x / Math.abs(this.balls[i].velocity.x)) ||
+          0;
+        let fy =
+          -0.5 *
+            drag *
+            density *
+            this.balls[i].area *
+            this.balls[i].velocity.y *
+            this.balls[i].velocity.y *
+            (this.balls[i].velocity.y / Math.abs(this.balls[i].velocity.y)) ||
+          0;
+
+        //Calculating the acceleration of the ball
+        let ax = fx / this.balls[i].mass;
+        let ay = this.ag * gravity + fy / this.balls[i].mass;
+
+        //Calculating the ball velocity
+        this.balls[i].velocity.x += ax * this.fps;
+        this.balls[i].velocity.y += ay * this.fps;
+
+        //Calculating the position of the ball
+        this.balls[i].position.x += this.balls[i].velocity.x * this.fps * 100;
+        this.balls[i].position.y += this.balls[i].velocity.y * this.fps * 100;
+
+        const img = new Image();
+        img.src = this.balls[i].img;
+        this.ctx.beginPath();
+        var angleInRadians = this.balls[i].rotation;
+        var ballX = this.balls[i].position.x - this.balls[i].radius * 1.3;
+        var ballY = this.balls[i].position.y - this.balls[i].radius * 1.3;
+        var ballRadius = this.balls[i].radius;
+
+        this.ctx.translate(ballX + ballRadius, ballY + ballRadius);
+
+        this.ctx.rotate(angleInRadians);
+
+        // draws the rotation of mix animation
+        if (this.mixAnimationBool) {
+          this.balls[i].rotation = angleInRadians + 0.5;
+        }
+        if (this.balls[i].velocity.y > 2) {
+          this.balls[i].rotation =
+            angleInRadians - this.balls[i].rotationDegree;
+        }
+
+        this.ctx.drawImage(img, -ballRadius, -ballRadius, 40, 40);
+
+        this.ctx.rotate(-angleInRadians);
+        this.ctx.translate(-(ballX + ballRadius), -(ballY + ballRadius));
+
+        //this.ctx.arc(this.balls[i].position.x, this.balls[i].position.y, this.balls[i].radius, 0, 2 * Math.PI, true);
+        //this.ctx.fill();
+        this.ctx.closePath();
+
+        //Handling the ball collisions
+        this.collisionBall(this.balls[i]);
+        this.collisionWall(this.balls[i]);
+      }
+    },
+    // calculates the ball positions at wall collision
+    collisionWall(ball) {
+      if (ball.position.x > this.width - ball.radius) {
+        ball.velocity.x *= ball.e;
+        ball.position.x = this.width - ball.radius;
+      }
+      if (ball.position.y > this.height - ball.radius) {
+        ball.velocity.y *= ball.e;
+        ball.position.y = this.height - ball.radius;
+      }
+      if (ball.position.x < ball.radius) {
+        ball.velocity.x *= ball.e;
+        ball.position.x = ball.radius;
+      }
+      if (ball.position.y < ball.radius) {
+        ball.velocity.y *= ball.e;
+        ball.position.y = ball.radius;
+      }
+    },
+    // calculates the ball positions in mutual ball collisions
+    collisionBall(b1) {
+      for (let i = 0; i < this.balls.length; i++) {
+        const b2 = this.balls[i];
+        if (b1.position.x != b2.position.x && b1.position.y != b2.position.y) {
+          if (
+            b1.position.x + b1.radius + b2.radius > b2.position.x &&
+            b1.position.x < b2.position.x + b1.radius + b2.radius &&
+            b1.position.y + b1.radius + b2.radius > b2.position.y &&
+            b1.position.y < b2.position.y + b1.radius + b2.radius
+          ) {
+            const distX = b1.position.x - b2.position.x;
+            const distY = b1.position.y - b2.position.y;
+            const d = Math.sqrt(distX * distX + distY * distY);
+
+            //checking circle vs circle collision
+            if (d < b1.radius + b2.radius) {
+              const nx = (b2.position.x - b1.position.x) / d;
+              const ny = (b2.position.y - b1.position.y) / d;
+              const p =
+                (2 *
+                  (b1.velocity.x * nx +
+                    b1.velocity.y * ny -
+                    b2.velocity.x * nx -
+                    b2.velocity.y * ny)) /
+                (b1.mass + b2.mass);
+
+              // calulating the point of collision
+              const colPointX =
+                (b1.position.x * b2.radius + b2.position.x * b1.radius) /
+                (b1.radius + b2.radius);
+              const colPointY =
+                (b1.position.y * b2.radius + b2.position.y * b1.radius) /
+                (b1.radius + b2.radius);
+
+              //stop overlap
+              b1.position.x =
+                colPointX + (b1.radius * (b1.position.x - b2.position.x)) / d;
+              b1.position.y =
+                colPointY + (b1.radius * (b1.position.y - b2.position.y)) / d;
+              b2.position.x =
+                colPointX + (b2.radius * (b2.position.x - b1.position.x)) / d;
+              b2.position.y =
+                colPointY + (b2.radius * (b2.position.y - b1.position.y)) / d;
+
+              //updating velocity 
+              b1.velocity.x -= p * b1.mass * nx;
+              b1.velocity.y -= p * b1.mass * ny;
+              b2.velocity.x += p * b2.mass * nx;
+              b2.velocity.y += p * b2.mass * ny;
+            }
+          }
+        }
+      }
+    },
+    // saves all the main colors of the ingredient images to get the mixed color from it
     getRGBList() {
       this.rgbList = [];
       Promise.all(
@@ -89,6 +273,7 @@ export default {
         this.sumColor = this.getSumColor();
       });
     },
+    // calculates the most common color pixels of the ingredient image
     getMaxColor(img) {
       const canvas = document.createElement("canvas");
       const context = canvas.getContext("2d");
@@ -117,6 +302,32 @@ export default {
       );
       return maxColor;
     },
+    // computes the common color
+    getSumColor() {
+      const numColors = this.rgbList.length;
+      // Initialization of the sum variable for the RGB values
+      let sumR = 0;
+      let sumG = 0;
+      let sumB = 0;
+
+      // Loop to add up all the RGB values of the colors
+      this.rgbList.forEach((color) => {
+        const rgb = color.split(",").map(Number);
+        sumR += rgb[0];
+        sumG += rgb[1];
+        sumB += rgb[2];
+      });
+
+      // Calculation of the average of the RGB values
+      const avgR = Math.round(sumR / numColors);
+      const avgG = Math.round(sumG / numColors);
+      const avgB = Math.round(sumB / numColors);
+
+      // Creation of a common color
+      const commonColor = `rgb(${avgR},${avgG},${avgB})`;
+      return commonColor;
+    },
+    // the juiceAnimation is just a subtle back and forth motion to represent a liquid 
     juice() {
       const tl = gsap.timeline();
       tl.play();
@@ -125,14 +336,18 @@ export default {
         .to("#innerImage", { duration: 1, rotate: 0 })
         .repeat(-1);
     },
+    // the mix animation is triggered as soon as the ingredients are complete and "buy" is clicked. The mixanimation is introduced in the CanvasAnimation by the mixAnimationBool. 
+    // In addition to the juice animation, a mixer shake animation is initiated
     mixAnimation(amount) {
       clearInterval(this.timer);
-      this.timer = setInterval(this.loop, 15);
+      this.timer = setInterval(this.loop, 15);  
 
       this.mixAnimationBool = true;
       const tl = gsap.timeline();
 
       this.juiceAnimation(amount);
+      
+      // mixer shake animation
       tl.play();
       tl.to(".containerMixer", { duration: 0.1, rotate: -1 })
         .to(".containerMixer", { duration: 0.1, rotate: 1 })
@@ -147,38 +362,7 @@ export default {
           );
         });
     },
-    showAlertSuccess(title, text) {
-      Swal.fire({
-        title: title,
-        text: text,
-        icon: "success",
-        showCancelButton: false,
-        confirmButtonColor: "#6D9E1F",
-        confirmButtonText: "Weiter!",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.$router.push({ path: `/` });
-        }
-      });
-    },
-    liquidAnimation(image) {
-      const img = new Image();
-      img.crossOrigin = "Anonymous";
-      img.src = "/images/piece/" + image;
-      img.onload = () => {
-        const svg = document.getElementById("liquidImage");
-        let color = this.getMaxColor(img);
-        const rgb = color.split(",").map(Number);
-        svg.style.backgroundColor =
-          "rgb(" + rgb[0] + "," + rgb[1] + "," + rgb[2] + ")";
-
-        gsap.fromTo(
-          "#liquidImage",
-          { opacity: 0.8, y: "100%", transformOrigin: "bottom center" },
-          { duration: 1, opacity: 0.8, y: "88%", ease: "power3.out" }
-        );
-      };
-    },
+    // the juice animation gets the calculated total color of all ingredients and paints the svg. The SVG is faded into the mixer during animation
     juiceAnimation(amount) {
       const amountInPercent = 87 - 2.6 * amount;
       this.getRGBList();
@@ -205,229 +389,58 @@ export default {
         );
       }, 300);
     },
-    getSumColor() {
-      const numColors = this.rgbList.length;
-      // Initialisierung der Summenvariablen für die RGB-Werte
-      let sumR = 0;
-      let sumG = 0;
-      let sumB = 0;
-
-      // Schleife, um alle RGB-Werte der Farben zu addieren
-      this.rgbList.forEach((color) => {
+    // almost identical to the juice animation, only here the selected liquid is animated
+    liquidAnimation(image) {
+      const img = new Image();
+      img.crossOrigin = "Anonymous";
+      img.src = "/images/piece/" + image;
+      img.onload = () => {
+        const svg = document.getElementById("liquidImage");
+        let color = this.getMaxColor(img);
         const rgb = color.split(",").map(Number);
-        sumR += rgb[0];
-        sumG += rgb[1];
-        sumB += rgb[2];
-      });
+        svg.style.backgroundColor =
+          "rgb(" + rgb[0] + "," + rgb[1] + "," + rgb[2] + ")";
 
-      // Berechnung des Durchschnitts der RGB-Werte
-      const avgR = Math.round(sumR / numColors);
-      const avgG = Math.round(sumG / numColors);
-      const avgB = Math.round(sumB / numColors);
-
-      // Erstellung einer gemeinsamen Farbe
-      const commonColor = `rgb(${avgR},${avgG},${avgB})`;
-      return commonColor;
-    },
-    removeSpecificOne(image) {
-      var count = 0;
-      for (var i = 0; i < this.balls.length; i++) {
-        if (this.balls[i].img === "/images/piece/" + image) {
-          this.balls.splice(i, 1);
-          count++;
-          i--;
-          if (count === 3) {
-            break;
-          }
-        }
-      }
-      sessionStorage.setItem("ingredientsArray", JSON.stringify(this.balls));
-    },
-    removeSpecificAll(img) {
-      this.balls = this.balls.filter(function (ball) {
-        return ball.img !== "/images/piece/" + img;
-      });
-      sessionStorage.setItem("ingredientsArray", JSON.stringify(this.balls));
-    },
-    removeBall() {
-      this.balls = [];
-      sessionStorage.setItem("ingredientsArray", JSON.stringify(this.balls));
-    },
-    removeAll() {
-      this.clearLiquid();
-      this.balls = [];
-      sessionStorage.setItem("ingredientsArray", JSON.stringify(this.balls));
-    },
-    setImg(image, count) {
-      sessionStorage.setItem("ingredientsArray", JSON.stringify(this.balls));
-      this.balls = JSON.parse(sessionStorage.getItem("ingredientsArray"));
-
-      for (let i = 0; i < count * 3; i++) {
-        this.balls.push(
-          new Ball(Math.random() * (265 - 0) + 0, 50, 14, 0.7, 10, image)
+        gsap.fromTo(
+          "#liquidImage",
+          { opacity: 0.8, y: "100%", transformOrigin: "bottom center" },
+          { duration: 1, opacity: 0.8, y: "88%", ease: "power3.out" }
         );
-      }
-
-      sessionStorage.setItem("ingredientsArray", JSON.stringify(this.balls));
-      this.ingredientsArray = JSON.parse(
-        sessionStorage.getItem("ingredientsArray")
-      );
+      };
     },
-    loop() {
-      //create constants
-      const gravity = 0.7;
-      const density = 1;
-      const drag = 1;
-      //Clear window at the beginning of every frame
+    // reset the liquidAnimation
+    clearLiquid() {
+      gsap.set("#innerImage, #liquidImage", {
+        opacity: 0,
+        y: "100%",
+        transformOrigin: "bottom center",
+      });
+    },
+    // since, in contrast to the blade frontend, a new instance is created by the mixer each time the component is integrated, we have to make sure that the animation is stopped on unmount
+    clearInterval() {
       this.ctx.clearRect(0, 0, this.width, this.height);
-      for (let i = 0; i < this.balls.length; i++) {
-        //physics - calculating the aerodynamic forces to drag
-        // -0.5 * Cd * A * v^2 * rho
-        let fx =
-          -0.5 *
-            drag *
-            density *
-            this.balls[i].area *
-            this.balls[i].velocity.x *
-            this.balls[i].velocity.x *
-            (this.balls[i].velocity.x / Math.abs(this.balls[i].velocity.x)) ||
-          0;
-        let fy =
-          -0.5 *
-            drag *
-            density *
-            this.balls[i].area *
-            this.balls[i].velocity.y *
-            this.balls[i].velocity.y *
-            (this.balls[i].velocity.y / Math.abs(this.balls[i].velocity.y)) ||
-          0;
-
-        //Calculating the acceleration of the ball
-        //F = ma or a = F/m
-        let ax = fx / this.balls[i].mass;
-        let ay = this.ag * gravity + fy / this.balls[i].mass;
-
-        //Calculating the ball velocity
-        this.balls[i].velocity.x += ax * this.fps;
-        this.balls[i].velocity.y += ay * this.fps;
-
-        //Calculating the position of the ball
-        this.balls[i].position.x += this.balls[i].velocity.x * this.fps * 100;
-        this.balls[i].position.y += this.balls[i].velocity.y * this.fps * 100;
-
-        const img = new Image();
-        //Rendering the ball
-        img.src = this.balls[i].img;
-        this.ctx.beginPath();
-
-        var angleInRadians = this.balls[i].rotation;
-        var ballX = this.balls[i].position.x - this.balls[i].radius * 1.3;
-        var ballY = this.balls[i].position.y - this.balls[i].radius * 1.3;
-        var ballRadius = this.balls[i].radius;
-
-        this.ctx.translate(ballX + ballRadius, ballY + ballRadius);
-
-        this.ctx.rotate(angleInRadians);
-
-        if (this.mixAnimationBool) {
-          this.balls[i].rotation = angleInRadians + 0.5;
-        }
-        if (this.balls[i].velocity.y > 2) {
-          this.balls[i].rotation =
-            angleInRadians - this.balls[i].rotationDegree;
-        }
-
-        this.ctx.drawImage(img, -ballRadius, -ballRadius, 40, 40);
-
-        this.ctx.rotate(-angleInRadians);
-        this.ctx.translate(-(ballX + ballRadius), -(ballY + ballRadius));
-
-        //this.ctx.arc(this.balls[i].position.x, this.balls[i].position.y, this.balls[i].radius, 0, 2 * Math.PI, true);
-        //this.ctx.fill();
-        this.ctx.closePath();
-
-        //Handling the ball collisions
-
-        this.collisionBall(this.balls[i]);
-        this.collisionWall(this.balls[i]);
-      }
+      sessionStorage.setItem("ingredientsArray", JSON.stringify(this.balls));
+      clearInterval(this.timer);    // this is not an endless loop. Custom methods are defined in vue with this. called.
     },
-    collisionWall(ball) {
-      if (ball.position.x > this.width - ball.radius) {
-        ball.velocity.x *= ball.e;
-        ball.position.x = this.width - ball.radius;
-      }
-      if (ball.position.y > this.height - ball.radius) {
-        ball.velocity.y *= ball.e;
-        ball.position.y = this.height - ball.radius;
-      }
-      if (ball.position.x < ball.radius) {
-        ball.velocity.x *= ball.e;
-        ball.position.x = ball.radius;
-      }
-      if (ball.position.y < ball.radius) {
-        ball.velocity.y *= ball.e;
-        ball.position.y = ball.radius;
-      }
-    },
-    collisionBall(b1) {
-      for (let i = 0; i < this.balls.length; i++) {
-        const b2 = this.balls[i];
-        if (b1.position.x != b2.position.x && b1.position.y != b2.position.y) {
-          //quick check for potential collisions using AABBs
-          if (
-            b1.position.x + b1.radius + b2.radius > b2.position.x &&
-            b1.position.x < b2.position.x + b1.radius + b2.radius &&
-            b1.position.y + b1.radius + b2.radius > b2.position.y &&
-            b1.position.y < b2.position.y + b1.radius + b2.radius
-          ) {
-            //pythagoras
-            const distX = b1.position.x - b2.position.x;
-            const distY = b1.position.y - b2.position.y;
-            const d = Math.sqrt(distX * distX + distY * distY);
-
-            //checking circle vs circle collision
-            if (d < b1.radius + b2.radius) {
-              const nx = (b2.position.x - b1.position.x) / d;
-              const ny = (b2.position.y - b1.position.y) / d;
-              const p =
-                (2 *
-                  (b1.velocity.x * nx +
-                    b1.velocity.y * ny -
-                    b2.velocity.x * nx -
-                    b2.velocity.y * ny)) /
-                (b1.mass + b2.mass);
-
-              // calulating the point of collision
-              const colPointX =
-                (b1.position.x * b2.radius + b2.position.x * b1.radius) /
-                (b1.radius + b2.radius);
-              const colPointY =
-                (b1.position.y * b2.radius + b2.position.y * b1.radius) /
-                (b1.radius + b2.radius);
-
-              //stoping overlap
-              b1.position.x =
-                colPointX + (b1.radius * (b1.position.x - b2.position.x)) / d;
-              b1.position.y =
-                colPointY + (b1.radius * (b1.position.y - b2.position.y)) / d;
-              b2.position.x =
-                colPointX + (b2.radius * (b2.position.x - b1.position.x)) / d;
-              b2.position.y =
-                colPointY + (b2.radius * (b2.position.y - b1.position.y)) / d;
-
-              //updating velocity to reflect collision
-              b1.velocity.x -= p * b1.mass * nx;
-              b1.velocity.y -= p * b1.mass * ny;
-              b2.velocity.x += p * b2.mass * nx;
-              b2.velocity.y += p * b2.mass * ny;
-            }
-          }
+    // after finishing the mixanimation show a success popup
+    showAlertSuccess(title, text) {
+      Swal.fire({
+        title: title,
+        text: text,
+        icon: "success",
+        showCancelButton: false,
+        confirmButtonColor: "#6D9E1F",
+        confirmButtonText: "Weiter!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.$router.push({ path: `/` });
         }
-      }
+      });
     },
   },
 };
+
+// object-instance representing an ingredient
 class Ball {
   constructor(x, y, radius, e, mass, image) {
     this.position = { x: x, y: y }; //m

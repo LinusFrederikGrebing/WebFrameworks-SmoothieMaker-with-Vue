@@ -74,7 +74,6 @@ export default {
     };
   },
   mounted() {
-    console.log(this.id);
     this.getIngrediente(this.id);
   },
   methods: {

@@ -17,7 +17,6 @@
 
 <script>
 import axios from "axios";
-import { showBottleSizes } from '../steps/alerts'
 
 export default {
   name: "SizeComponent",
@@ -32,9 +31,24 @@ export default {
     this.getCartCount();
   },
   methods: {
+    // since choosing a different BottleSize will delete the composition, make sure the user is aware of this
     showBottleSizes() {
-      showBottleSizes();
+      Swal.fire({
+        title: "Bist du Dir sicher?",
+        text: "Deine komplette Zusammenstellung wird bei Größenänderung unwiederruflich gelöscht!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#6D9E1F",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Andere Größe wählen!",
+        cancelButtonText: "Abbrechen!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.$router.push({ path: "/chooseBottleSize" });
+        }
+      });
     },
+    // fetches the current count status from the database and updates it in the DOM
     getCartCount() {
       axios.get("/cart/count").then((response) => {
         this.cartCount = response.data.cartCount;

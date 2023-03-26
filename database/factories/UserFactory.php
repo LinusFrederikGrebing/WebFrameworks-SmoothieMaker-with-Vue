@@ -15,6 +15,7 @@ class UserFactory extends Factory
      */
     public function definition()
     {
+        // "faker" creates test data in name or email format. This template can be used to create instances of the type User
         return [
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),

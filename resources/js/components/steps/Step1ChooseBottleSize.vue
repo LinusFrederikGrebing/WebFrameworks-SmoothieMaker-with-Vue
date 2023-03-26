@@ -68,28 +68,32 @@ export default {
       bottles: [],
     };
   },
-  async mounted() {
-    try {
-      const response = await axios.get("/bottleSize");
-      this.bottles = response.data.bottles;
-      this.clearMixer();
-      setTimeout(() => {
-        this.enterGrid();
-      }, 0);
-    } catch (error) {
-      console.log(error);
-    }
+  mounted() {
+    this.getBottles();
   },
   methods: {
+    // This method uses Axios to fetch bottle data from a server endpoint ("/bottleSize"). Upon a successful response, it sets the fetched bottle data to the "bottles" data property of the component, 
+    // clears a session storage variable using the "clearMixer" method, and calls the "enterGrid" method to animate the display of the bottle cards on the page.
+    async getBottles() {
+      try {
+        const response = await axios.get("/bottleSize");
+        this.bottles = response.data.bottles;
+        this.clearMixer();
+        setTimeout(() => {
+          this.enterGrid();
+        }, 0);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    // gsap hover-Animations
     hoverEnter(obj) {
-      gsap.to(obj.target, {
-        duration: 0.2,
-        scale: 1.05,
-      });
+      gsap.to(obj.target, { duration: 0.2, scale: 1.05 });
     },
     hoverLeave(obj) {
       gsap.to(obj.target, { duration: 0.2, scale: 1 });
     },
+    // loops through all bottles and applies a GSAP animation to each bottle card element to move it from either the left or right side of the page to the center
     enterGrid() {
       for (let i = 1; i <= this.bottles.length; i++) {
         let element = document.getElementById("bottle-card" + i);
@@ -97,21 +101,14 @@ export default {
         if (i % 2 == 0) {
           start = -1400;
         }
-        gsap.fromTo(
-          element,
-          {
-            x: start,
-          },
-          {
-            duration: 1,
-            x: 0,
-          }
-        );
+        gsap.fromTo(element, { x: start }, { duration: 1, x: 0 });
       }
     },
+    // clears the ingredients stored for the mixer in sessionStorage
     clearMixer() {
       sessionStorage.setItem("ingredientsArray", JSON.stringify([]));
     },
+    // navigates to the next side after set the actual bottle size
     async storeBottle(bottle) {
       try {
         await axios.get("/schritt1/" + bottle.id);
