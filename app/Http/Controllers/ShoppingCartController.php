@@ -40,7 +40,7 @@ class ShoppingCartController extends Controller
         return response()->json(['stored' => true, 'image' => $ingrediente->image]);
     }
    
-     // Delete an item from the cart
+    // Delete an item from the cart
     public function deleteCart(Request $request, $ingredienteID)
     {
         // Get the item from the cart using ID
@@ -70,7 +70,7 @@ class ShoppingCartController extends Controller
         return response()->json(['stored' => false]);
     }
 
-     // Decrease the quantity of an item in the cart
+    // Decrease the quantity of an item in the cart
     public function decreaseCardQty(Request $request, $ingredienteID)
     {
         $cart_item =  Cart::get($ingredienteID);

@@ -31,6 +31,9 @@ class IngredienteController extends Controller
     // create a new ingredient instance and add the information from the request
     public function store(Request $request)
     {
+        $request->validate([
+            'image' => ['required', 'image'],
+        ]);
         $ingrediente = new Ingrediente;
         $this->storeOrUpdateIngrediente($request, $ingrediente);
         return response()->json(['ingredienteId' => $ingrediente->id]);
@@ -38,6 +41,9 @@ class IngredienteController extends Controller
     // gets a reference to the ingredient instance and adds the information from the request
     public function updateIngrediente(Request $request, $ingredienteID)
     {
+        $request->validate([
+            'image' => ['image'],
+        ]);
         $ingrediente = Ingrediente::find($ingredienteID);
         $this->storeOrUpdateIngrediente($request, $ingrediente);
     }

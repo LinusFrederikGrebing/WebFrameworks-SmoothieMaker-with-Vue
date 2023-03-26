@@ -19,13 +19,13 @@ class UserSeed extends Seeder
         User::factory()->create([
             'name' => 'Admin',
             'email' => 'Admin@admin.com',
-            'password' => bcrypt('password'), // str_random(10)
+            'password' => bcrypt('password'),
             'type' =>  UserRole::MITARBEITER,
         ]);
         User::factory()->create([
             'name' => 'User',
             'email' => 'User@user.com',
-            'password' => bcrypt('password'), // str_random(10)
+            'password' => bcrypt('password'),
             'type' =>  UserRole::KUNDE,
         ]);
     }

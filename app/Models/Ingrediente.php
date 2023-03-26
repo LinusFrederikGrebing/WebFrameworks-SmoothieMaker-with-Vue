@@ -14,7 +14,7 @@ class Ingrediente extends Model
      // no database entries such as created_at or updated_at are required
     public $timestamps = false;
 
-    // Define a many-to-many relationship between the current model and Preset model,
+    // Define a many-to-many relationship between the current model and Preset model
     public function presets()
     {
         // using the intermediate table 'preset_ingredients'.

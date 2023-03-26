@@ -15,6 +15,12 @@ class PresetSeed extends Seeder
      */
     public function run()
     {
+        /*
+        * This method creates three presets for smoothie recipes, with specific names and sets of ingredients.
+        * Each call to $this->createPreset() creates a new Preset model in the database with the given parameters.
+        * The first parameter is the name of the recipe, the second is the ID of the Bottle model associated with it,
+        * and the third is an array of ingredient IDs and quantities for the recipe.
+        */
         $this->createPreset(
             'Avocado-Schoko-Smoothie', 2,
             [
@@ -49,12 +55,13 @@ class PresetSeed extends Seeder
 
     private function createPreset(string $name, int $bottle_id, array $ingredients)
     {
+        // creates a new Preset model in the database with the given name, Bottle ID, and user ID (null).
         $preset = Preset::create([
             'name' => $name,
             'user_id' => null,
             'bottle_id' => $bottle_id,
         ]);
-
+        // This loop attaches ingredients to the newly-created Preset model.
         foreach ($ingredients as $ingredient) {
             $preset->ingredients()->attach(
                 Ingrediente::find($ingredient['id']),

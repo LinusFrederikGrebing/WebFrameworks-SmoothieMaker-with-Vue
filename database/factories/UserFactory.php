@@ -25,7 +25,7 @@ class UserFactory extends Factory
             'type' =>  UserRole::KUNDE,
         ];
     }
-
+ 
     /**
      * Indicate that the model's email address should be unverified.
      *
