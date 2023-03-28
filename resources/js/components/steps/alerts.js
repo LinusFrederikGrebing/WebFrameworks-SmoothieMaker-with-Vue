@@ -49,6 +49,7 @@ export  function showInfo(ingredientId, ingredintName) {
             title: "Inhaltsstoffe - " + ingredintName,
             html: tableHTML,
             showCloseButton: true,
+            showConfirmButton: false
         })
     });
 }
