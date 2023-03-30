@@ -114,7 +114,7 @@ export default {
     async storeBottle(bottle) {
       try {
         await axios.get("/schritt1/" + bottle.id);
-        this.$router.push({ path: "/chooseIngrediente" });
+        this.$router.push({ path: "/chooseIngredient" });
       } catch (error) {
         console.error(error);
       }

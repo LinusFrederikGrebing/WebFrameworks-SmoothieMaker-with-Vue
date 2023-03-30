@@ -7,9 +7,9 @@
           <v-card elevation="10" max-width="800" min-height="550" class="mx-auto rounded-box">
             <v-card-text class="w-75 mx-auto">
               <h2 class="font-weight-bold mt-8">
-                Informationen zur Zutat {{ ingrediente.name }} hinzufügen:
+                Informationen zur Zutat {{ ingredient.name }} hinzufügen:
               </h2>
-              <v-form @submit.prevent="updateIngrediente" enctype="multipart/form-data">
+              <v-form @submit.prevent="updateIngredient" enctype="multipart/form-data">
                 <v-row>
                   <v-col cols="12" lg="6" sm="12">
                     <v-text-field class="enrollField" id="info" label="Info" v-model="ingredientInfo.info" required />
@@ -69,7 +69,7 @@ export default {
   props: ["id"],
   data() {
     return {
-      ingrediente: {},
+      ingredient: {},
       ingredientInfo: {
         info: "",
         energie: "",
@@ -84,7 +84,7 @@ export default {
     };
   },
   mounted() {
-    this.getIngrediente(this.id);
+    this.getIngredient(this.id);
   },
   methods: {
     // redirect back to the employeeTemplate
@@ -92,13 +92,13 @@ export default {
       this.$router.push("/employeeTemplate");
     },
     // retrieves ingredient data from the server.
-    getIngrediente() {
+    getIngredient() {
       axios.get(`/ingredientinfo/getIngredient/${this.id}`, {}).then((response) => {
-        this.ingrediente = response.data.ingrediente;
+        this.ingredient = response.data.ingredient;
       });
     },
     // sends a post request with ingredient information to update the ingredient and redirects to the employeeTemplate page upon success.
-    updateIngrediente() {
+    updateIngredient() {
       const config = {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -114,7 +114,7 @@ export default {
       data.append("protein", this.ingredientInfo.protein);
       data.append("salt", this.ingredientInfo.salt);
       axios
-        .post(`/ingredienteInfo/create/${this.id}`, data, config)
+        .post(`/ingredientInfo/create/${this.id}`, data, config)
         .then(() => {
           showAlertSuccess("Die Zutat-Informationen wurden erfolgreich aktualisiert!", "");
           this.$router.push({ path: "/employeeTemplate" });

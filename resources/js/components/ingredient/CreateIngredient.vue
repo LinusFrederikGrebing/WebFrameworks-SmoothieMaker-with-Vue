@@ -7,7 +7,7 @@
           <v-card elevation="10" max-width="800" min-height="550" class="mx-auto rounded-box">
             <v-card-text class="w-75 mx-auto">
               <h2 class="font-weight-bold mb-12 mt-16">Zutat hinzufügen:</h2>
-              <v-form @submit.prevent="storeIngrediente">
+              <v-form @submit.prevent="storeIngredient">
                 <v-text-field v-model="form.name" label="Name:" required :rules="nameRules"></v-text-field>
                 <v-text-field v-model="form.price" label="Einzelpreis:" type="number" step="0.01" required
                   :rules="priceRules"></v-text-field>
@@ -31,7 +31,7 @@
 import axios from "axios";
 import { showAlertError } from '../steps/alerts'
 export default {
-  name: "CreateIngrediente",
+  name: "CreateIngredient",
   data() {
     return {
       typeOptions: ["fruits", "vegetables", "liquid"],
@@ -87,7 +87,7 @@ export default {
       });
     },
     // sends a post request to the server with data entered in the form, including the image file selected by the user, and displays a success or error message.
-    storeIngrediente(e) {
+    storeIngredient(e) {
       if (this.file == null) {
         showAlertError("Du musst eine Bilddatei ausgewählt haben!");
         return;
@@ -98,8 +98,8 @@ export default {
       data.append("name", this.form.name);
       data.append("price", this.form.price);
       data.append("type", this.form.type);
-      axios.post("/api/create/ingrediente", data).then((response) => {
-        this.ingredientId = response.data.ingrediente;
+      axios.post("/api/create/ingredient", data).then((response) => {
+        this.ingredientId = response.data.ingredient;
         this.showAlertSuccess("Die Zuatat wurde erfolgreich hinzugefügt!", "Klicke auf Informationen hinzufügen, um die Inhaltsstoffe der Zutat einzutragen!");
       });
     },

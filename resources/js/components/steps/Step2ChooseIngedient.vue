@@ -27,7 +27,7 @@
       <v-col cols="12" md="8" class="mb-1 mt-1">
         <v-row class="item-list">
           <v-col
-            v-for="(ingrediente, index) in ingredients"
+            v-for="(ingredient, index) in ingredients"
             :key="index"
             cols="12"
             sm="6"
@@ -37,9 +37,9 @@
             <v-card
               @mouseenter="hoverEnter($event)"
               @mouseleave="hoverLeave($event)"
-              :id="'ingrediente-card' + index"
+              :id="'ingredient-card' + index"
               elevation="5"
-              class="mx-auto ingrediente-item"
+              class="mx-auto ingredient-item"
               max-width="400"
             >
               <div>
@@ -47,20 +47,20 @@
                   class="white--text align-end ml-auto mr-auto mt-1 mb-1"
                   height="60px"
                   width="60px"
-                  :src="'/images/piece/' + ingrediente.image"
+                  :src="'/images/piece/' + ingredient.image"
                 >
                 </v-img>
                 <button
                   style="position: absolute; top: 0; right: 0; opacity: 0.4;"
-                  @click="showAlertInfo(ingrediente.id, ingrediente.name)"
+                  @click="showAlertInfo(ingredient.id, ingredient.name)"
                 >
                   <span class="material-symbols-outlined"> info </span>
                 </button>
                 <div class="text-center">
                   <p class="font-weight-bold ml-1 mr-1">
-                    {{ ingrediente.name }}:
+                    {{ ingredient.name }}:
                   </p>
-                  <p>{{ ingrediente.price }}€ / 50g</p>
+                  <p>{{ ingredient.price }}€ / 50g</p>
                 </div>
 
                 <v-form enctype="multipart/form-data" method="post">
@@ -84,7 +84,7 @@
                       class="white--text bg-white w-40px"
                       type="submit"
                       @click.prevent="
-                        addToCart(ingrediente, selectedAmounts[index])
+                        addToCart(ingredient, selectedAmounts[index])
                       "
                     >
                       <i style="color: black" class="material-icons"
@@ -136,7 +136,7 @@ import SizeComponent from "../layouts/SizeComponent.vue";
 import { showInfo, showAlertError } from '../steps/alerts'
 
 export default {
-  name: "Step2ChooseIngrediente",
+  name: "Step2ChooseIngredient",
   components: {
     MixerComponent,
     ProgressbarComponent,
@@ -211,7 +211,7 @@ export default {
     // random fade-in Aniamtion
     enterGrid() {
       for (let i = 0; i < this.ingredients.length; i++) {
-        let element = document.getElementById("ingrediente-card" + i);
+        let element = document.getElementById("ingredient-card" + i);
         gsap.fromTo(
           element, { y: -1000, x: -1000 }, { delay: Math.random() / 2, duration: 2, y: 0, x: 0 }
         );

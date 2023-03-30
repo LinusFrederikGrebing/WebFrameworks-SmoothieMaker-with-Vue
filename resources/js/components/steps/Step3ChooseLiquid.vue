@@ -39,7 +39,7 @@
               @mouseleave="hoverLeave($event)"
               :class="{ 'selected-card': liquid.id === selectedCard }"
               elevation="5"
-              class="mx-auto ingrediente-item"
+              class="mx-auto ingredient-item"
               max-width="600"
               :id="'liquid-card' + index"
             >
@@ -198,9 +198,9 @@ export default {
         this.addToCart(this.liquid, 1);
       }
     },
-    // navigates back to the "/chooseIngrediente" path using the Vue router.
+    // navigates back to the "/chooseIngredient" path using the Vue router.
     showStep2() {
-      this.$router.push({ path: "/chooseIngrediente" });
+      this.$router.push({ path: "/chooseIngredient" });
     },
     // adds the liquid to the cart if one was previously selected
     addToCart(ingredient, amount) {

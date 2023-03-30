@@ -22,7 +22,7 @@
     <v-row class="mt-2">
       <v-col class="mb-2" cols="12">
         <div class="mx-auto d-flex flex-wrap">
-          <button color="success" class="mx-auto flex-grow-1 green-bg custom-btn" @click="showIngrediente()">
+          <button color="success" class="mx-auto flex-grow-1 green-bg custom-btn" @click="showIngredient()">
             Weitere Zutaten hinzufügen
           </button>
           <button color="error" class="mx-auto flex-grow-1 red-bg custom-btn" @click="removeAllAlert()">
@@ -46,7 +46,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(cart, cartIndex) in ingredienteContent" :key="cartIndex">
+                  <tr v-for="(cart, cartIndex) in ingredientContent" :key="cartIndex">
                     <td>
                       <img width="75" height="75" :src="'/images/piece/' + cart.options.image" class="mt-2 mb-2" />
                     </td>
@@ -145,7 +145,7 @@ export default {
       cartContent: [],
       cartTotal: null,
       cartSubTotal: null,
-      ingredienteContent: [],
+      ingredientContent: [],
       liquidContent: [],
       liquid: null,
       bottle: null,
@@ -205,13 +205,13 @@ export default {
     },
     // Triggers an animation on the mixer component if there are enough ingredients and liquid selected.
     mixAnimation() {
-      const ingredienteContentSum = this.ingredienteContent.reduce((sum, ingredient) => sum + ingredient.qty, 0);
-      if ((ingredienteContentSum == this.bottle.amount) && this.liquidContent.length == 1) {
+      const ingredientContentSum = this.ingredientContent.reduce((sum, ingredient) => sum + ingredient.qty, 0);
+      if ((ingredientContentSum == this.bottle.amount) && this.liquidContent.length == 1) {
         this.$refs.mixerComponent.mixAnimation(this.bottle.amount);
       } else {
         var errorMessage = "";
-        if (ingredienteContentSum !== this.bottle.amount) {
-          const missingIngredients = this.bottle.amount - ingredienteContentSum;
+        if (ingredientContentSum !== this.bottle.amount) {
+          const missingIngredients = this.bottle.amount - ingredientContentSum;
           errorMessage = `Füge noch ${missingIngredients} Zutaten hinzu, um deine Zusammenstellung abzuschließen. `;
         }
         if (this.liquidContent.length == 0) {
@@ -231,10 +231,10 @@ export default {
       axios.get("/cartContent").then((response) => {
         this.cartContent = Object.values(response.data.cart);
         this.liquidContent = this.cartContent.filter((cartItem) => cartItem.options.type === "liquid");
-        this.ingredienteContent = this.cartContent.filter((cartItem) => cartItem.options.type !== "liquid");
+        this.ingredientContent = this.cartContent.filter((cartItem) => cartItem.options.type !== "liquid");
         this.$refs.mixerComponent.removeBall();
-        this.ingredienteContent.forEach((ingrediente) => {
-          this.$refs.mixerComponent.setImg(ingrediente.options.image, ingrediente.qty);
+        this.ingredientContent.forEach((ingredient) => {
+          this.$refs.mixerComponent.setImg(ingredient.options.image, ingredient.qty);
         });
         this.getCartTotal();
       });
@@ -308,13 +308,13 @@ export default {
     },
     // the amount displayed is changed in the Dom if the amount is changed asynchronously.
     setnewAmount(rowId, amount) {
-      this.ingredienteContent.forEach(function (content) {
+      this.ingredientContent.forEach(function (content) {
         if (content.rowId == rowId) { content.qty += amount };
       });
     },
     // Redirects the user back to the "choose ingredient" page.
-    showIngrediente() {
-      this.$router.push({ path: "/chooseIngrediente" });
+    showIngredient() {
+      this.$router.push({ path: "/chooseIngredient" });
     },
      // displays a confirmation dialog using the SweetAlert library, and if the user confirms, the whole composition is discarded.
     removeAllAlert() {

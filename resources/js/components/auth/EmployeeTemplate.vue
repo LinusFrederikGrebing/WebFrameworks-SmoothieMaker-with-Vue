@@ -27,28 +27,28 @@
             </div>
           </v-card>
         </v-col>
-        <v-col v-for="(ingrediente, index) in ingredients" :key="index" cols="12" sm="6" md="3" lg="2">
-          <v-card @mouseenter="hoverEnter($event)" @mouseleave="hoverLeave($event)" :id="'ingrediente-card' + index"
-            elevation="5" class="mx-auto ingrediente-item" max-width="400">
+        <v-col v-for="(ingredient, index) in ingredients" :key="index" cols="12" sm="6" md="3" lg="2">
+          <v-card @mouseenter="hoverEnter($event)" @mouseleave="hoverLeave($event)" :id="'ingredient-card' + index"
+            elevation="5" class="mx-auto ingredient-item" max-width="400">
             <div>
               <v-img class="white--text align-end ml-auto mr-auto mt-2 mb-1" height="60px" width="60px"
-                :src="'/images/piece/' + ingrediente.image">
+                :src="'/images/piece/' + ingredient.image">
               </v-img>
               <button style="position: absolute; top: 0; right: 0; opacity: 0.4"
-                @click="showAlertInfo(ingrediente.id, ingrediente.name)">
+                @click="showAlertInfo(ingredient.id, ingredient.name)">
                 <span class="material-symbols-outlined"> info </span>
               </button>
               <div class="text-center mb-3">
                 <p class="font-weight-bold ml-1 mr-1">
-                  {{ ingrediente.name }}:
+                  {{ ingredient.name }}:
                 </p>
-                <p>{{ ingrediente.price }}€ / 50g</p>
+                <p>{{ ingredient.price }}€ / 50g</p>
               </div>
               <div class="mx-auto d-flex flex-wrap">
-                <v-btn class="flex-grow-1" @click="changeRouteUpdate(ingrediente)">
+                <v-btn class="flex-grow-1" @click="changeRouteUpdate(ingredient)">
                   <span class="material-symbols-outlined">edit</span>
                 </v-btn>
-                <v-btn width="45" class="flex-grow-1" @click="deleteIngrediente(ingrediente.id)">
+                <v-btn width="45" class="flex-grow-1" @click="deleteIngredient(ingredient.id)">
                   <span class="material-symbols-outlined">delete</span>
                 </v-btn>
               </div>
@@ -97,7 +97,7 @@ export default {
   },
   mounted() {
     this.getIngredientsList().then(() => {
-      this.getActiveIngredienteList();
+      this.getActiveIngredientList();
     });
   },
   methods: {
@@ -186,8 +186,8 @@ export default {
     changeRouteCreate() {
       this.$router.push({ path: "/create" });
     },
-    changeRouteUpdate(ingrediente) {
-      this.$router.push({ path: `/update/ingrediente/${ingrediente.id}` });
+    changeRouteUpdate(ingredient) {
+      this.$router.push({ path: `/update/ingredient/${ingredient.id}` });
     },
     // Changes the active category and updates the ingredients list displayed on the page.
     handleCategoryClick(category) {
@@ -199,14 +199,14 @@ export default {
       this.categories.forEach((c, i) => (c.active = c === category));
     },
     // Deletes an ingredient and then updates the ingredient list displayed on the page.
-    deleteIngrediente(id) {
-      axios.post(`api/delete/ingrediente/${id}`);
+    deleteIngredient(id) {
+      axios.post(`api/delete/ingredient/${id}`);
       this.getIngredientsList().then(() => {
-        this.getActiveIngredienteList();
+        this.getActiveIngredientList();
       });
     },
     // Retrieves the currently active ingredient list and updates the displayed list accordingly.
-    getActiveIngredienteList() {
+    getActiveIngredientList() {
       for (let i = 0; i < this.categories.length; i++) {
         if (this.categories[i].active) {
           this.ingredients = this[categories[i].list];

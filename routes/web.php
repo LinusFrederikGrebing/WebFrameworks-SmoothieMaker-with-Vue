@@ -25,7 +25,7 @@ Route::post('/decreaseCardQty/{carditem}', [App\Http\Controllers\ShoppingCartCon
 Route::get('/cart/count', [App\Http\Controllers\ShoppingCartController::class, 'getCurrentCartCount']);
 Route::get('/cartContent', [App\Http\Controllers\ShoppingCartController::class, 'getCurrentCartContent']);
 Route::get('/cartTotal', [App\Http\Controllers\ShoppingCartController::class, 'getCurrentCartTotal']);
-Route::post('/addCart/{ingrediente}', [App\Http\Controllers\ShoppingCartController::class, 'storeIngredienteToCart']);
+Route::post('/addCart/{ingredient}', [App\Http\Controllers\ShoppingCartController::class, 'storeIngredientToCart']);
 Route::get('/removeAll', [App\Http\Controllers\ShoppingCartController::class, 'removeAllFromCartList']);
 Route::get('/getCurrentLiquid', [App\Http\Controllers\ShoppingCartController::class, 'getCurrentLiquid']);
 Route::get('/getCurrentBottle', [App\Http\Controllers\ShoppingCartController::class, 'getCurrentBottle']);
@@ -35,7 +35,7 @@ Route::get('/checkPreset/{presetName}', [App\Http\Controllers\PresetController::
 Route::post('/storeAsPreset', [App\Http\Controllers\PresetController::class, 'storeAsPreset'])->name('storeAsPreset');
 Route::get('/storeExistingPreset/{presetName}', [App\Http\Controllers\PresetController::class, 'storeExistingPreset'])->name('storeExistingPreset');
 Route::get('/user-presets', [App\Http\Controllers\PresetController::class, 'getUserPresets']);
-Route::get('/deletePreset/{ingrediente}', [App\Http\Controllers\PresetController::class, 'deleteUserPreset'])->name('deletePreset');
+Route::get('/deletePreset/{ingredient}', [App\Http\Controllers\PresetController::class, 'deleteUserPreset'])->name('deletePreset');
 
 Route::get('/checkLoggedInUser', [App\Http\Controllers\GateController::class, 'checkLoggedInUser'])->name('checkLoggedInUser');
 Route::get('/getUserRole', [App\Http\Controllers\GateController::class, 'getUserRole'])->name('getUserRole');
@@ -43,10 +43,10 @@ Route::get('/getUserRole', [App\Http\Controllers\GateController::class, 'getUser
 
 Route::get('/getIngredientInfo/{ingredientId}', [App\Http\Controllers\IngredientInfoController::class, 'getIngredientInfo'])->name('getIngredientInfo');
 
-Route::post('/updated/ingredienteInfo/{ingrediente}', [App\Http\Controllers\IngredientInfoController::class, 'updateIngrediente']);
-Route::post('/update/ingredienteInfo/{ingrediente}', [App\Http\Controllers\IngredientInfoController::class, 'showUpdateField'])->name('update');
-Route::post('/ingredienteInfo/create/{ingrediente}', [App\Http\Controllers\IngredientInfoController::class, 'storeIngredientInfo']);
-Route::get('/ingredientinfo/getIngredient/{ingrediente}', [App\Http\Controllers\IngredientInfoController::class, 'getIngredient'])->name('getIngredient');
+Route::post('/updated/ingredientInfo/{ingredient}', [App\Http\Controllers\IngredientInfoController::class, 'updateIngredient']);
+Route::post('/update/ingredientInfo/{ingredient}', [App\Http\Controllers\IngredientInfoController::class, 'showUpdateField'])->name('update');
+Route::post('/ingredientInfo/create/{ingredient}', [App\Http\Controllers\IngredientInfoController::class, 'storeIngredientInfo']);
+Route::get('/ingredientinfo/getIngredient/{ingredient}', [App\Http\Controllers\IngredientInfoController::class, 'getIngredient'])->name('getIngredient');
 
 // needed to refer to the vue router
 Route::get('{any}', function () {

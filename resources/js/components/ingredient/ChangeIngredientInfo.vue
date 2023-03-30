@@ -7,9 +7,9 @@
           <v-card elevation="10" max-width="800" min-height="550" class="mx-auto rounded-box">
             <v-card-text class="w-75 mx-auto">
               <h2 class="font-weight-bold mt-8">
-                Informationen zur Zutat {{ ingrediente.name }} aktualisieren:
+                Informationen zur Zutat {{ ingredient.name }} aktualisieren:
               </h2>
-              <v-form @submit.prevent="updateIngrediente" enctype="multipart/form-data">
+              <v-form @submit.prevent="updateIngredient" enctype="multipart/form-data">
                 <v-row>
                   <v-col cols="12" lg="6" sm="12">
                     <v-text-field class="enrollField" id="info" label="Info" v-model="ingredientInfo.info" required />
@@ -69,28 +69,28 @@ export default {
   props: ["id"],
   data() {
     return {
-      ingrediente: {},
+      ingredient: {},
       ingredientInfo: {},
     };
   },
   mounted() {
-    this.getIngrediente(this.id);
+    this.getIngredient(this.id);
   },
   methods: {
     // redirect back to the employeeTemplate
     showHome() {
       this.$router.push("/employeeTemplate");
     },
-    // Sends a request and retrieves the ingredient information from the server response, then updates the ingrediente and ingredientInfo data properties with the corresponding values.
-    getIngrediente() {
-      axios.post(`/update/ingredienteInfo/${this.id}`, {}).then((response) => {
-        this.ingrediente = response.data.ingrediente;
+    // Sends a request and retrieves the ingredient information from the server response, then updates the ingredient and ingredientInfo data properties with the corresponding values.
+    getIngredient() {
+      axios.post(`/update/ingredientInfo/${this.id}`, {}).then((response) => {
+        this.ingredient = response.data.ingredient;
         this.ingredientInfo = response.data.ingredientInfo;
       });
     },
-    // Constructs a FormData object with the ingredient information from the ingredientInfo data property, then sends a POST request to "/updated/ingredienteInfo/{id}" endpoint with the FormData object and a header containing the content type. 
+    // Constructs a FormData object with the ingredient information from the ingredientInfo data property, then sends a POST request to "/updated/ingredientInfo/{id}" endpoint with the FormData object and a header containing the content type. 
     // If the request is successful, it shows a success alert message using showAlertSuccess(), then redirects to "/employeeTemplate" route. If an error occurs, it logs the error to the console.
-    updateIngrediente() {
+    updateIngredient() {
       const config = {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -106,7 +106,7 @@ export default {
       data.append("protein", this.ingredientInfo.protein);
       data.append("salt", this.ingredientInfo.salt);
       axios
-        .post(`/updated/ingredienteInfo/${this.id}`, data, config)
+        .post(`/updated/ingredientInfo/${this.id}`, data, config)
         .then(() => {
           showAlertSuccess("Die Zutat-Informationen wurden erfolgreich aktualisiert!", "");
           this.$router.push({ path: "/employeeTemplate" });

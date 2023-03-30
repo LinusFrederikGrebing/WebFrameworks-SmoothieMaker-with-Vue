@@ -2,12 +2,12 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 /* Component import area */
 import LandingPageTemplate from '../components/LandingPageTemplate'
-import CreateIngrediente from '../components/ingrediente/CreateIngrediente'
-import UpdateIngrediente from '../components/ingrediente/UpdateIngrediente'
-import ChangeIngredientInfo from '../components/ingrediente/ChangeIngredientInfo'
-import CreateIngredientInfo from '../components/ingrediente/CreateIngredientInfo'
+import CreateIngredient from '../components/ingredient/CreateIngredient'
+import UpdateIngredient from '../components/ingredient/UpdateIngredient'
+import ChangeIngredientInfo from '../components/ingredient/ChangeIngredientInfo'
+import CreateIngredientInfo from '../components/ingredient/CreateIngredientInfo'
 import ChooseBottleSize from '../components/steps/Step1ChooseBottleSize'
-import step2Component  from '../components/steps/Step2ChooseIngediente'
+import step2Component  from '../components/steps/Step2ChooseIngedient'
 import ShopComponent  from '../components/steps/ShopComponent'
 import Step3ChooseLiquid  from '../components/steps/Step3ChooseLiquid'
 import LoginComponent  from '../components/auth/LoginComponent'
@@ -28,8 +28,8 @@ const routes = [
         component: ChooseBottleSize
     },
     {
-        path: '/chooseIngrediente',
-        name: 'chooseIngrediente',
+        path: '/chooseIngredient',
+        name: 'chooseIngredient',
         component: step2Component
     },
     {
@@ -55,7 +55,7 @@ const routes = [
     {
         path: '/create',
         name: 'create',
-        component: CreateIngrediente
+        component: CreateIngredient
     },
     {
         path: '/update/IngredientList/:id',
@@ -74,9 +74,9 @@ const routes = [
         component: RegisterComponent
     },
     {
-        path: "/update/ingrediente/:id",
-        name: "update-ingrediente",
-        component: UpdateIngrediente,
+        path: "/update/ingredient/:id",
+        name: "update-ingredient",
+        component: UpdateIngredient,
         props: true 
     },
     {

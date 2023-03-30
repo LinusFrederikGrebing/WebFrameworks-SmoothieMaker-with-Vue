@@ -14,14 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Ingrediente-Routes
-Route::get('/create', [App\Http\Controllers\IngredienteController::class, 'create'])->name('create');
-Route::post('/delete/ingrediente/{ingrediente}', [App\Http\Controllers\IngredienteController::class, 'deleteIngediengte'])->name('deleteZutat');
-Route::get('/getIngredientsList', [App\Http\Controllers\IngredienteController::class, 'getIngredientsList']);
-Route::get('/liquid', [App\Http\Controllers\IngredienteController::class, 'getLiquidList']);
-Route::post('/updated/ingrediente/{ingrediente}', [App\Http\Controllers\IngredienteController::class, 'updateIngrediente']);
-Route::post('/update/ingrediente/{ingrediente}', [App\Http\Controllers\IngredienteController::class, 'showUpdateField'])->name('update');
-Route::post('/create/ingrediente', [App\Http\Controllers\IngredienteController::class, 'store']);
+//Ingredient-Routes
+Route::get('/create', [App\Http\Controllers\IngredientController::class, 'create'])->name('create');
+Route::post('/delete/ingredient/{ingredient}', [App\Http\Controllers\IngredientController::class, 'deleteIngediengte'])->name('deleteZutat');
+Route::get('/getIngredientsList', [App\Http\Controllers\IngredientController::class, 'getIngredientsList']);
+Route::get('/liquid', [App\Http\Controllers\IngredientController::class, 'getLiquidList']);
+Route::post('/updated/ingredient/{ingredient}', [App\Http\Controllers\IngredientController::class, 'updateIngredient']);
+Route::post('/update/ingredient/{ingredient}', [App\Http\Controllers\IngredientController::class, 'showUpdateField'])->name('update');
+Route::post('/create/ingredient', [App\Http\Controllers\IngredientController::class, 'store']);
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

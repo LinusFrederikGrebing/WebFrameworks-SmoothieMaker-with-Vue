@@ -6,15 +6,15 @@ use Illuminate\Http\Request;
 // The Cart component is session-based.
 use Cart;
 use App\Models\BottleSize;
-use App\Models\Ingrediente;
+use App\Models\Ingredient;
 
 class ShoppingCartController extends Controller
 {
     // Add ingredient to cart
-    public function storeIngredienteToCart(Request $request, $ingredienteID)
+    public function storeIngredientToCart(Request $request, $ingredientID)
     {
         // Find the ingredient by ID
-        $ingrediente = Ingrediente::findOrFail($ingredienteID); 
+        $ingredient = Ingredient::findOrFail($ingredientID); 
         // Get the current bottle
         $bottle = $this->getBottle($request);
         // Get the current liquid items in the cart, if there is one
@@ -23,37 +23,37 @@ class ShoppingCartController extends Controller
         $total_amount = ($liquidItems->isNotEmpty()) ? $bottle->amount + 1 : $bottle->amount;
 
         // If the ingredient is a liquid, remove all other liquid items from the cart and add the new one
-        if($ingrediente->type == 'liquid'){
+        if($ingredient->type == 'liquid'){
             foreach ($liquidItems as $item) { 
                 Cart::remove($item->rowId);
             }
-            $this->addToCart($ingrediente, $request->amount);
+            $this->addToCart($ingredient, $request->amount);
         } else {
             // If the ingredient is not a liquid, check if there is enough space in the cart to add it
             $can_add_to_cart = (Cart::count() + $request->amount) <= $total_amount;
             if($can_add_to_cart){
-               $this->addToCart($ingrediente, $request->amount);
+               $this->addToCart($ingredient, $request->amount);
             } else {
                return response()->json(['stored' => false]);
             }
         }
-        return response()->json(['stored' => true, 'image' => $ingrediente->image]);
+        return response()->json(['stored' => true, 'image' => $ingredient->image]);
     }
    
     // Delete an item from the cart
-    public function deleteCart(Request $request, $ingredienteID)
+    public function deleteCart(Request $request, $ingredientID)
     {
         // Get the item from the cart using ID
-        $item = Cart::get($ingredienteID);
+        $item = Cart::get($ingredientID);
         $wasLiquid = ($item->options->type == 'liquid') ? true : false;
         $image = $item->options->image;
         // Remove the item from the cart
-        Cart::remove($ingredienteID);
+        Cart::remove($ingredientID);
         return response()->json(['image' => $image, 'wasLiquid' => $wasLiquid]);
     }
 
     // Increase the quantity of an item in the cart
-    public function increaseCardQty(Request $request, $ingredienteID)
+    public function increaseCardQty(Request $request, $ingredientID)
     {   
         // Get the current bottle
         $bottle = $this->getBottle($request);
@@ -64,19 +64,19 @@ class ShoppingCartController extends Controller
    
         // If there is enough space in the cart, increase the item's quantity
         if (Cart::count() < $total_amount) {
-            Cart::update($ingredienteID, Cart::get($ingredienteID)->qty + 1); 
-            return response()->json(['stored' => true, 'image' => Cart::get($ingredienteID)->options->image]);
+            Cart::update($ingredientID, Cart::get($ingredientID)->qty + 1); 
+            return response()->json(['stored' => true, 'image' => Cart::get($ingredientID)->options->image]);
         }
         return response()->json(['stored' => false]);
     }
 
     // Decrease the quantity of an item in the cart
-    public function decreaseCardQty(Request $request, $ingredienteID)
+    public function decreaseCardQty(Request $request, $ingredientID)
     {
-        $cart_item =  Cart::get($ingredienteID);
+        $cart_item =  Cart::get($ingredientID);
         $image = $cart_item->options->image;
         $newqty = $cart_item->qty - 1;
-        Cart::update($ingredienteID, $newqty); 
+        Cart::update($ingredientID, $newqty); 
         return response()->json(['image' => $image, 'newqty' => $newqty]);
     }
 
@@ -144,15 +144,15 @@ class ShoppingCartController extends Controller
     }
 
     // Adds an ingredient item to the Cart based on the passed ingredient with the passed amount as qty
-    private function addToCart($ingrediente, $amount){
+    private function addToCart($ingredient, $amount){
         Cart::add([
-            'id' => $ingrediente->id,
-            'name' => $ingrediente->name,
+            'id' => $ingredient->id,
+            'name' => $ingredient->name,
             'qty' => $amount,
-            'price' => $ingrediente->price,
+            'price' => $ingredient->price,
             'options' => [
-                'image' => $ingrediente->image,
-                'type' =>  $ingrediente->type,
+                'image' => $ingredient->image,
+                'type' =>  $ingredient->type,
             ],
         ]);
     }
